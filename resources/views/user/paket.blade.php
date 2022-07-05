@@ -9,6 +9,12 @@
                 <h3 class="mb-3">Beli Paket</h3>
                 <hr>
                 <div class="col-md-12 mb-3">
+                    @if ($message = Session::get('success'))
+                    <div class="alert alert-primary alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $message }}</strong>
+                    </div>
+                    @endif
                     <div class="text-center">
                         <h3>Paket Anda Saat Ini</h3>
                         <div class="mt-1">

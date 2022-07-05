@@ -85,6 +85,20 @@
         </a>
       </li>
 
+      <li class="nav-item nav-category">Konfigurasi Event Tryout</li>
+      <li class="nav-item">
+        <a href="{{ route('admin.event-tryout.label-soal.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Label Soal Event Tryout</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.event-tryout.soal.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Soal Event Tryout</span>
+        </a>
+      </li>
+
       <li class="nav-item nav-category">Pembayaran</li>
       <li class="nav-item">
         <a href="{{ route('admin.pembayaran.index') }}" class="nav-link">

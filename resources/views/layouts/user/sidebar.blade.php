@@ -79,6 +79,29 @@
         </div>
       </li>
 
+      <li class="nav-item nav-category">Event Tryout</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#event-tryout" role="button" aria-expanded="false" aria-controls="event-tryout">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Event Tryout</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down link-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="collapse" id="event-tryout" style="">
+          <ul class="nav sub-menu">
+            <li class="nav-item">
+              <a href="{{ route('user.event-tryout') }}" class="nav-link">
+                Event Tryout
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('user.event-tryout.hasil') }}" class="nav-link">
+                Hasil Event Tryout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
       <li class="nav-item nav-category">Akun</li>
       <li class="nav-item">
         <a href="{{ route('user.profil') }}" class="nav-link">

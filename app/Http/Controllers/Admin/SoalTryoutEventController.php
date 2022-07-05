@@ -6,53 +6,53 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
 use Str;
-use App\Models\SoalTryout;
-use App\Models\LabelSoalTryout;
+use App\Models\SoalTryoutEvent;
+use App\Models\LabelSoalTryoutEvent;
 
-class SoalTryoutController extends Controller
+class SoalTryoutEventController extends Controller
 {
     public function index(Request $request){
-        $data = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')
-        ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
-        ->join('kategori', 'kategori.id_kategori', '=', 'label_soal_tryout.id_kategori')
-        ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', '=', 'label_soal_tryout.id_jenis_kampus')
-        ->orderBy('id_soal_tryout', 'DESC')->get();
+        $data = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')
+        ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout_event.id_paket')
+        ->join('kategori', 'kategori.id_kategori', '=', 'label_soal_tryout_event.id_kategori')
+        ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', '=', 'label_soal_tryout_event.id_jenis_kampus')
+        ->orderBy('id_soal_tryout_event', 'DESC')->get();
         if($request->ajax()){
             return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_soal_tryout.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-data">Edit</a>';
-                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_soal_tryout.'" data-original-title="Delete" class="btn btn-danger btn-sm delete-data">Delete</a>';
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_soal_tryout_event.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-data">Edit</a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_soal_tryout_event.'" data-original-title="Delete" class="btn btn-danger btn-sm delete-data">Delete</a>';
                 return $btn;
             })
             ->addColumn('soals', function($row){
-                $soal = mb_strimwidth($row->soal_tryout, 0, 100, "...");
+                $soal = mb_strimwidth($row->soal_tryout_event, 0, 100, "...");
                 return $soal;
             })
             ->rawColumns(['action', 'soals'])
             ->make(true);
         }
 
-        $label_soal_tryout = LabelSoalTryout::pluck('id_label_soal_tryout', 'nama_label');
+        $label_soal_tryout_event = LabelSoalTryoutEvent::pluck('id_label_soal_tryout_event', 'nama_label');
 
-        return view('admin.tryout.soal', compact('label_soal_tryout'));
+        return view('admin.tryout-event.soal', compact('label_soal_tryout_event'));
     }
 
     public function show($id){
-        $data = SoalTryout::find($id);
+        $data = SoalTryoutEvent::find($id);
         return response()->json($data);
     }
 
     public function store(Request $request)
     {
-        $getJumlahSoal = SoalTryout::where('id_label_soal_tryout', $request->id_label_soal_tryout)->count();
+        $getJumlahSoal = SoalTryoutEvent::where('id_label_soal_tryout_event', $request->id_label_soal_tryout_event)->count();
 
         $count = 0;
         $name = encrypt(Str::of($request->soal)->slug('-'));
         $slug_name = $name;
 
         while(true) {
-            $check = SoalTryout::where('id_soal_tryout', '!=', $request->id_soal_tryout)->where('slug', $slug_name)->first();
+            $check = SoalTryoutEvent::where('id_soal_tryout_event', '!=', $request->id_soal_tryout_event)->where('slug', $slug_name)->first();
             if (empty($check)){
                 break;
             } else {
@@ -61,10 +61,10 @@ class SoalTryoutController extends Controller
         }
 
         if($getJumlahSoal <= 50){
-            if($request->id_soal_tryout == ''){
-                $data = SoalTryout::insert([
-                    'id_label_soal_tryout' => $request->id_label_soal_tryout,
-                    'soal_tryout' => $request->soal,
+            if($request->id_soal_tryout_event == ''){
+                $data = SoalTryoutEvent::insert([
+                    'id_label_soal_tryout_event' => $request->id_label_soal_tryout_event,
+                    'soal_tryout_event' => $request->soal,
                     'a' => $request->a,
                     'b' => $request->b,
                     'c' => $request->c,
@@ -77,9 +77,9 @@ class SoalTryoutController extends Controller
 
                 return response()->json('Soal Ditambah');
             } else {
-                $data = SoalTryout::where('id_soal_tryout', $request->id_soal_tryout)->update(
+                $data = SoalTryoutEvent::where('id_soal_tryout_event', $request->id_soal_tryout_event)->update(
                     [
-                        'id_label_soal_tryout' => $request->id_label_soal_tryout,
+                        'id_label_soal_tryout_event' => $request->id_label_soal_tryout_event,
                         'soal' => $request->soal,
                         'a' => $request->a,
                         'b' => $request->b,
@@ -99,7 +99,7 @@ class SoalTryoutController extends Controller
     }
 
     public function destroy($id){
-        $data = SoalTryout::find($id)->delete();
+        $data = SoalTryoutEvent::find($id)->delete();
         return response()->json($data);
     }
 }

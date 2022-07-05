@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between flex-row align-items-center mb-3">
-                    <div><h3>Tryout Soal {{ $label }}</h3></div>
+                    <div><h3>Event Tryout Soal {{ $label }}</h3></div>
                     <div><h3 class="timer"></h3></div>    
                 </div>
                 
@@ -167,11 +167,11 @@
             if (timeleft < 0) {
                 $.ajax({
                     type: "POST",
-                    url: "/user/tryout/finish",
+                    url: "/user/event-tryout/finish",
                     data: {},
                     cache: false,
                     success: function(data) {
-                        window.location = "/user/tryout/pembahasan/"+data+"";
+                        window.location = "/user/event-tryout/pembahasan/"+data+"";
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr);
@@ -186,7 +186,7 @@
 
         slug = $('#mini_map_1').data('id');
         var no = $('#mini_map_1').data('no');
-        $.getJSON("/user/tryout/first-soal/" + slug + "", function(data){
+        $.getJSON("/user/event-tryout/first-soal/" + slug + "", function(data){
             $("#soal").html(data[0].soal);
             $("#nomor_soal").text("Soal Nomor " + $('#mini_map_1').data('no'));
             $("#no_soal").val($('#mini_map_1').data('no'));
@@ -196,7 +196,7 @@
             $("#jawaban_d_text").html(data[0].d);
             $("#jawaban_e_text").html(data[0].e);
         });
-        $.getJSON("/user/tryout/get-jawaban/" + no + "", function(data){
+        $.getJSON("/user/event-tryout/get-jawaban/" + no + "", function(data){
             if(data == ''){
                 $('input[name="jawaban"]').prop('checked', false);
             } else if(data == 'a') {
@@ -211,7 +211,7 @@
                 $('#jawaban_e').prop('checked', true);
             }
         });
-        $.getJSON("/user/tryout/get-all-jawaban", function(data){   
+        $.getJSON("/user/event-tryout/get-all-jawaban", function(data){   
             all = data.length+1
             for (var i=0; i < data.length; i++) {
                 var index_view=i+1;
@@ -242,11 +242,11 @@ $('#batal').on('click', function(){
 $('#batalBtn').on('click', function(){
     $.ajax({
         type: "POST",
-        url: "/user/tryout/cancel",
+        url: "/user/event-tryout/cancel",
         data: {},
         cache: false,
         success: function(data) {
-            window.location = "/user/tryout";
+            window.location = "/user/event-tryout";
         },
         error: function(xhr, status, error) {
             console.error(xhr);
@@ -261,11 +261,11 @@ $('#selesai').on('click', function(){
 $('#selesaiBtn').on('click', function(){
     $.ajax({
         type: "POST",
-        url: "/user/tryout/finish",
+        url: "/user/event-tryout/finish",
         data: {},
         cache: false,
         success: function(data) {
-            window.location = "/user/tryout/pembahasan/"+data+"";
+            window.location = "/user/event-tryout/pembahasan/"+data+"";
         },
         error: function(xhr, status, error) {
             console.error(xhr);
@@ -280,7 +280,7 @@ $('#report-soal').on('click', function(){
 $('#reportBtn').on('click', function(){
     $.ajax({
         type: "POST",
-        url: "/user/tryout/report",
+        url: "/user/event-tryout/report",
         data: {
             no: $('#no_soal').val(),
             kategori: $('#kategori_report').val(),
@@ -301,7 +301,7 @@ function getSoal(obj) {
     var slug = $(obj).data('id');
     var no = $(obj).data('no');
     var actual_no = $(obj).data('no');
-    $.getJSON("/user/tryout/get-all-jawaban", function(data){  
+    $.getJSON("/user/event-tryout/get-all-jawaban", function(data){  
         no_plus_1 = no + 1;
         no_min_1 = no - 1;
         length = data.length - 1;
@@ -351,7 +351,7 @@ function getSoal(obj) {
         }        
     });
 
-    $.getJSON("/user/tryout/get-soal/" + slug + "", function(data){
+    $.getJSON("/user/event-tryout/get-soal/" + slug + "", function(data){
         $("#soal").html(data[0].soal);
         $("#nomor_soal").text("Soal Nomor " + actual_no);
         $("#no_soal").val(actual_no);
@@ -362,7 +362,7 @@ function getSoal(obj) {
         $("#jawaban_e_text").html(data[0].e);
     });
 
-    $.getJSON("/user/tryout/get-jawaban/" + no + "", function(data){
+    $.getJSON("/user/event-tryout/get-jawaban/" + no + "", function(data){
         if(data == '-'){
             $('input[name="jawaban"]').prop('checked', false);
         } else if(data == 'a') {
@@ -382,7 +382,7 @@ function getSoal(obj) {
 function jawab(obj) {
     $.ajax({
         type: "POST",
-        url: "/user/tryout/store",
+        url: "/user/event-tryout/store",
         data: {
             no: $('#no_soal').val(),
             jawaban: $(obj).data('id')

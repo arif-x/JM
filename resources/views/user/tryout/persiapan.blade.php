@@ -7,14 +7,14 @@
 		<div class="card">
 			<div class="card-body">
 				@foreach($soals as $soal)
-				<h3>Persiapan Latihan {{ $soal->nama_label }}</h3>
+				<h3>Persiapan Tryout {{ $soal->nama_label }}</h3>
 				<hr class="my-4">
 				<div class="row">
 					<div class="col-md-12">
 						<table class="table table-hover">
 							<tr>
-								<th class="w-25">Kategori </th>
-								<td class="fs-15">{{ $soal->nama_kategori }}</td>
+								<th class="w-25">Tryout </th>
+								<td class="fs-15">{{ $soal->nama_label }}</td>
 							</tr>
 							<tr>
 								<th class="w-25">Jumlah Soal</th>

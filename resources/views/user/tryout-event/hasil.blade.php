@@ -7,8 +7,8 @@
         <div class="card">
             <div class="card-body">
                 <div>
-                    <h3>Hasil Tryout Soal</h3>
-                    <p>Berikut hasil tryout yang telah dikerjakan</p>
+                    <h3>Hasil Event Tryout</h3>
+                    <p>Berikut hasil event tryout yang telah dikerjakan</p>
                 </div>
                 <hr>
                 <div class="table-responsive">
@@ -33,7 +33,7 @@
                                 processing: true,
                                 serverSide: true,
                                 paging: true,
-                                ajax: "{{ route('user.tryout.hasil') }}",
+                                ajax: "{{ route('user.event-tryout.hasil') }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                                 {data: 'nama_label', name: 'nama_label'},

@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between flex-row align-items-center mb-3">
-                    <div><h3>Hasil & Pembahasan Latihan Soal {{ $label }}</h3></div>
+                    <div><h3>Hasil & Pembahasan Event Tryout Soal {{ $label }}</h3></div>
                     <div><h3 class="timer"></h3></div>    
                 </div>
                 
@@ -223,8 +223,8 @@
 
         slug = $('#mini_map_1').data('id');
         var no = $('#mini_map_1').data('no');
-        $.getJSON("/user/latihan/pembahasan/soal/" + slug + "", function(data){
-            $("#soal").html(data[0].soal);
+        $.getJSON("/user/event-tryout/pembahasan/soal/" + slug + "", function(data){
+            $("#soal").html(data[0].soal_tryout);
             $("#nomor_soal").text("Soal Nomor " + $('#mini_map_1').data('no'));
             $("#no_soal").val($('#mini_map_1').data('no'));
             $("#jawaban_user").html(data[0].jawaban);
@@ -239,7 +239,7 @@
                 $("#jawaban_user").addClass('text-primary');
             }
             $("#kunci_jawaban").html(data[0].kunci);
-            $("#no_soals").val(data[0].id_soal);
+            $("#no_soals").html(data[0].id_soal);
             $("#pembahasan").html(data[0].pembahasan);
             $("#jawaban_a_text").html(data[0].a);
             $("#jawaban_b_text").html(data[0].b);
@@ -329,7 +329,7 @@ $('#report-soal').on('click', function(){
 $('#reportBtn').on('click', function(){
     $.ajax({
         type: "POST",
-        url: "/user/latihan/report-pembahasan",
+        url: "/user/event-tryout/report-pembahasan",
         data: {
             no: $('#no_soals').val(),
             kategori: $('#kategori_report').val(),
@@ -351,7 +351,7 @@ function getSoal(obj){
     var no = $(obj).data('no');
     var actual_no = $(obj).data('no');
 
-    $.getJSON("/user/latihan/pembahasan/soal/"+slug, function(data){  
+    $.getJSON("/user/event-tryout/pembahasan/soal/"+slug, function(data){  
         no_plus_1 = no + 1;
         no_min_1 = no - 1;
         length = data.length - 1;
@@ -380,7 +380,7 @@ function getSoal(obj){
         all = data.length+1
         for (var i=0; i < data.length; i++) {
             console.log(data[i].nomor);
-            $("#soal").html(data[no_min_1].soal);
+            $("#soal").html(data[no_min_1].soal_tryout);
             $("#nomor_soal").text("Soal Nomor " + actual_no);
             $("#no_soal").val(actual_no);
             $("#jawaban_user").html(data[no_min_1].jawaban);
@@ -394,7 +394,7 @@ function getSoal(obj){
                 $("#jawaban_user").removeClass('text-danger');
                 $("#jawaban_user").addClass('text-primary');
             }
-            $("#no_soals").val(data[no_min_1].id_soal);
+            $("#no_soals").html(data[no_min_1].id_soal);
             $("#kunci_jawaban").html(data[no_min_1].kunci);
             $("#pembahasan").html(data[no_min_1].pembahasan);
             $("#jawaban_a_text").html(data[no_min_1].a);

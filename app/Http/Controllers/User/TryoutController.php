@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\LabelSoalTryout;
 use App\Models\StatusMengerjakanTryout;
 use App\Models\JawabanUserTryout;
-use App\Models\LaporanSoal;
+use App\Models\LaporanSoalTryout;
 use Auth;
 use File;
 use DB;
@@ -22,21 +22,6 @@ class TryoutController extends Controller
     public function index(){
         $tps = LabelSoalTryout::join('soal_tryout', 'soal_tryout.id_label_soal_tryout', '=', 'label_soal_tryout.id_label_soal_tryout')
         ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
-        ->where('label_soal_tryout.id_jenis_soal', 1)
-        ->select('label_soal_tryout.id_label_soal_tryout', 'nama_paket', 'label_soal_tryout.slug' , 'label_soal_tryout.nama_label', DB::raw("count(soal_tryout.id_label_soal_tryout) as counts"))
-        ->groupBy('soal_tryout.id_label_soal_tryout')
-        ->get();
-
-        $tka = LabelSoalTryout::join('soal_tryout', 'soal_tryout.id_label_soal_tryout', '=', 'label_soal_tryout.id_label_soal_tryout')
-        ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
-        ->where('label_soal_tryout.id_jenis_soal', 2)
-        ->select('label_soal_tryout.id_label_soal_tryout', 'nama_paket', 'label_soal_tryout.slug' , 'label_soal_tryout.nama_label', DB::raw("count(soal_tryout.id_label_soal_tryout) as counts"))
-        ->groupBy('soal_tryout.id_label_soal_tryout')
-        ->get();
-
-        $inggris = LabelSoalTryout::join('soal_tryout', 'soal_tryout.id_label_soal_tryout', '=', 'label_soal_tryout.id_label_soal_tryout')
-        ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
-        ->where('label_soal_tryout.id_jenis_soal', 3)
         ->select('label_soal_tryout.id_label_soal_tryout', 'nama_paket', 'label_soal_tryout.slug' , 'label_soal_tryout.nama_label', DB::raw("count(soal_tryout.id_label_soal_tryout) as counts"))
         ->groupBy('soal_tryout.id_label_soal_tryout')
         ->get();
@@ -91,7 +76,7 @@ class TryoutController extends Controller
             ';
         }
 
-        return view('user.tryout.tryout', ['tka' => $tka, 'tps' => $tps, 'inggris' => $inggris], compact('modal'));
+        return view('user.tryout.tryout', ['tps' => $tps], compact('modal'));
     }
 
     public function ready($slug){
@@ -105,7 +90,7 @@ class TryoutController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket');
+            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = LabelSoalTryout::join('soal_tryout', 'soal_tryout.id_label_soal_tryout', '=', 'label_soal_tryout.id_label_soal_tryout')
             ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
@@ -129,7 +114,7 @@ class TryoutController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket');
+            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->select('soal_tryout', 'soal_tryout.slug')->get();
             $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->inRandomOrder()->get();
@@ -202,7 +187,7 @@ class TryoutController extends Controller
                 File::put(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"), $newJson);   
             }
 
-            return view('user.tryout.single', ['soals' => $soal], compact('label', 'timer', 'end'));
+            return view('user.tryout-event.single', ['soals' => $soal], compact('label', 'timer', 'end'));
         }
     }
 
@@ -323,6 +308,18 @@ class TryoutController extends Controller
 
         $data = LaporanSoalTryout::insert([
             'id_soal' => $id_soal,
+            'kategori' => $request->kategori,
+            'pesan' => $request->pesan,
+        ]);
+
+        return response()->json($data);
+    }
+
+    public function reportPembahasan(Request $request){
+        $id_soal = '';
+
+        $data = LaporanSoalTryout::insert([
+            'id_soal' => $request->no,
             'kategori' => $request->kategori,
             'pesan' => $request->pesan,
         ]);

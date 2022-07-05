@@ -59,6 +59,12 @@ Route::group([
             Route::resource('label-soal', 'LabelSoalTryoutController', ['as' => 'admin.tryout']);
             Route::resource('soal', 'SoalTryoutController', ['as' => 'admin.tryout']);  
         });
+        Route::group([
+            'prefix' => 'event-tryout'
+        ], function(){
+            Route::resource('label-soal', 'LabelSoalTryoutEventController', ['as' => 'admin.event-tryout']);
+            Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin.event-tryout']);  
+        });
         Route::resource('pembayaran', 'PembayaranController', ['as' => 'admin']);
         Route::resource('rekening', 'RekeningController', ['as' => 'admin']);
         Route::resource('kontak', 'KontakController', ['as' => 'admin']);
@@ -97,6 +103,7 @@ Route::group([
         Route::post('/persiapan/{slug}', 'LatihanController@cancelAndContinue')->name('user.latihan.cancel-and-continue');
         Route::post('/finish', 'LatihanController@finish')->name('user.latihan.finish');
         Route::post('/report', 'LatihanController@report')->name('user.latihan.report');
+        Route::post('/report-pembahasan', 'LatihanController@reportPembahasan')->name('user.latihan.report.pembahasan');
         Route::get('/pembahasan/{slug}', 'LatihanController@pembahasanIndex')->name('user.latihan.pembahasan.index');
         Route::get('/pembahasan/soal/{slug}', 'LatihanController@pembahasan')->name('user.latihan.pembahasan');
     });
@@ -115,12 +122,35 @@ Route::group([
         Route::post('/cancel', 'TryoutController@cancel')->name('user.tryout.cancel');
         Route::get('/cancel', 'TryoutController@cancel')->name('user.tryout.cancel');
         Route::post('/finish', 'TryoutController@finish')->name('user.tryout.finish');
+        Route::post('/report', 'TryoutController@report')->name('user.tryout.report');
+        Route::post('/report-pembahasan', 'TryoutController@reportPembahasan')->name('user.tryout.report.pembahasan');
         Route::get('/pembahasan/{slug}', 'TryoutController@pembahasanIndex')->name('user.tryout.pembahasan.index');
         Route::get('/pembahasan/soal/{slug}', 'TryoutController@pembahasan')->name('user.tryout.pembahasan');
     });
 
+    Route::group([
+        'prefix' => 'event-tryout'
+    ], function(){
+        Route::get('/', 'TryoutEventController@index')->name('user.event-tryout');
+        Route::get('/persiapan/{slug}', 'TryoutEventController@ready')->name('user.event-tryout.ready');
+        Route::post('/kerjakan/{slug}', 'TryoutEventController@kerjakan')->name('user.event-tryout.kerjakan');
+        Route::get('/first-soal/{id}', 'TryoutEventController@firstSoal')->name('user.event-tryout.soal.first');
+        Route::get('/get-soal/{id}', 'TryoutEventController@getSoal')->name('user.event-tryout.soal.single');
+        Route::get('/get-jawaban/{id}', 'TryoutEventController@getJawaban')->name('user.event-tryout.soal.jawaban');
+        Route::get('/get-all-jawaban', 'TryoutEventController@getAllJawaban')->name('user.event-tryout.soal.jawaban.all');
+        Route::post('/store', 'TryoutEventController@store')->name('user.event-tryout.store');
+        Route::post('/cancel', 'TryoutEventController@cancel')->name('user.event-tryout.cancel');
+        Route::get('/cancel', 'TryoutEventController@cancel')->name('user.event-tryout.cancel');
+        Route::post('/finish', 'TryoutEventController@finish')->name('user.event-tryout.finish');
+        Route::post('/report', 'TryoutEventController@report')->name('user.event-tryout.report');
+        Route::post('/report-pembahasan', 'TryoutEventController@reportPembahasan')->name('user.event-tryout.report.pembahasan');
+        Route::get('/pembahasan/{slug}', 'TryoutEventController@pembahasanIndex')->name('user.event-tryout.pembahasan.index');
+        Route::get('/pembahasan/soal/{slug}', 'TryoutEventController@pembahasan')->name('user.event-tryout.pembahasan');
+    });
+
         Route::get('/hasil-latihan', 'LatihanController@hasilLatihan')->name('user.latihan.hasil');
         Route::get('/hasil-tryout', 'TryoutController@hasilTryout')->name('user.tryout.hasil');
+        Route::get('/hasil-event-tryout', 'TryoutEventController@hasilTryout')->name('user.event-tryout.hasil');
 
     Route::group([
         'prefix' => 'paket'

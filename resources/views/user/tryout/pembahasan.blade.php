@@ -42,6 +42,7 @@
                                             </div>
                                             <hr>
                                             <input id="no_soal" type="hidden"></input>
+                                            <input id="no_soals" type="hidden"></input>
                                             <p id="soal" class="mb-3"></p>
                                             <div class="container">
                                                 <p class="mb-3" id="jawaban_a_text"><strong id="jawaban_a"></strong></p>
@@ -238,6 +239,7 @@
                 $("#jawaban_user").addClass('text-primary');
             }
             $("#kunci_jawaban").html(data[0].kunci);
+            $("#no_soals").html(data[0].id_soal);
             $("#pembahasan").html(data[0].pembahasan);
             $("#jawaban_a_text").html(data[0].a);
             $("#jawaban_b_text").html(data[0].b);
@@ -320,6 +322,30 @@
         });
 });
 
+$('#report-soal').on('click', function(){
+    $('#reportModal').modal('show');
+});
+
+$('#reportBtn').on('click', function(){
+    $.ajax({
+        type: "POST",
+        url: "/user/tryout/report-pembahasan",
+        data: {
+            no: $('#no_soals').val(),
+            kategori: $('#kategori_report').val(),
+            pesan: $('#pesan').val(),
+        },
+        cache: false,
+        success: function(data) {
+            $('#reportModal').modal('hide');
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr);
+            $('#reportModal').modal('hide');
+        }
+    });
+})
+
 function getSoal(obj){
     var slug = $(obj).data('id');
     var no = $(obj).data('no');
@@ -368,6 +394,7 @@ function getSoal(obj){
                 $("#jawaban_user").removeClass('text-danger');
                 $("#jawaban_user").addClass('text-primary');
             }
+            $("#no_soals").html(data[no_min_1].id_soal);
             $("#kunci_jawaban").html(data[no_min_1].kunci);
             $("#pembahasan").html(data[no_min_1].pembahasan);
             $("#jawaban_a_text").html(data[no_min_1].a);
