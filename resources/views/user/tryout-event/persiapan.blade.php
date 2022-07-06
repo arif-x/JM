@@ -35,7 +35,7 @@
 								<tr>
 									<th class="w-25">Kode Kupon</th>
 									<td class="fs-15">
-										<input type="tetx" name="kupon" class="form-control">
+										<input type="tetx" name="kupon" class="form-control" required>
 									</td>
 								</tr>
 							</table>

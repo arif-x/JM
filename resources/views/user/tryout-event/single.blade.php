@@ -311,6 +311,8 @@ function getSoal(obj) {
         if(actual_no == 1){
             $('#previous').data('no', '-');
             $('#previous').prop("disabled", true);
+            $('#next').data('no', 2);
+            $('#next').data('id', $('#mini_map_2').data('id'));
             $('#next').prop("disabled", false);
         } else if(actual_no == data.length){
             $('#next').data('no', '-');

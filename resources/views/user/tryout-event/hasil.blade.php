@@ -7,8 +7,8 @@
         <div class="card">
             <div class="card-body">
                 <div>
-                    <h3>Hasil Event Tryout</h3>
-                    <p>Berikut hasil event tryout yang telah dikerjakan</p>
+                    <h3>Hasil Event Tryout {{ $label }}</h3>
+                    <p>Berikut hasil ranking event tryout.</p>
                 </div>
                 <hr>
                 <div class="table-responsive">
@@ -17,8 +17,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Tryout</th>
-                                <th>Tanggal Mengerjakan</th>
-                                <th>Action</th>
+                                <th>Skor</th>
                             </tr>
                         </thead>  
                     </table>
@@ -33,12 +32,11 @@
                                 processing: true,
                                 serverSide: true,
                                 paging: true,
-                                ajax: "{{ route('user.event-tryout.hasil') }}",
+                                ajax: "{{ route('user.event-tryout.hasil', $slugs) }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                                 {data: 'nama_label', name: 'nama_label'},
-                                {data: 'tgl_mengerjakan', name: 'tgl_mengerjakan'},
-                                {data: 'pembahasan', name: 'pembahasan'},
+                                {data: 'skor', name: 'skor'},
                                 ]
                             });
                         });

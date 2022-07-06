@@ -59,6 +59,7 @@ return [
                 'image/png',
                 'image/gif',
                 'application/pdf',
+                'video/mp4',
                 'text/plain',
             ],
         ],

@@ -57,6 +57,20 @@
         </a>
       </li>
 
+      <li class="nav-item nav-category">Konfigurasi Materi</li>
+      <li class="nav-item">
+        <a href="{{ route('admin.materi.label-materi.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Label Materi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.materi.materi.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Materi</span>
+        </a>
+      </li>
+
       <li class="nav-item nav-category">Konfigurasi Latihan</li>
       <li class="nav-item">
         <a href="{{ route('admin.latihan.label-soal.index') }}" class="nav-link">

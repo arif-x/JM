@@ -25,6 +25,7 @@ class TryoutEventController extends Controller
         // ->where('label_soal_tryout_event.id_jenis_soal', 1)
         ->select('label_soal_tryout_event.id_label_soal_tryout_event', 'nama_paket', 'label_soal_tryout_event.slug' , 'label_soal_tryout_event.nama_label', 'label_soal_tryout_event.tgl_mulai', 'label_soal_tryout_event.tgl_end', DB::raw("count(soal_tryout_event.id_label_soal_tryout_event) as counts"))
         ->groupBy('soal_tryout_event.id_label_soal_tryout_event')
+        ->orderBy('label_soal_tryout_event.id_label_soal_tryout_event')
         ->get();
 
         // $tka = LabelSoalTryoutEvent::join('soal_tryout_event', 'soal_tryout_event.id_label_soal_tryout_event', '=', 'label_soal_tryout_event.id_label_soal_tryout_event')
@@ -447,23 +448,21 @@ class TryoutEventController extends Controller
         return response()->json($data);
     }
 
-    public function hasilTryout(Request $request){
+    public function hasilTryout(Request $request, $slug){
         $data = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')
         ->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'label_soal_tryout_event.id_jenis_soal')
-        ->select('jenis_soal', 'nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs')
-        ->where('jawaban_user_tryout_event.id_user', Auth::user()->id_user)->orderBy('id_jawaban_user_tryout_event', 'DESC')->get();
+        ->select('jenis_soal', 'nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor')
+        ->groupBy('id_user')->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
+
+        $slugs = LabelSoalTryoutEvent::where('slug', $slug)->value('slug');
+        $label = LabelSoalTryoutEvent::where('slug', $slug)->value('nama_label');
 
         if($request->ajax()){
             return Datatables::of($data)
             ->addIndexColumn()
-            ->addColumn('pembahasan', function($row){
-                $btn = '<a type="button" href="/user/event-tryout/pembahasan/'.$row->slugs.'" class="btn btn-primary">Pembahasan</a>';
-                return $btn;
-            })
-            ->rawColumns(['pembahasan'])
             ->make(true);
         }
 
-        return view('user.tryout-event.hasil');
+        return view('user.tryout-event.hasil', compact('slugs', 'label'));
     }
 }

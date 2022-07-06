@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 
 /*
@@ -48,22 +48,46 @@ Route::group([
         Route::resource('jenis-view-soal', 'JenisViewSoalController', ['as' => 'admin']);
         Route::resource('jenis-soal', 'JenisSoalController', ['as' => 'admin']);
         Route::group([
+            'prefix' => 'materi'
+        ], function(){
+            Route::resource('label-materi', 'LabelMateriController', ['as' => 'admin.materi']);
+            Route::resource('materi', 'MateriController', ['as' => 'admin.materi']);  
+        });
+        Route::group([
             'prefix' => 'latihan'
         ], function(){
             Route::resource('label-soal', 'LabelSoalLatihanController', ['as' => 'admin.latihan']);
-            Route::resource('soal', 'SoalLatihanController', ['as' => 'admin.latihan']);  
+            Route::resource('soal', 'SoalLatihanController', ['as' => 'admin.latihan']);
+            Route::group([
+                'namespace' => 'Excel\Import',
+                'prefix' => 'import'
+            ], function(){
+                Route::post('/', 'SoalLatihanController@importExcel')->name('admin.latihan.import');
+            });  
         });
         Route::group([
             'prefix' => 'tryout'
         ], function(){
             Route::resource('label-soal', 'LabelSoalTryoutController', ['as' => 'admin.tryout']);
             Route::resource('soal', 'SoalTryoutController', ['as' => 'admin.tryout']);  
+            Route::group([
+                'namespace' => 'Excel\Import',
+                'prefix' => 'import'
+            ], function(){
+                Route::post('/', 'SoalTryoutController@importExcel')->name('admin.tryout.import');
+            });  
         });
         Route::group([
             'prefix' => 'event-tryout'
         ], function(){
             Route::resource('label-soal', 'LabelSoalTryoutEventController', ['as' => 'admin.event-tryout']);
             Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin.event-tryout']);  
+            Route::group([
+                'namespace' => 'Excel\Import',
+                'prefix' => 'import'
+            ], function(){
+                Route::post('/', 'SoalTryoutEventController@importExcel')->name('admin.event-tryout.import');
+            });  
         });
         Route::resource('pembayaran', 'PembayaranController', ['as' => 'admin']);
         Route::resource('rekening', 'RekeningController', ['as' => 'admin']);
@@ -76,15 +100,21 @@ Route::group([
 });
 
 
-Route::post('soal/store', 'Admin\SoalController@store');
-
-
 Route::group([
     'namespace' => 'User',
     'prefix' => 'user',
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'verified'],
 ], function(){ 
     Route::get('/dashboard', 'DashboardController@index')->name('user.dashboard');
+
+    Route::group([
+        'prefix' => 'materi'
+    ], function(){
+        Route::get('/text', 'MateriController@indexText')->name('user.materi.text');
+        Route::get('/text/{slug}', 'MateriController@singleText')->name('user.materi.text.single');
+        Route::get('/video', 'MateriController@indexVideo')->name('user.materi.video');
+        Route::get('/video/{slug}', 'MateriController@singleVideo')->name('user.materi.video.single');
+    });
 
 
     Route::group([
@@ -148,9 +178,9 @@ Route::group([
         Route::get('/pembahasan/soal/{slug}', 'TryoutEventController@pembahasan')->name('user.event-tryout.pembahasan');
     });
 
-        Route::get('/hasil-latihan', 'LatihanController@hasilLatihan')->name('user.latihan.hasil');
-        Route::get('/hasil-tryout', 'TryoutController@hasilTryout')->name('user.tryout.hasil');
-        Route::get('/hasil-event-tryout', 'TryoutEventController@hasilTryout')->name('user.event-tryout.hasil');
+    Route::get('/hasil-latihan', 'LatihanController@hasilLatihan')->name('user.latihan.hasil');
+    Route::get('/hasil-tryout', 'TryoutController@hasilTryout')->name('user.tryout.hasil');
+    Route::get('/hasil-event-tryout/{slug}', 'TryoutEventController@hasilTryout')->name('user.event-tryout.hasil');
 
     Route::group([
         'prefix' => 'paket'
