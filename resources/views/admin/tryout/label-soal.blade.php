@@ -19,7 +19,6 @@
                                 <th>Nama Label Soal</th>
                                 <th>Paket</th>
                                 <th>Kategori</th>
-                                <th>Jenis Soal</th>
                                 <th>Jenis Kampus</th>
                                 <th>Action</th>
                             </tr>
@@ -56,16 +55,6 @@
                                             <select class="form-control" name="id_kategori" id="id_kategori">
                                                 <option value="" disabled selected>Pilih</option>
                                                 @foreach($kategori as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="id_jenis_soal" class="control-label">Jenis Soal</label>
-                                            <select class="form-control" name="id_jenis_soal" id="id_jenis_soal">
-                                                <option value="" disabled selected>Pilih</option>
-                                                @foreach($jenis_soal as $key => $value)
                                                 <option value="{{ $key }}">{{ $value }}</option>
                                                 @endforeach
                                             </select>
@@ -120,7 +109,6 @@
                                 {data: 'nama_label', name: 'nama_label'},
                                 {data: 'nama_paket', name: 'nama_paket'},
                                 {data: 'nama_kategori', name: 'nama_kategori'},
-                                {data: 'jenis_soal', name: 'jenis_soal'},
                                 {data: 'nama_jenis_kampus', name: 'nama_jenis_kampus'},
                                 {data: 'action', name: 'action'},
                                 ]
@@ -143,7 +131,6 @@
                                     $('#nama_label').val(data.nama_label);
                                     $('#id_paket').val(data.id_paket);
                                     $('#id_kategori').val(data.id_kategori);
-                                    $('#id_jenis_soal').val(data.id_jenis_soal);
                                     $('#id_jenis_kampus').val(data.id_jenis_kampus);
                                     $('#theModal').modal('show');
                                 })

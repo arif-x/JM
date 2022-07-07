@@ -8,6 +8,7 @@ use DataTables;
 use Str;
 use App\Models\SoalTryout;
 use App\Models\LabelSoalTryout;
+use App\Models\JenisSoal;
 
 class SoalTryoutController extends Controller
 {
@@ -16,6 +17,8 @@ class SoalTryoutController extends Controller
         ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
         ->join('kategori', 'kategori.id_kategori', '=', 'label_soal_tryout.id_kategori')
         ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', '=', 'label_soal_tryout.id_jenis_kampus')
+        ->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout.id_jenis_soal')
+        ->join('sub_jenis_soal', 'sub_jenis_soal.id_sub_jenis_soal', '=', 'soal_tryout.id_sub_jenis_soal')
         ->orderBy('id_soal_tryout', 'DESC')->get();
         if($request->ajax()){
             return Datatables::of($data)
@@ -34,18 +37,19 @@ class SoalTryoutController extends Controller
         }
 
         $label_soal_tryout = LabelSoalTryout::pluck('id_label_soal_tryout', 'nama_label');
+        $jenis_soal = JenisSoal::pluck('jenis_soal', 'id_jenis_soal');
 
-        return view('admin.tryout.soal', compact('label_soal_tryout'));
+        return view('admin.tryout.soal', compact('label_soal_tryout', 'jenis_soal'));
     }
 
     public function show($id){
-        $data = SoalTryout::find($id);
+        $data = SoalTryout::join('sub_jenis_soal', 'sub_jenis_soal.id_sub_jenis_soal', '=', 'soal_tryout.id_sub_jenis_soal')->find($id);
         return response()->json($data);
     }
 
     public function store(Request $request)
     {
-        $getJumlahSoal = SoalTryout::where('id_label_soal_tryout', $request->id_label_soal_tryout)->count();
+        $getJumlahSoal = SoalTryout::where('id_sub_jenis_soal', $request->id_sub_jenis_soal)->count();
 
         $count = 0;
         $name = encrypt(Str::of($request->soal)->slug('-'));
@@ -60,11 +64,13 @@ class SoalTryoutController extends Controller
             }
         }
 
-        if($getJumlahSoal <= 50){
+        if($getJumlahSoal <= 20){
             if($request->id_soal_tryout == ''){
                 $data = SoalTryout::insert([
                     'id_label_soal_tryout' => $request->id_label_soal_tryout,
                     'soal_tryout' => $request->soal,
+                    'id_jenis_soal' => $request->id_jenis_soal,
+                    'id_sub_jenis_soal' => $request->id_sub_jenis_soal,
                     'a' => $request->a,
                     'b' => $request->b,
                     'c' => $request->c,
@@ -80,7 +86,9 @@ class SoalTryoutController extends Controller
                 $data = SoalTryout::where('id_soal_tryout', $request->id_soal_tryout)->update(
                     [
                         'id_label_soal_tryout' => $request->id_label_soal_tryout,
-                        'soal' => $request->soal,
+                        'soal_tryout' => $request->soal,
+                        'id_jenis_soal' => $request->id_jenis_soal,
+                        'id_sub_jenis_soal' => $request->id_sub_jenis_soal,
                         'a' => $request->a,
                         'b' => $request->b,
                         'c' => $request->c,

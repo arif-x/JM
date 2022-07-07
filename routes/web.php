@@ -92,6 +92,11 @@ Route::group([
         Route::resource('pembayaran', 'PembayaranController', ['as' => 'admin']);
         Route::resource('rekening', 'RekeningController', ['as' => 'admin']);
         Route::resource('kontak', 'KontakController', ['as' => 'admin']);
+        Route::group([
+            'prefix' => 'data'
+        ], function(){
+            Route::get('get-sub-jenis-soal/{id}', 'DataController@getSubJenisSoal')->name('admin.data.get-sub-jenis-soal');
+        });
     });
 
     Route::group(['prefix' => 'filemanager'], function () {
@@ -122,6 +127,7 @@ Route::group([
     ], function(){
         Route::get('/', 'LatihanController@index')->name('user.latihan');
         Route::get('/persiapan/{slug}', 'LatihanController@ready')->name('user.latihan.ready');
+        Route::post('/persiapan/{slug}', 'LatihanController@ready')->name('user.latihan.ready.post');
         Route::get('/kerjakan/{slug}', 'LatihanController@kerjakan')->name('user.latihan.kerjakan');
         Route::get('/first-soal/{id}', 'LatihanController@firstSoal')->name('user.latihan.soal.first');
         Route::get('/get-soal/{id}', 'LatihanController@getSoal')->name('user.latihan.soal.single');
@@ -143,6 +149,7 @@ Route::group([
     ], function(){
         Route::get('/', 'TryoutController@index')->name('user.tryout');
         Route::get('/persiapan/{slug}', 'TryoutController@ready')->name('user.tryout.ready');
+        Route::post('/persiapan/{slug}', 'TryoutController@ready')->name('user.tryout.ready.post');
         Route::get('/kerjakan/{slug}', 'TryoutController@kerjakan')->name('user.tryout.kerjakan');
         Route::get('/first-soal/{id}', 'TryoutController@firstSoal')->name('user.tryout.soal.first');
         Route::get('/get-soal/{id}', 'TryoutController@getSoal')->name('user.tryout.soal.single');
@@ -163,6 +170,7 @@ Route::group([
     ], function(){
         Route::get('/', 'TryoutEventController@index')->name('user.event-tryout');
         Route::get('/persiapan/{slug}', 'TryoutEventController@ready')->name('user.event-tryout.ready');
+        Route::post('/persiapan/{slug}', 'TryoutEventController@ready')->name('user.event-tryout.ready.post');
         Route::post('/kerjakan/{slug}', 'TryoutEventController@kerjakan')->name('user.event-tryout.kerjakan');
         Route::get('/first-soal/{id}', 'TryoutEventController@firstSoal')->name('user.event-tryout.soal.first');
         Route::get('/get-soal/{id}', 'TryoutEventController@getSoal')->name('user.event-tryout.soal.single');
@@ -207,3 +215,5 @@ Route::group([
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
+
+// Route::post('/finish', 'User\TryoutController@finish');

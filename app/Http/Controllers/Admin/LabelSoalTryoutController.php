@@ -18,7 +18,6 @@ class LabelSoalTryoutController extends Controller
         $data = LabelSoalTryout::join('paket', 'paket.id_paket', 'label_soal_tryout.id_paket')
         ->join('kategori', 'kategori.id_kategori', 'label_soal_tryout.id_kategori')
         ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', 'label_soal_tryout.id_jenis_kampus')
-        ->join('jenis_soal', 'jenis_soal.id_jenis_soal', 'label_soal_tryout.id_jenis_soal')
         ->orderBy('id_label_soal_tryout', 'DESC')->get();
         if($request->ajax()){
             return Datatables::of($data)
@@ -34,9 +33,8 @@ class LabelSoalTryoutController extends Controller
         $paket = Paket::pluck('nama_paket', 'id_paket');
         $kategori = Kategori::pluck('nama_kategori', 'id_kategori');
         $jenis_kampus = JenisKampus::pluck('nama_jenis_kampus', 'id_jenis_kampus');
-        $jenis_soal = JenisSoal::pluck('jenis_soal', 'id_jenis_soal');
 
-        return view('admin.tryout.label-soal', compact('paket', 'kategori', 'jenis_kampus', 'jenis_soal'));
+        return view('admin.tryout.label-soal', compact('paket', 'kategori', 'jenis_kampus'));
     }
 
     public function show($id){
@@ -65,7 +63,6 @@ class LabelSoalTryoutController extends Controller
                 'id_paket' => $request->id_paket,
                 'id_kategori' => $request->id_kategori,
                 'id_jenis_kampus' => $request->id_jenis_kampus,
-                'id_jenis_soal' => $request->id_jenis_soal,
                 'nama_label' => $request->nama_label,
                 'slug' => $slug_name
             ]

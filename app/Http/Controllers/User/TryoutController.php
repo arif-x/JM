@@ -117,7 +117,7 @@ class TryoutController extends Controller
             return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->select('soal_tryout', 'soal_tryout.slug')->get();
-            $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->inRandomOrder()->get();
+            $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->orderBy('id_sub_jenis_soal')->inRandomOrder()->get();
             $label = LabelSoalTryout::where('label_soal_tryout.slug', $slug)->value('nama_label');
             $id_label = LabelSoalTryout::where('label_soal_tryout.slug', $slug)->value('id_label_soal_tryout');
 
@@ -132,6 +132,8 @@ class TryoutController extends Controller
                 'd' => '',
                 'e' => '',
                 'slug' => '',
+                'id_jenis_soal' => '',
+                'id_sub_jenis_soal' => '',
                 'waktu_mengerjakan' => '',
                 'jawaban' => '',
             ];
@@ -151,6 +153,8 @@ class TryoutController extends Controller
                 $data['d'] = $value['d'];
                 $data['e'] = $value['e'];
                 $data['slug'] = $value['slug'];
+                $data['id_jenis_soal'] = $value['id_jenis_soal'];
+                $data['id_sub_jenis_soal'] = $value['id_sub_jenis_soal'];
                 $data['waktu_mengerjakan'] = Carbon::now()->toDateTimeString();
                 $data['jawaban'] = '-';
                 array_push($data_soal, $data);
@@ -187,7 +191,7 @@ class TryoutController extends Controller
                 File::put(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"), $newJson);   
             }
 
-            return view('user.tryout-event.single', ['soals' => $soal], compact('label', 'timer', 'end'));
+            return view('user.tryout.single', ['soals' => $soal], compact('label', 'timer', 'end'));
         }
     }
 
@@ -243,24 +247,48 @@ class TryoutController extends Controller
 
     public function finish(){
         $oldJson = File::get(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"));
+        // $oldJson = File::get(storage_path("app/public/jawaban/tryout/akuganteng@gmail.com.json"));
         $jsonData = json_decode($oldJson, true);
+        $jsonSubJenis = json_decode($oldJson);
 
         $id_label = [];
         $id_soal_tryout = [];
         $jawaban = [];
         $start = [];
-        $skor = 0;
+        $skor = [0,0];
+        $array_sub_jenis = array();
+        foreach ($jsonSubJenis as $each) {
+            if (isset($array_sub_jenis[$each->id_sub_jenis_soal]))
+                array_push($array_sub_jenis[$each->id_sub_jenis_soal], $each->id_sub_jenis_soal);
+            else
+                $array_sub_jenis[$each->id_sub_jenis_soal] = array($each->id_sub_jenis_soal);
+        }
+
+        $sub_jenis = array_keys($array_sub_jenis);
 
         foreach ($jsonData as $key => $entry) {
-            array_push($id_label, $jsonData[$key]['id_label']);
-            array_push($id_soal_tryout, $jsonData[$key]['id_soal_tryout']);
-            array_push($jawaban, $jsonData[$key]['jawaban']);
-            array_push($start, $jsonData[$key]['waktu_mengerjakan']);
-            $kunci = SoalTryout::where('id_soal_tryout', $jsonData[$key]['id_soal_tryout'])->value('kunci');
-            if($jsonData[$key]['jawaban'] == $kunci){
-                $skor = $skor + 1;
-            } else {
-                $skor = $skor + 0;
+            for ($i=0; $i < count($sub_jenis); $i++) { 
+                if ($entry['id_sub_jenis_soal'] == $sub_jenis[$i]) {
+                    array_push($id_label, $jsonData[$key]['id_label']);
+                    array_push($id_soal_tryout, $jsonData[$key]['id_soal_tryout']);
+                    array_push($jawaban, $jsonData[$key]['jawaban']);
+                    array_push($start, $jsonData[$key]['waktu_mengerjakan']);
+                    $kunci = SoalTryout::where('id_soal_tryout', $jsonData[$key]['id_soal_tryout'])->value('kunci');
+                    $kunci_exploded = explode(',', $kunci);
+                    if($jsonData[$key]['jawaban'] == 'a'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[0];
+                    } elseif($jsonData[$key]['jawaban'] == 'b'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[1];
+                    } elseif($jsonData[$key]['jawaban'] == 'c'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[2];
+                    } elseif($jsonData[$key]['jawaban'] == 'd'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[3];
+                    } elseif($jsonData[$key]['jawaban'] == 'e'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[4];
+                    } else {
+                        $skor[$i] = $skor[$i] + 0;
+                    }
+                }
             }
         }
 
@@ -285,13 +313,12 @@ class TryoutController extends Controller
                 'tgl_mengerjakan' => $start,
                 'jawaban_user_tryout' => $jawaban_imploded,
                 'id_soal_tryout' => $id_soal_tryout_imploded,
-                'skor' => $skor,
+                'skor' => implode(",", $skor),
                 'slug' => $slugs
             ]);
         }
 
         File::delete(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"));
-        // return redirect()->route('user.tryout.pembahasan', $slugs);
         return response()->json($slugs);
     }
 
@@ -358,34 +385,65 @@ class TryoutController extends Controller
 
         $id_soal_exploded = explode(",", $jawaban_user_tryout[0]['id_soal_tryout']);
         $jawaban_exploded = explode(",", $jawaban_user_tryout[0]['jawaban_user_tryout']);
-        $skor = $jawaban_user_tryout[0]['skor'];
+        // $skor = $jawaban_user_tryout[0]['skor'];
+        $skor = '';
 
-        $benar = 0;
-        $salah = 0;
+        $kategori = JawabanUserTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'jawaban_user_tryout.id_label_soal_tryout')->where('jawaban_user_tryout.slug', $slug)->value('id_kategori');
+        $skoring_exploded = explode(',', JawabanUserTryout::where('slug', $slug)->value('skor'));
+
+        if($kategori == 1){
+            $skor = 'Skor TPS: <br/>
+            '.'Matematika Saintek = '.$skoring_exploded[0].'<br>'.
+            'Fisika = '.$skoring_exploded[1].'<br>'.
+            'Kimia = '.$skoring_exploded[1].'<br>'.
+            'Biologi = '.$skoring_exploded[1].'<br>';
+        } elseif($kategori == 2){
+            $skor = 'Skor TPS: <br/>
+            '.'Matematika Soshum = '.$skoring_exploded[0].'<br>'.
+            'Geografi = '.$skoring_exploded[1].'<br>'.
+            'Sejarah = '.$skoring_exploded[1].'<br>'.
+            'Ekonomi = '.$skoring_exploded[1].'<br>';
+        } 
+
+        $dijawab = 0;
         $kosong = 0;
 
         for ($i=0; $i < count($id_soal_exploded); $i++) { 
-            $kunci = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('kunci');
             $data_soal[$i]['slug'] = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('slug');
-            if($jawaban_exploded[$i] == $kunci){
-                $benar = $benar + 1;
-            } elseif($jawaban_exploded[$i] != $kunci && $jawaban_exploded[$i] != '-'){
-                $salah = $salah + 1;
+
+            $kunci_jawaban = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('kunci');
+            $kunci_exploded = explode(',', $kunci_jawaban);
+            $kunci = '';
+            if($kunci_exploded[0] == 50){
+                $kunci = 'a';
+            }elseif($kunci_exploded[1] == 50){
+                $kunci = 'b';
+            }elseif($kunci_exploded[2] == 50){
+                $kunci = 'c';
+            }elseif($kunci_exploded[3] == 50){
+                $kunci = 'd';
+            }elseif($kunci_exploded[4] == 50){
+                $kunci = 'e';
+            }
+
+            if($jawaban_exploded[$i] != '-'){
+                $dijawab = $dijawab + 1;
             } elseif($jawaban_exploded[$i] == '-'){
                 $kosong = $kosong + 1;
             }
+
         }
 
-        return view('user.tryout.pembahasan', compact('label', 'skor', 'benar', 'salah', 'kosong', 'slugs'), ['soals' => $data_soal]);
+        return view('user.tryout.pembahasan', compact('label', 'skor', 'dijawab', 'kosong', 'slugs'), ['soals' => $data_soal]);
     }
 
     public function pembahasan($slug){
         $data_soal = array(); 
 
         $jawaban_user_tryout = JawabanUserTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'jawaban_user_tryout.id_label_soal_tryout')
+        ->select('jawaban_user_tryout.slug', 'jawaban_user_tryout.id_soal_tryout', 'jawaban_user_tryout.jawaban_user_tryout')
         ->where('id_user', Auth::user()->id_user)
-        ->orderBy('id_jawaban_user_tryout', 'DESC')
-        ->limit(1)
+        ->where('jawaban_user_tryout.slug', $slug)
         ->get();
 
         $id_soal_exploded = explode(",", $jawaban_user_tryout[0]['id_soal_tryout']);
@@ -410,12 +468,20 @@ class TryoutController extends Controller
         for ($i=0; $i < count($id_soal_exploded); $i++) { 
             $nomor = $i + 1;
             $soal = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('soal_tryout');
-            $kunci = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('kunci');
+            $kunci_jawaban = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('kunci');
+            $kunci_exploded = explode(',', $kunci_jawaban);
+            $kunci = '';
             $a = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('a');
             $b = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('b');
             $c = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('c');
             $d = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('d');
             $e = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('e');
+
+            $data_skoring = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('kunci');
+            $skoring_exploded = explode(',', $data_skoring);
+
+            $kunci = 'Opsi A = ' . $skoring_exploded[0].'<br>'.'Opsi B = ' . $skoring_exploded[1].'<br>'.'Opsi C = ' . $skoring_exploded[2].'<br>'.'Opsi D = ' . $skoring_exploded[3].'<br>'.'Opsi E = ' . $skoring_exploded[4];
+
             $pembahasan = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('pembahasan');
             $jawaban = $jawaban_exploded[$i];
             $data[$i]['nomor'] = $nomor;
@@ -437,8 +503,7 @@ class TryoutController extends Controller
 
     public function hasilTryout(Request $request){
         $data = JawabanUserTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'jawaban_user_tryout.id_label_soal_tryout')
-        ->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'label_soal_tryout.id_jenis_soal')
-        ->select('jenis_soal', 'nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout.slug as slugs')
+        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout.slug as slugs')
         ->where('jawaban_user_tryout.id_user', Auth::user()->id_user)->orderBy('id_jawaban_user_tryout', 'DESC')->get();
 
         if($request->ajax()){

@@ -23,6 +23,8 @@
                                 <th>No.</th>
                                 <th>Label Soal</th>
                                 <th>Soal</th>
+                                <th>Jenis Soal</th>
+                                <th>Sub Jenis Soal</th>
                                 <th>Action</th>
                             </tr>
                         </thead>  
@@ -71,6 +73,24 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <label for="id_jenis_soal" class="control-label">Jenis Soal</label>
+                                            <select class="form-control" name="id_jenis_soal" id="id_jenis_soal">
+                                                <option value="" disabled selected>Pilih</option>
+                                                @foreach($jenis_soal as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_sub_jenis_soal" class="control-label">Sub Jenis Soal</label>
+                                            <select class="form-control" name="id_sub_jenis_soal" id="id_sub_jenis_soal">
+                                                <option value="" disabled selected>Pilih</option>
+                                                
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="soal" class="control-label">Soal</label>
                                             <textarea name="soal" class="soal form-control" id="soal" cols="30" rows="60"></textarea>
                                         </div>
@@ -102,14 +122,7 @@
 
                                         <div class="form-group">
                                             <label for="kunci" class="control-label">Kunci Jawaban</label>
-                                            <select class="form-control" id="kunci" name="kunci">
-                                                <option value="" disabled selected>Pilih</option>
-                                                <option value="a">A</option>
-                                                <option value="b">B</option>
-                                                <option value="c">C</option>
-                                                <option value="d">D</option>
-                                                <option value="e">E</option>
-                                            </select>
+                                            <input type="text" name="kunci" id="kunci" class="form-control">
                                         </div>
 
                                         <div class="form-group">
@@ -148,6 +161,8 @@
                                 }
                             });
 
+                            $('select[name="id_sub_jenis_soal"]').empty();
+
                             var table = $('#dataTableExample').DataTable({
                                 processing: true,
                                 serverSide: true,
@@ -157,6 +172,8 @@
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                                 {data: 'nama_label', name: 'nama_label'},
                                 {data: 'soals', name:'soals'},
+                                {data: 'jenis_soal', name:'jenis_soal'},
+                                {data: 'sub_jenis_soal', name:'sub_jenis_soal'},
                                 {data: 'action', name: 'action'},
                                 ],
                             });
@@ -173,6 +190,8 @@
                                 $('#theForm').trigger("reset");
                                 $('#theModalHeading').html("Tambah Data");
                                 $('#label_soal_tryout').val();
+                                $('#id_jenis_soal').val();
+                                $('#id_sub_jenis_soal').val();
                                 tinymce.get("soal").setContent('');
                                 tinymce.get("jawaban_a").setContent('');
                                 tinymce.get("jawaban_b").setContent('');
@@ -190,6 +209,11 @@
                                     $('#saveBtn').val("save");
                                     $('#id_soal_tryout').val(data.id_soal_tryout);
                                     $('#id_label_soal_tryout').val(data.id_label_soal_tryout);
+                                    $('#id_jenis_soal').val(data.id_jenis_soal);
+                                    $('select[name="id_sub_jenis_soal"]').empty();
+                                    $("#id_sub_jenis_soal").append("<option value="+data.id_sub_jenis_soal+">"+data.sub_jenis_soal+"</option>");
+                                    $("#id_sub_jenis_soal").val(data.id_sub_jenis_soal);
+                                    $('#id_sub_jenis_soal').val(data.id_sub_jenis_soal).change();
                                     tinymce.get("soal").setContent(data.soal_tryout);
                                     tinymce.get("jawaban_a").setContent(data.a);
                                     tinymce.get("jawaban_b").setContent(data.b);
@@ -220,6 +244,8 @@
                                     data: {
                                         id_soal_tryout: $('#id_soal_tryout').val(),
                                         id_label_soal_tryout: $('#id_label_soal_tryout').val(),
+                                        id_jenis_soal: $('#id_jenis_soal').val(),
+                                        id_sub_jenis_soal: $('#id_sub_jenis_soal').val(),
                                         soal: tinymce.get('soal').getContent(),
                                         a: tinymce.get('jawaban_a').getContent(),
                                         b: tinymce.get('jawaban_b').getContent(),
@@ -259,6 +285,25 @@
                                         console.log('Error:', data);
                                     }
                                 });
+                            });
+
+                            $('select[name="id_jenis_soal"]').on('change', function() {
+                                var id_jenis_soal = $(this).val();
+                                if(id_jenis_soal) {
+                                    $.ajax({
+                                        url: "/admin/data/get-sub-jenis-soal/"+id_jenis_soal+"",
+                                        type: "GET",
+                                        dataType: "json",
+                                        success:function(data) {
+                                            $('select[name="id_sub_jenis_soal"]').empty();
+                                            $.each(data, function(key, value) {
+                                                $('select[name="id_sub_jenis_soal"]').append('<option value="'+ key +'">'+ value +'</option>');
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    $('select[name="id_sub_jenis_soal"]').empty();
+                                }
                             });
 
                         });

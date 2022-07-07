@@ -56,7 +56,8 @@
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h5>Jawaban Anda : <strong class="text-capitalize" id="jawaban_user"></strong></h5>
-                                                    <h5>Kunci Jawaban : <strong class="text-capitalize text-primary" id="kunci_jawaban"></strong></h5>
+                                                    <h5>Poin Jawaban : </h5>
+                                                    <p><strong class="text-capitalize" id="kunci_jawaban"></strong></p>
                                                     <hr>
                                                     <h4>Pembahasan</h4>
                                                     <hr>
@@ -112,15 +113,11 @@
                                             <table>
                                                 <tr>
                                                     <td><span class="badge bg-success text-success" style="width: 100px; max-width:32px; height:32px; margin: 4px; padding:0;">x</span></td>
-                                                    <td> = Benar</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="badge bg-danger text-danger" style="width: 100px; max-width:32px; height:32px; margin: 4px; padding:0;">x</span></td>
-                                                    <td> = Salah</td>
+                                                    <td> = Dijawab</td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="badge bg-secondary text-secondary" style="width: 100px; max-width:32px; height:32px; margin: 4px; padding:0;">x</span></td>
-                                                    <td> = Kosong</td>
+                                                    <td> = Tidak Dijawab</td>
                                                 </tr>
                                             </table>
                                             <hr>
@@ -140,7 +137,7 @@
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Skor Akhir</h4>
-                                            <h4><strong>{{ $skor }}</strong></h4>
+                                            <p class="text-left"><strong>{!! $skor !!}</strong></p>
                                             <h6>Dari 15</h6>
                                         </div>
                                     </div>
@@ -149,8 +146,7 @@
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Hasil</h4>
-                                            <h5>Benar = <strong>{{ $benar }}</strong></h5>
-                                            <h5>Salah = <strong>{{ $salah }}</strong></h5>
+                                            <h5>Dijawab = <strong>{{ $dijawab }}</strong></h5>
                                             <h5>Tidak Dijawab = <strong>{{ $kosong }}</strong></h5>
                                         </div>
                                     </div>
@@ -194,12 +190,12 @@
             new Chart($("#chartjsBar"), {
                 type: 'bar',
                 data: {
-                    labels: [ "Benar", "Salah", "Kosong"],
+                    labels: [ "Dijawab", "Kosong"],
                     datasets: [
                     {
-                        label: "Population",
+                        label: "Jumlah",
                         backgroundColor: ["#b1cfec","#7ee5e5","#66d1d1"],
-                        data: [{{$benar}},{{$salah}},{{$kosong}}]
+                        data: [{{$dijawab}},{{$kosong}}]
                     }
                     ]
                 },
@@ -221,7 +217,7 @@
             $("html, body").animate({scrollTop: 0}, 500);
         });
 
-        slug = $('#mini_map_1').data('id');
+        var slug = '{{$slugs}}';
         var no = $('#mini_map_1').data('no');
         $.getJSON("/user/tryout/pembahasan/soal/" + slug + "", function(data){
             $("#soal").html(data[0].soal_tryout);
@@ -231,13 +227,7 @@
             if(data[0].jawaban == '-'){
                 $("#jawaban_user").html('Tidak Dijawab');
             }
-            if(data[0].jawaban != data[0].kunci){
-                $("#jawaban_user").removeClass('text-primary');
-                $("#jawaban_user").addClass('text-danger');
-            } else {
-                $("#jawaban_user").removeClass('text-danger');
-                $("#jawaban_user").addClass('text-primary');
-            }
+            $("#jawaban_user").addClass('text-primary');
             $("#kunci_jawaban").html(data[0].kunci);
             $("#no_soals").html(data[0].id_soal);
             $("#pembahasan").html(data[0].pembahasan);
@@ -256,71 +246,40 @@
             $("#jawaban_c_text").removeClass('text-danger');
             $("#jawaban_d_text").removeClass('text-danger');
             $("#jawaban_e_text").removeClass('text-danger');
-            if(data[0]['kunci'] == data[0]['jawaban']) {
-                $('input[name="jawaban"]').prop('checked', false);
-            } else if(data[0]['kunci'] == 'a') {
+            if(data[0]['jawaban'] == 'a') {
                 $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['kunci'] == 'b') {
+            } else if(data[0]['jawaban'] == 'b') {
                 $('#jawaban_b_text').addClass('text-primary');
-            } else if(data[0]['kunci'] == 'c') {
+            } else if(data[0]['jawaban'] == 'c') {
                 $('#jawaban_c_text').addClass('text-primary');
-            } else if(data[0]['kunci'] == 'd') {
+            } else if(data[0]['jawaban'] == 'd') {
                 $('#jawaban_d_text').addClass('text-primary');
-            } else if(data[0]['kunci'] == 'e') {
+            } else if(data[0]['jawaban'] == 'e') {
                 $('#jawaban_e_text').addClass('text-primary');
-            }
-
-            if(data[0]['jawaban'] == 'a' && data[0]['kunci'] == 'a') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] == 'b' && data[0]['kunci'] == 'b') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] == 'c' && data[0]['kunci'] == 'c') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] == 'd' && data[0]['kunci'] == 'd') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] == 'e' && data[0]['kunci'] == 'e') {
-                $('#jawaban_a_text').addClass('text-primary');
-            }
-
-            if(data[0]['jawaban'] == data[0]['kunci']) {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'a'){
-                $('#jawaban_a_text').addClass('text-danger');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'b'){
-                $('#jawaban_b_text').addClass('text-danger');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'c'){
-                $('#jawaban_c_text').addClass('text-danger');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'd'){
-                $('#jawaban_d_text').addClass('text-danger');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'e'){
-                $('#jawaban_e_text').addClass('text-danger');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] != '-'){
-
             }
 
             all = data.length+1
             $('#mini_map_1[data-no=1]').prop('disabled', true);
+            $('#mini_map_1[data-no=1]').removeClass('btn-secondary');
+            $('#mini_map_1[data-no=1]').removeClass('btn-success');
+            $('#mini_map_1[data-no=1]').addClass('btn-warning');
             for (var i=0; i < data.length; i++) {
                 $('#mini_map_'+index_view+'[data-no='+index_view+']').click(function(){
                     $("html, body").animate({scrollTop: 0}, 500);
                 });
                 var index_view=i+1;
-                if(data[i].jawaban == data[i].kunci){
+                if(data[i].jawaban != '-'){
                     $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-danger');
                     $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-secondary');
                     $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-success');
-                } else if(data[i].jawaban != data[i].kunci && data[i].jawaban != '-'){
-                    $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-success');
-                    $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-secondary');
-                    $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-danger');
                 } else if(data[i].jawaban == '-'){
-                    $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-danger');
+                    $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-secondary');
                     $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-success');
                     $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-secondary');
                 }
             }        
         });
-});
+    });
 
 $('#report-soal').on('click', function(){
     $('#reportModal').modal('show');
@@ -347,7 +306,7 @@ $('#reportBtn').on('click', function(){
 })
 
 function getSoal(obj){
-    var slug = $(obj).data('id');
+    var slug = '{{$slugs}}';
     var no = $(obj).data('no');
     var actual_no = $(obj).data('no');
 
@@ -387,13 +346,7 @@ function getSoal(obj){
             if(data[no_min_1].jawaban == '-'){
                 $("#jawaban_user").html('Tidak Dijawab');
             }
-            if(data[no_min_1].jawaban != data[no_min_1].kunci){
-                $("#jawaban_user").removeClass('text-primary');
-                $("#jawaban_user").addClass('text-danger');
-            } else {
-                $("#jawaban_user").removeClass('text-danger');
-                $("#jawaban_user").addClass('text-primary');
-            }
+            $("#jawaban_user").addClass('text-primary');
             $("#no_soals").html(data[no_min_1].id_soal);
             $("#kunci_jawaban").html(data[no_min_1].kunci);
             $("#pembahasan").html(data[no_min_1].pembahasan);
@@ -412,52 +365,32 @@ function getSoal(obj){
             $("#jawaban_c_text").removeClass('text-danger');
             $("#jawaban_d_text").removeClass('text-danger');
             $("#jawaban_e_text").removeClass('text-danger');
-            if(data[no_min_1]['kunci'] == data[no_min_1]['jawaban']) {
-                $('input[name="jawaban"]').prop('checked', false);
-            } else if(data[no_min_1]['kunci'] == 'a') {
+            if(data[no_min_1]['jawaban'] == 'a') {
                 $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['kunci'] == 'b') {
+            } else if(data[no_min_1]['jawaban'] == 'b') {
                 $('#jawaban_b_text').addClass('text-primary');
-            } else if(data[no_min_1]['kunci'] == 'c') {
+            } else if(data[no_min_1]['jawaban'] == 'c') {
                 $('#jawaban_c_text').addClass('text-primary');
-            } else if(data[no_min_1]['kunci'] == 'd') {
+            } else if(data[no_min_1]['jawaban'] == 'd') {
                 $('#jawaban_d_text').addClass('text-primary');
-            } else if(data[no_min_1]['kunci'] == 'e') {
+            } else if(data[no_min_1]['jawaban'] == 'e') {
                 $('#jawaban_e_text').addClass('text-primary');
-            }
-
-            if(data[no_min_1]['jawaban'] == 'a' && data[no_min_1]['kunci'] == 'a') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] == 'b' && data[no_min_1]['kunci'] == 'b') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] == 'c' && data[no_min_1]['kunci'] == 'c') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] == 'd' && data[no_min_1]['kunci'] == 'd') {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] == 'e' && data[no_min_1]['kunci'] == 'e') {
-                $('#jawaban_a_text').addClass('text-primary');
-            }
-
-            if(data[no_min_1]['jawaban'] == data[no_min_1]['kunci']) {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'a'){
-                $('#jawaban_a_text').addClass('text-danger');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'b'){
-                $('#jawaban_b_text').addClass('text-danger');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'c'){
-                $('#jawaban_c_text').addClass('text-danger');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'd'){
-                $('#jawaban_d_text').addClass('text-danger');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'e'){
-                $('#jawaban_e_text').addClass('text-danger');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] != '-'){
-
             }
 
             var index_view=i+1;
             $('#mini_map_'+index_view+'[data-no='+index_view+']').prop('disabled', false);
             if(index_view == no){
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-secondary');
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-warning');
                 $('#mini_map_'+index_view+'[data-no='+index_view+']').prop('disabled', true);
+            } else if(index_view != no && data[i].jawaban == '-'){
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-warning');
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-secondary');
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').prop('disabled', false);
+            } else if(index_view != no && data[i].jawaban != '-'){
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-warning');
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').addClass('btn-success');
+                $('#mini_map_'+index_view+'[data-no='+index_view+']').prop('disabled', false);
             }
         }       
     });

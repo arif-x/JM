@@ -19,7 +19,6 @@ class LabelSoalTryoutEventController extends Controller
         $data = LabelSoalTryoutEvent::join('paket', 'paket.id_paket', 'label_soal_tryout_event.id_paket')
         ->join('kategori', 'kategori.id_kategori', 'label_soal_tryout_event.id_kategori')
         ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', 'label_soal_tryout_event.id_jenis_kampus')
-        ->join('jenis_soal', 'jenis_soal.id_jenis_soal', 'label_soal_tryout_event.id_jenis_soal')
         ->orderBy('id_label_soal_tryout_event', 'DESC')->get();
 
         for ($i=0; $i < count($data); $i++) { 
@@ -41,9 +40,8 @@ class LabelSoalTryoutEventController extends Controller
         $paket = Paket::pluck('nama_paket', 'id_paket');
         $kategori = Kategori::pluck('nama_kategori', 'id_kategori');
         $jenis_kampus = JenisKampus::pluck('nama_jenis_kampus', 'id_jenis_kampus');
-        $jenis_soal = JenisSoal::pluck('jenis_soal', 'id_jenis_soal');
 
-        return view('admin.tryout-event.label-soal', compact('paket', 'kategori', 'jenis_kampus', 'jenis_soal'));
+        return view('admin.tryout-event.label-soal', compact('paket', 'kategori', 'jenis_kampus'));
     }
 
     public function show($id){
@@ -74,7 +72,6 @@ class LabelSoalTryoutEventController extends Controller
                 'id_paket' => $request->id_paket,
                 'id_kategori' => $request->id_kategori,
                 'id_jenis_kampus' => $request->id_jenis_kampus,
-                'id_jenis_soal' => $request->id_jenis_soal,
                 'nama_label' => $request->nama_label,
                 'tgl_mulai' => $request->tgl_mulai,
                 'tgl_end' => $request->tgl_end,

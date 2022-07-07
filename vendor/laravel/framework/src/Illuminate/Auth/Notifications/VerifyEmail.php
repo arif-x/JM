@@ -61,11 +61,14 @@ class VerifyEmail extends Notification
      */
     protected function buildMailMessage($url)
     {
+        // $img_url = env('APP_URL')."/img/my-logo.png";
+        $img_url = 'https://images.tokopedia.net/img/cache/500-square/product-1/2017/9/4/0/0_4fb05e35-6eb7-4849-84c5-60663c0cc1f5_488_583.jpg';
+
         return (new MailMessage)
-            ->subject(Lang::get('Verify Email Address'))
-            ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $url)
-            ->line(Lang::get('If you did not create an account, no further action is required.'));
+            ->subject(Lang::get('Verifikasi Alamat Email'))
+            ->line(Lang::get('Silakan klik tombol di bawah ini untuk memverifikasi alamat email Anda.'))
+            ->action(Lang::get('Verifikasi Alamat Email Di Sini'), $url)
+            ->line(Lang::get('Jika Anda tidak membuat akun, tidak ada tindakan lebih lanjut yang diperlukan.'));
     }
 
     /**
