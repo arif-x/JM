@@ -33,7 +33,7 @@
                                     <button class="btn btn-secondary ml-2 font-weight-bold mt-3" disabled>Event Belum Dimulai</button>
                                     @elseif(Carbon\Carbon::now() > $soal->tgl_end)
                                     <button class="btn btn-secondary ml-2 font-weight-bold mt-3" disabled>Event Telah Berakhir</button>
-                                    @elseif(Carbon::now()->between($soal->tgl_mulai, $soal->tgl_end))
+                                    @elseif(Carbon\Carbon::now()->between($soal->tgl_mulai, $soal->tgl_end))
                                     <button class="btn btn-inverse-primary ml-2 font-weight-bold mt-3" data-slug="{{ $soal->slug }}" onclick="tryoutEvent(this);" id="kerjakan">Kerjakan</button>
                                     @endif
                                     <a href="{{ route('user.event-tryout.hasil', $soal->slug) }}" class="btn btn-inverse-primary ml-2 font-weight-bold mt-3">Ranking</a>

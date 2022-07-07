@@ -216,4 +216,4 @@ Route::group([
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
 
-// Route::post('/finish', 'User\TryoutController@finish');
+Route::post('/finish', 'User\TryoutEventController@finish');

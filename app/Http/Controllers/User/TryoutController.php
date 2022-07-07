@@ -247,7 +247,6 @@ class TryoutController extends Controller
 
     public function finish(){
         $oldJson = File::get(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"));
-        // $oldJson = File::get(storage_path("app/public/jawaban/tryout/akuganteng@gmail.com.json"));
         $jsonData = json_decode($oldJson, true);
         $jsonSubJenis = json_decode($oldJson);
 
@@ -385,7 +384,6 @@ class TryoutController extends Controller
 
         $id_soal_exploded = explode(",", $jawaban_user_tryout[0]['id_soal_tryout']);
         $jawaban_exploded = explode(",", $jawaban_user_tryout[0]['jawaban_user_tryout']);
-        // $skor = $jawaban_user_tryout[0]['skor'];
         $skor = '';
 
         $kategori = JawabanUserTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'jawaban_user_tryout.id_label_soal_tryout')->where('jawaban_user_tryout.slug', $slug)->value('id_kategori');

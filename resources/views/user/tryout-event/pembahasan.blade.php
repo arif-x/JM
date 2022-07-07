@@ -149,8 +149,7 @@
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Hasil</h4>
-                                            <h5>Benar = <strong>{{ $benar }}</strong></h5>
-                                            <h5>Salah = <strong>{{ $salah }}</strong></h5>
+                                            <h5>Salah = <strong>{{ $dijawab }}</strong></h5>
                                             <h5>Tidak Dijawab = <strong>{{ $kosong }}</strong></h5>
                                         </div>
                                     </div>
@@ -197,9 +196,9 @@
                     labels: [ "Benar", "Salah", "Kosong"],
                     datasets: [
                     {
-                        label: "Population",
+                        label: "Jumlah",
                         backgroundColor: ["#b1cfec","#7ee5e5","#66d1d1"],
-                        data: [{{$benar}},{{$salah}},{{$kosong}}]
+                        data: [{{$dijawab}},{{$kosong}}]
                     }
                     ]
                 },

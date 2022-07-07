@@ -129,7 +129,7 @@ class TryoutEventController extends Controller
                 return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
             } else {
                 $soal = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->select('soal_tryout_event', 'soal_tryout_event.slug')->get();
-                $soal_json = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->inRandomOrder()->get();
+                $soal_json = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->orderBy('id_sub_jenis_soal')->inRandomOrder()->get();
                 $label = LabelSoalTryoutEvent::where('label_soal_tryout_event.slug', $slug)->value('nama_label');
                 $id_label = LabelSoalTryoutEvent::where('label_soal_tryout_event.slug', $slug)->value('id_label_soal_tryout_event');
 
@@ -144,6 +144,8 @@ class TryoutEventController extends Controller
                     'd' => '',
                     'e' => '',
                     'slug' => '',
+                    'id_jenis_soal' => '',
+                    'id_sub_jenis_soal' => '',
                     'waktu_mengerjakan' => '',
                     'jawaban' => '',
                 ];
@@ -163,6 +165,8 @@ class TryoutEventController extends Controller
                     $data['d'] = $value['d'];
                     $data['e'] = $value['e'];
                     $data['slug'] = $value['slug'];
+                    $data['id_jenis_soal'] = $value['id_jenis_soal'];
+                    $data['id_sub_jenis_soal'] = $value['id_sub_jenis_soal'];
                     $data['waktu_mengerjakan'] = Carbon::now()->toDateTimeString();
                     $data['jawaban'] = '-';
                     array_push($data_soal, $data);
@@ -210,7 +214,7 @@ class TryoutEventController extends Controller
     }
 
     public function getSoal($slug){
-        $data = SoalTryoutEvent::select('soal_tryout', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
+        $data = SoalTryoutEvent::select('soal_tryout_event', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
         return response()->json($data);
     }
 
@@ -255,25 +259,50 @@ class TryoutEventController extends Controller
     }
 
     public function finish(){
-        $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"));
+        // $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"));
+        $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/akuganteng@gmail.com.json"));
         $jsonData = json_decode($oldJson, true);
+        $jsonSubJenis = json_decode($oldJson);
 
         $id_label = [];
         $id_soal_tryout_event = [];
         $jawaban = [];
         $start = [];
-        $skor = 0;
+        $skor = [0,0];
+        $array_sub_jenis = array();
+        foreach ($jsonSubJenis as $each) {
+            if (isset($array_sub_jenis[$each->id_sub_jenis_soal]))
+                array_push($array_sub_jenis[$each->id_sub_jenis_soal], $each->id_sub_jenis_soal);
+            else
+                $array_sub_jenis[$each->id_sub_jenis_soal] = array($each->id_sub_jenis_soal);
+        }
+
+        $sub_jenis = array_keys($array_sub_jenis);
 
         foreach ($jsonData as $key => $entry) {
-            array_push($id_label, $jsonData[$key]['id_label']);
-            array_push($id_soal_tryout_event, $jsonData[$key]['id_soal_tryout_event']);
-            array_push($jawaban, $jsonData[$key]['jawaban']);
-            array_push($start, $jsonData[$key]['waktu_mengerjakan']);
-            $kunci = SoalTryoutEvent::where('id_soal_tryout_event', $jsonData[$key]['id_soal_tryout_event'])->value('kunci');
-            if($jsonData[$key]['jawaban'] == $kunci){
-                $skor = $skor + 1;
-            } else {
-                $skor = $skor + 0;
+            for ($i=0; $i < count($sub_jenis); $i++) { 
+                if ($entry['id_sub_jenis_soal'] == $sub_jenis[$i]) {
+                    array_push($id_label, $jsonData[$key]['id_label']);
+                    array_push($id_soal_tryout_event, $jsonData[$key]['id_soal_tryout_event']);
+                    array_push($jawaban, $jsonData[$key]['jawaban']);
+                    array_push($start, $jsonData[$key]['waktu_mengerjakan']);
+                    $kunci = SoalTryoutEvent::where('id_soal_tryout_event', $jsonData[$key]['id_soal_tryout_event'])->value('kunci');
+                    $kunci_exploded = explode(',', $kunci);
+
+                    if($jsonData[$key]['jawaban'] == 'a'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[0];
+                    } elseif($jsonData[$key]['jawaban'] == 'b'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[1];
+                    } elseif($jsonData[$key]['jawaban'] == 'c'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[2];
+                    } elseif($jsonData[$key]['jawaban'] == 'd'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[3];
+                    } elseif($jsonData[$key]['jawaban'] == 'e'){
+                        $skor[$i] = $skor[$i] + $kunci_exploded[4];
+                    } else {
+                        $skor[$i] = $skor[$i] + 0;
+                    }
+                }
             }
         }
 
@@ -298,7 +327,7 @@ class TryoutEventController extends Controller
                 'tgl_mengerjakan' => $start,
                 'jawaban_user_tryout_event' => $jawaban_imploded,
                 'id_soal_tryout_event' => $id_soal_tryout_event_imploded,
-                'skor' => $skor,
+                'skor' => implode(",", $skor),
                 'slug' => $slugs
             ]);
         }
@@ -371,25 +400,54 @@ class TryoutEventController extends Controller
 
         $id_soal_exploded = explode(",", $jawaban_user_tryout_event[0]['id_soal_tryout_event']);
         $jawaban_exploded = explode(",", $jawaban_user_tryout_event[0]['jawaban_user_tryout_event']);
-        $skor = $jawaban_user_tryout_event[0]['skor'];
+        $skor = '';
 
-        $benar = 0;
-        $salah = 0;
+        $kategori = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')->where('jawaban_user_tryout_event.slug', $slug)->value('id_kategori');
+        $skoring_exploded = explode(',', JawabanUserTryoutEvent::where('slug', $slug)->value('skor'));
+
+        if($kategori == 1){
+            $skor = 'Skor TPS: <br/>
+            '.'Matematika Saintek = '.$skoring_exploded[0].'<br>'.
+            'Fisika = '.$skoring_exploded[1].'<br>'.
+            'Kimia = '.$skoring_exploded[1].'<br>'.
+            'Biologi = '.$skoring_exploded[1].'<br>';
+        } elseif($kategori == 2){
+            $skor = 'Skor TPS: <br/>
+            '.'Matematika Soshum = '.$skoring_exploded[0].'<br>'.
+            'Geografi = '.$skoring_exploded[1].'<br>'.
+            'Sejarah = '.$skoring_exploded[1].'<br>'.
+            'Ekonomi = '.$skoring_exploded[1].'<br>';
+        } 
+
+        $dijawab = 0;
         $kosong = 0;
 
         for ($i=0; $i < count($id_soal_exploded); $i++) { 
-            $kunci = SoalTryoutEvent::where('id_soal_tryout_event', $id_soal_exploded[$i])->value('kunci');
             $data_soal[$i]['slug'] = SoalTryoutEvent::where('id_soal_tryout_event', $id_soal_exploded[$i])->value('slug');
-            if($jawaban_exploded[$i] == $kunci){
-                $benar = $benar + 1;
-            } elseif($jawaban_exploded[$i] != $kunci && $jawaban_exploded[$i] != '-'){
-                $salah = $salah + 1;
+
+            $kunci_jawaban = SoalTryoutEvent::where('id_soal_tryout_event', $id_soal_exploded[$i])->value('kunci');
+            $kunci_exploded = explode(',', $kunci_jawaban);
+            $kunci = '';
+            if($kunci_exploded[0] == 50){
+                $kunci = 'a';
+            }elseif($kunci_exploded[1] == 50){
+                $kunci = 'b';
+            }elseif($kunci_exploded[2] == 50){
+                $kunci = 'c';
+            }elseif($kunci_exploded[3] == 50){
+                $kunci = 'd';
+            }elseif($kunci_exploded[4] == 50){
+                $kunci = 'e';
+            }
+
+            if($jawaban_exploded[$i] != '-'){
+                $dijawab = $dijawab + 1;
             } elseif($jawaban_exploded[$i] == '-'){
                 $kosong = $kosong + 1;
             }
-        }
 
-        return view('user.tryout-event.pembahasan', compact('label', 'skor', 'benar', 'salah', 'kosong', 'slugs'), ['soals' => $data_soal]);
+        }
+        return view('user.tryout-event.pembahasan', compact('label', 'skor', 'dijawab', 'kosong', 'slugs'), ['soals' => $data_soal]);
     }
 
     public function pembahasan($slug){
