@@ -508,9 +508,9 @@ class TryoutEventController extends Controller
 
     public function hasilTryout(Request $request, $slug){
         $data = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')
-        ->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'label_soal_tryout_event.id_jenis_soal')
-        ->select('jenis_soal', 'nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor')
-        ->groupBy('id_user')->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
+        ->join('users', 'users.id_user', '=', 'jawaban_user_tryout_event.id_user')
+        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap')
+        ->groupBy('jawaban_user_tryout_event.id_user')->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
 
         $slugs = LabelSoalTryoutEvent::where('slug', $slug)->value('slug');
         $label = LabelSoalTryoutEvent::where('slug', $slug)->value('nama_label');

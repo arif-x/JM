@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Tryout</th>
+                                <th>Nama</th>
                                 <th>Skor</th>
                             </tr>
                         </thead>  
@@ -35,7 +35,7 @@
                                 ajax: "{{ route('user.event-tryout.hasil', $slugs) }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                                {data: 'nama_label', name: 'nama_label'},
+                                {data: 'nama_lengkap', name: 'nama_lengkap'},
                                 {data: 'skor', name: 'skor'},
                                 ]
                             });

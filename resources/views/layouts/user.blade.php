@@ -79,6 +79,13 @@
 		.big{ width: 20px; height: 20px; }
 		.form-check-label{margin-left: 1rem !important;}
 
+		video {
+			width: 100%;
+			height: auto;
+			object-fit: fill; // use "cover" to avoid distortion
+			position: absolute;
+		}
+
 	</style>
 
 
@@ -125,6 +132,10 @@
 	<!-- custom js for this page -->
 	<script src="{{ URL::asset('/assets/js/dashboard.js') }}"></script>
 	<script src="{{ URL::asset('/assets/js/carousel.js') }}"></script>
+
+	<script type="text/javascript">
+		$('video').attr('controlsList', 'nodownload')
+	</script>
 
 	<!-- <script type="text/javascript">
 		$(document).ready(function(){
