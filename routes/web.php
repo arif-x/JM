@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Universitas;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
+    return view('index', compact('universitas'));
 });
 
 Auth::routes(['verify' => true]);
@@ -216,4 +218,4 @@ Route::group([
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
 
-Route::post('/finish', 'User\TryoutEventController@finish');
+Route::post('/finish', 'User\TryoutController@finish');

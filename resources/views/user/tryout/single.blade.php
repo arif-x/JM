@@ -187,7 +187,7 @@
         slug = $('#mini_map_1').data('id');
         var no = $('#mini_map_1').data('no');
         $.getJSON("/user/tryout/first-soal/" + slug + "", function(data){
-            $("#soal").html(data[0].soal);
+            $("#soal").html(data[0].soal_tryout);
             $("#nomor_soal").text("Soal Nomor " + $('#mini_map_1').data('no'));
             $("#no_soal").val($('#mini_map_1').data('no'));
             $("#jawaban_a_text").html(data[0].a);
@@ -354,7 +354,7 @@ function getSoal(obj) {
     });
 
     $.getJSON("/user/tryout/get-soal/" + slug + "", function(data){
-        $("#soal").html(data[0].soal);
+        $("#soal").html(data[0].soal_tryout);
         $("#nomor_soal").text("Soal Nomor " + actual_no);
         $("#no_soal").val(actual_no);
         $("#jawaban_a_text").html(data[0].a);

@@ -6,16 +6,48 @@
 		<ul class="navbar-nav">
 			<li class="nav-item dropdown nav-profile">
 				<a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					@guest
+					@if (Route::has('login'))
+					@endif
+					@if (Route::has('register'))
+					@endif
+					@else
 					@php echo Auth::user()->avatar; @endphp
+					@endguest
 				</a>
 				<div class="dropdown-menu" aria-labelledby="profileDropdown">
 					<div class="dropdown-header d-flex flex-column align-items-center">
 						<div class="figure mb-3">
+							@guest
+							@if (Route::has('login'))
+							@endif
+							@if (Route::has('register'))
+							@endif
+							@else
 							@php echo Auth::user()->avatar; @endphp
+							@endguest
 						</div>
 						<div class="info text-center">
-							<p class="name font-weight-bold mb-0">{{ Auth::user()->nama_lengkap }}</p>
-							<p class="email text-muted mb-3">{{ Auth::user()->email }}</p>
+							<p class="name font-weight-bold mb-0">
+								@guest
+								@if (Route::has('login'))
+								@endif
+								@if (Route::has('register'))
+								@endif
+								@else
+								{{ Auth::user()->nama_lengkap }}
+								@endguest
+							</p>
+							<p class="email text-muted mb-3">
+								@guest
+								@if (Route::has('login'))
+								@endif
+								@if (Route::has('register'))
+								@endif
+								@else
+								{{ Auth::user()->email }}
+								@endguest
+							</p>
 						</div>
 					</div>
 					<div class="dropdown-body">

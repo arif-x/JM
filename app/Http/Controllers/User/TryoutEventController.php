@@ -268,7 +268,7 @@ class TryoutEventController extends Controller
         $id_soal_tryout_event = [];
         $jawaban = [];
         $start = [];
-        $skor = [0,0];
+        $skor = [0,0,0,0,0,0,0];
         $array_sub_jenis = array();
         foreach ($jsonSubJenis as $each) {
             if (isset($array_sub_jenis[$each->id_sub_jenis_soal]))
@@ -405,18 +405,16 @@ class TryoutEventController extends Controller
         $kategori = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')->where('jawaban_user_tryout_event.slug', $slug)->value('id_kategori');
         $skoring_exploded = explode(',', JawabanUserTryoutEvent::where('slug', $slug)->value('skor'));
 
+        for ($i=0; $i < 9; $i++) { 
+            if(!isset($skoring_exploded[$i])){
+                $skoring_exploded[$i] = 0;
+            }
+        }
+
         if($kategori == 1){
-            $skor = 'Skor TPS: <br/>
-            '.'Matematika Saintek = '.$skoring_exploded[0].'<br>'.
-            'Fisika = '.$skoring_exploded[1].'<br>'.
-            'Kimia = '.$skoring_exploded[1].'<br>'.
-            'Biologi = '.$skoring_exploded[1].'<br>';
+            $skor = '<table class="table"><tr><th colspan="2">TPS</th><th colspan="2">TKA</th></tr><tr><td>Matematika Saintek</td><td>'.$skoring_exploded[0].'</td><td>Kemampuan Penalaran Umum</td><td>'.$skoring_exploded[4].'</td></tr><tr><td>Fisika</td><td>'.$skoring_exploded[1].'</td><td>Kemampuan Memahami Bacaan & menulis</td><td>'.$skoring_exploded[5].'</td></tr><tr><td>Kimia</td><td>'.$skoring_exploded[2].'</td><td>Pengetahuan & Pemahaman Umum</td><td>'.$skoring_exploded[6].'</td></tr><tr><td>Biologi</td><td>'.$skoring_exploded[3].'</td><td>Pengetahuan Kuantitatif</td><td>'.$skoring_exploded[7].'</td></tr></table>';
         } elseif($kategori == 2){
-            $skor = 'Skor TPS: <br/>
-            '.'Matematika Soshum = '.$skoring_exploded[0].'<br>'.
-            'Geografi = '.$skoring_exploded[1].'<br>'.
-            'Sejarah = '.$skoring_exploded[1].'<br>'.
-            'Ekonomi = '.$skoring_exploded[1].'<br>';
+            '<table class="table"><tr><th colspan="2">TPS</th><th colspan="2">TKA</th></tr><tr><td>Matematika Soshum</td><td>'.$skoring_exploded[0].'</td><td>Kemampuan Penalaran Umum</td><td>'.$skoring_exploded[4].'</td></tr><tr><td>Geografi</td><td>'.$skoring_exploded[1].'</td><td>Kemampuan Memahami Bacaan & menulis</td><td>'.$skoring_exploded[5].'</td></tr><tr><td>Sejarah</td><td>'.$skoring_exploded[2].'</td><td>Pengetahuan & Pemahaman Umum</td><td>'.$skoring_exploded[6].'</td></tr><tr><td>Ekonomi</td><td>'.$skoring_exploded[3].'</td><td>Pengetahuan Kuantitatif</td><td>'.$skoring_exploded[7].'</td></tr></table>';
         } 
 
         $dijawab = 0;

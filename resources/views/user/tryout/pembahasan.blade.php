@@ -131,19 +131,23 @@
                                 </div>
                             </div>
                         </div>
+                        <style type="text/css">
+                            .hasil-chart {
+                                min-height: 500px !important;
+                            }
+                        </style>
                         <div class="tab-pane fade" id="statistik-section" role="tabpanel" aria-labelledby="statistik-section-tab">
                             <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <div class="card hasil-chart">
-                                        <div class="card-body text-center">
-                                            <h4 class="mb-2">Skor Akhir</h4>
+                                <div class="col-md-12 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h4 class="mb-2  text-center">Skor Akhir:  {{ $jumlah }}</h4>
                                             <p class="text-left"><strong>{!! $skor !!}</strong></p>
-                                            <h6>Dari 15</h6>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="card hasil-chart">
+                                <div class="col-md-12 mb-3">
+                                    <div class="card h-100">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Hasil</h4>
                                             <h5>Dijawab = <strong>{{ $dijawab }}</strong></h5>
@@ -151,11 +155,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <div class="card ">
                                         <div class="card-body">
                                             <h6 class="card-title">Statistik</h6>
-                                            <canvas id="chartjsBar" style="display: block;"  class="chartjs-render-monitor hasil-charts"></canvas>
+                                            <canvas id="chartjsBar" style="display: block;"  class="chartjs-render-monitor "></canvas>
                                         </div>
                                     </div>
                                 </div>

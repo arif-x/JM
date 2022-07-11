@@ -19,8 +19,13 @@
                         <h3>Paket Anda Saat Ini</h3>
                         <div class="mt-1">
                             @foreach($paket_aktifs as $paket_aktif)
+                            @if(!empty($paket_aktif->nama_paket))
                             <h5 class="text-primary mt-1">{{ $paket_aktif->nama_paket }}<span class="f-14 text-muted"></span></h5>
                             <h5 class="f-16 mb-2">Aktif sampai dengan {{ $paket_aktif->tgl_limit }}</h5>
+                            @else
+                            <h5 class="text-primary mt-1">Gratis<span class="f-14 text-muted"></span></h5>
+                            <h5 class="f-16 mb-2">Aktif sampai dengan -</h5>
+                            @endif
                             @endforeach
                         </div>
                     </div>

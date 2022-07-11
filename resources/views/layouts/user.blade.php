@@ -80,10 +80,8 @@
 		.form-check-label{margin-left: 1rem !important;}
 
 		video {
-			width: 100%;
+			width: 100% !important;
 			height: auto;
-			object-fit: fill; // use "cover" to avoid distortion
-			position: absolute;
 		}
 
 	</style>

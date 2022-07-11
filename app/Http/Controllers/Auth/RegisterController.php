@@ -53,7 +53,8 @@ class RegisterController extends Controller
             'nama_lengkap' => ['required', 'string', 'max:255'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
+            'id_universitas' => ['required'],
         ]);
     }
 
@@ -71,6 +72,7 @@ class RegisterController extends Controller
             'avatar' => '<img src="https://ui-avatars.com/api/?name='.$data['nama_lengkap'].'&amp;background=00ADEF&amp;color=fff" alt="profile">',
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'id_universitas' => $data['id_universitas'],
         ]);
     }
 }

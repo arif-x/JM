@@ -136,7 +136,7 @@
                         </div>
                         <div class="tab-pane fade" id="statistik-section" role="tabpanel" aria-labelledby="statistik-section-tab">
                             <div class="row">
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Skor Akhir</h4>
@@ -145,7 +145,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Hasil</h4>
@@ -155,11 +155,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <div class="card ">
                                         <div class="card-body">
                                             <h6 class="card-title">Statistik</h6>
-                                            <canvas id="chartjsBar" style="display: block;"  class="chartjs-render-monitor hasil-charts"></canvas>
+                                            <canvas id="chartjsBar" style="display: block;"  class="chartjs-render-monitor"></canvas>
                                         </div>
                                     </div>
                                 </div>

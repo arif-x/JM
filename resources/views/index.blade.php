@@ -92,30 +92,41 @@
                 <div class="col-lg-5 offset-lg-1">
                     <div class="home-registration-form bg-white p-5 mt-4">
                         <h5 class="form-title mb-4 text-center font-weight-bold">Get 30 day FREE Trial</h5>
-                        <form class="registration-form">
+                        <form class="registration-form" method="POST" action="{{ route('register') }}">
+                            @csrf
+                            <label class="text-muted">Nama Lengkap</label>
+                            <input type="text" id="nama_lengkap" class="form-control mb-4 registration-input-box" name="nama_lengkap" required>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="text-muted">First Name</label>
-                                    <input type="text" id="exampleInputName1" class="form-control mb-4 registration-input-box">
+                                    <label class="text-muted">No. HP</label>
+                                    <input type="text" id="no_hp" class="form-control mb-4 registration-input-box" name="no_hp" required>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="text-muted">Last Name</label>
-                                    <input type="text" id="exampleInputName2" class="form-control mb-4 registration-input-box">
+                                    <label class="text-muted">Email</label>
+                                    <input type="email" id="email" class="form-control mb-4 registration-input-box @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" name="email">
+                                    @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="text-muted">First Name</label>
-                                    <input type="text" id="exampleInputName1" class="form-control mb-4 registration-input-box">
+                                    <label class="text-muted">Password</label>
+                                    <input type="password" id="password" class="form-control mb-4 registration-input-box" name="password" required>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="text-muted">Last Name</label>
-                                    <input type="text" id="exampleInputName2" class="form-control mb-4 registration-input-box">
+                                    <label class="text-muted">Universitas Tujuan</label>
+                                    <select class="form-control mb-4 registration-input-box" name="id_universitas" required>
+                                        <option value="" selected disabled>Pilih</option>
+                                            @foreach($universitas as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <label class="text-muted">Email</label>
-                            <input type="email" id="exampleInputEmail1" class="form-control mb-4 registration-input-box">
-                            <button class="btn btn-primary w-100 mt-3">Free Trial</button>
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Free Trial</button>
                         </form>
                     </div>
                 </div>

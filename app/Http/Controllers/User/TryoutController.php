@@ -254,7 +254,7 @@ class TryoutController extends Controller
         $id_soal_tryout = [];
         $jawaban = [];
         $start = [];
-        $skor = [0,0];
+        $skor = [0,0,0,0,0,0,0];
         $array_sub_jenis = array();
         foreach ($jsonSubJenis as $each) {
             if (isset($array_sub_jenis[$each->id_sub_jenis_soal]))
@@ -389,22 +389,26 @@ class TryoutController extends Controller
         $kategori = JawabanUserTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'jawaban_user_tryout.id_label_soal_tryout')->where('jawaban_user_tryout.slug', $slug)->value('id_kategori');
         $skoring_exploded = explode(',', JawabanUserTryout::where('slug', $slug)->value('skor'));
 
+        for ($i=0; $i < 9; $i++) { 
+            if(!isset($skoring_exploded[$i])){
+                $skoring_exploded[$i] = 0;
+            }
+        }
+
+
         if($kategori == 1){
-            $skor = 'Skor TPS: <br/>
-            '.'Matematika Saintek = '.$skoring_exploded[0].'<br>'.
-            'Fisika = '.$skoring_exploded[1].'<br>'.
-            'Kimia = '.$skoring_exploded[1].'<br>'.
-            'Biologi = '.$skoring_exploded[1].'<br>';
+            $skor = '<div class="table-responsive"><table class="table"><tr><th colspan="2">TPS</th><th colspan="2">TKA</th></tr><tr><td>Matematika Saintek</td><td>'.$skoring_exploded[0].'</td><td>Kemampuan Penalaran Umum</td><td>'.$skoring_exploded[4].'</td></tr><tr><td>Fisika</td><td>'.$skoring_exploded[1].'</td><td>Kemampuan Memahami Bacaan & menulis</td><td>'.$skoring_exploded[5].'</td></tr><tr><td>Kimia</td><td>'.$skoring_exploded[2].'</td><td>Pengetahuan & Pemahaman Umum</td><td>'.$skoring_exploded[6].'</td></tr><tr><td>Biologi</td><td>'.$skoring_exploded[3].'</td><td>Pengetahuan Kuantitatif</td><td>'.$skoring_exploded[7].'</td></tr></table></div>';
         } elseif($kategori == 2){
-            $skor = 'Skor TPS: <br/>
-            '.'Matematika Soshum = '.$skoring_exploded[0].'<br>'.
-            'Geografi = '.$skoring_exploded[1].'<br>'.
-            'Sejarah = '.$skoring_exploded[1].'<br>'.
-            'Ekonomi = '.$skoring_exploded[1].'<br>';
+            $skor = '<div class="table-responsive"><table class="table"><tr><th colspan="2">TPS</th><th colspan="2">TKA</th></tr><tr><td>Matematika Soshum</td><td>'.$skoring_exploded[0].'</td><td>Kemampuan Penalaran Umum</td><td>'.$skoring_exploded[4].'</td></tr><tr><td>Geografi</td><td>'.$skoring_exploded[1].'</td><td>Kemampuan Memahami Bacaan & menulis</td><td>'.$skoring_exploded[5].'</td></tr><tr><td>Sejarah</td><td>'.$skoring_exploded[2].'</td><td>Pengetahuan & Pemahaman Umum</td><td>'.$skoring_exploded[6].'</td></tr><tr><td>Ekonomi</td><td>'.$skoring_exploded[3].'</td><td>Pengetahuan Kuantitatif</td><td>'.$skoring_exploded[7].'</td></tr></table></div>';
         } 
 
         $dijawab = 0;
         $kosong = 0;
+        $jumlah = 0;
+
+        for ($i=0; $i < count($skoring_exploded); $i++) { 
+            $jumlah = $jumlah + $skoring_exploded[$i];
+        }
 
         for ($i=0; $i < count($id_soal_exploded); $i++) { 
             $data_soal[$i]['slug'] = SoalTryout::where('id_soal_tryout', $id_soal_exploded[$i])->value('slug');
@@ -432,7 +436,7 @@ class TryoutController extends Controller
 
         }
 
-        return view('user.tryout.pembahasan', compact('label', 'skor', 'dijawab', 'kosong', 'slugs'), ['soals' => $data_soal]);
+        return view('user.tryout.pembahasan', compact('label', 'skor', 'dijawab', 'kosong', 'slugs', 'jumlah'), ['soals' => $data_soal]);
     }
 
     public function pembahasan($slug){

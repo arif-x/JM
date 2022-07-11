@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Universitas;
 
 trait RegistersUsers
 {
@@ -18,7 +19,8 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
+        return view('auth.register', compact('universitas'));
     }
 
     /**
