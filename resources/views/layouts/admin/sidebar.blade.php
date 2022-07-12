@@ -56,6 +56,12 @@
           <span class="link-title">Jenis Kampus</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.universitas.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Universitas</span>
+        </a>
+      </li>
 
       <li class="nav-item nav-category">Konfigurasi Materi</li>
       <li class="nav-item">
@@ -118,6 +124,20 @@
         <a href="{{ route('admin.pembayaran.index') }}" class="nav-link">
           <i class="link-icon" data-feather="box"></i>
           <span class="link-title">Data Pembayaran</span>
+        </a>
+      </li>
+
+      <li class="nav-item nav-category">Konfigurasi Slider</li>
+      <li class="nav-item">
+        <a href="{{ route('admin.slider-besar.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Slider Besar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.slider-kecil.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Slider Kecil</span>
         </a>
       </li>
 

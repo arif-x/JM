@@ -7,13 +7,7 @@
     <div class="row w-100 mx-0 auth-page">
         <div class="col-md-8 col-xl-6 mx-auto">
             <div class="card">
-                <div class="row">
-                    <div class="col-md-4 pr-md-0">
-                      <div class="auth-left-wrapper">
-
-                      </div>
-                  </div>
-                  <div class="col-md-8 pl-md-0">
+                  <div class="col-md-12">
                       <div class="auth-form-wrapper px-4 py-5">
                         <a href="#" class="noble-ui-logo d-block mb-2">Jalur<span>Mandiri</span></a>
                         <h5 class="text-muted font-weight-normal mb-4">Selamat Datang! Verifikasi Email Anda.</h5>
@@ -46,6 +40,7 @@
                                     </button>
                                 </div>
                             </div>
+                            <a href="/" class="text-muted">Kembali ke Halaman Awal</a>
                         </form>
                     </div>
                 </div>

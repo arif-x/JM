@@ -49,7 +49,7 @@ class SoalTryoutController extends Controller
 
     public function store(Request $request)
     {
-        $getJumlahSoal = SoalTryout::where('id_sub_jenis_soal', $request->id_sub_jenis_soal)->count();
+        $getJumlahSoal = SoalTryout::where('id_label_soal_tryout', $request->id_label_soal_tryout)->where('id_sub_jenis_soal', $request->id_sub_jenis_soal)->count();
 
         $count = 0;
         $name = encrypt(Str::of($request->soal)->slug('-'));
@@ -64,7 +64,7 @@ class SoalTryoutController extends Controller
             }
         }
 
-        if($getJumlahSoal <= 20){
+        if($getJumlahSoal <= 15){
             if($request->id_soal_tryout == ''){
                 $data = SoalTryout::insert([
                     'id_label_soal_tryout' => $request->id_label_soal_tryout,

@@ -49,7 +49,7 @@ class SoalTryoutEventController extends Controller
 
     public function store(Request $request)
     {
-        $getJumlahSoal = SoalTryoutEvent::where('id_sub_jenis_soal', $request->id_sub_jenis_soal)->count();
+        $getJumlahSoal = SoalTryoutEvent::where('id_label_soal_tryout_event', $request->id_label_soal_tryout_event)->where('id_sub_jenis_soal', $request->id_sub_jenis_soal)->count();
 
         $count = 0;
         $name = encrypt(Str::of($request->soal)->slug('-'));

@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\PaketAktif;
+use App\Models\User;
+use App\Models\Paket;
 use Carbon\Carbon;
+use App\Mail\PembayaranDikonfirmasi;
+use App\Mail\PembayaranDitolak;
 use DataTables;
+use Mail;
 
 class PembayaranController extends Controller
 {
@@ -35,7 +40,9 @@ class PembayaranController extends Controller
             })
             ->addColumn('status', function($row){
                 $data = '';
-                if($row->status_pembayaran == 2){
+                if($row->status_pembayaran == 1){
+                    $data = 'Belum Dibayar';
+                }elseif($row->status_pembayaran == 2){
                     $data = 'Perlu Dikonfirmasi';
                 }elseif($row->status_pembayaran == 3){
                     $data = 'Ditolak';
@@ -83,6 +90,29 @@ class PembayaranController extends Controller
                 ]
             );
         }
+
+
+        $email = User::where('id_user', $request->id_user)->value('email');
+        $nama_paket = Paket::where('id_paket', $request->id_paket)->value('nama_paket');
+        $harga = Paket::where('id_paket', $request->id_paket)->value('harga');
+        $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
+
+        if($request->status_pembayaran == 4){
+            $mailData = [
+                'title' => 'Pembayaran Dikonfirmasi',
+                'body' => 'Pembayaran Paket '.$nama_paket.' dengan Harga '.$harga.' Dikonfirmasi.<br/>Kode Transaksi: '.$kode.''
+            ];
+
+            Mail::to($email)->send(new PembayaranDikonfirmasi($mailData));
+        } elseif($request->status_pembayaran == 3){
+            $mailData = [
+                'title' => 'Pembayaran Ditolak',
+                'body' => 'Pembayaran Paket '.$nama_paket.' dengan Harga '.$harga.' Ditolak.<br/>Kode Transaksi: '.$kode.''
+            ];
+            
+            Mail::to($email)->send(new PembayaranDitolak($mailData));
+        }
+
 
         return response()->json($data);
     }

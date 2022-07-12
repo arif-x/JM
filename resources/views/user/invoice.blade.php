@@ -61,6 +61,10 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="row">
+                                                <div class="col-md-6"><h5>Kode</h5></div>
+                                                <div class="col-md-6"><h5>: {{ $wait->kode }}</h5></div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6"><h5>Paket</h5></div>
                                                 <div class="col-md-6"><h5>: {{ $wait->nama_paket }}</h5></div>
                                             </div>
@@ -122,6 +126,10 @@
                                         <img class="card-img-top" src="{{ $pending->bukti_pembayaran }}" alt="">
                                         <div class="card-body">
                                             <div class="row">
+                                                <div class="col-md-6"><h5>Kode</h5></div>
+                                                <div class="col-md-6"><h5>: {{ $pending->kode }}</h5></div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6"><h5>Paket</h5></div>
                                                 <div class="col-md-6"><h5>: {{ $pending->nama_paket }}</h5></div>
                                             </div>
@@ -150,6 +158,10 @@
                                         <img class="card-img-top" src="{{ $reject->bukti_pembayaran }}" alt="">
                                         <div class="card-body">
                                             <div class="row">
+                                                <div class="col-md-6"><h5>Kode</h5></div>
+                                                <div class="col-md-6"><h5>: {{ $reject->kode }}</h5></div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6"><h5>Paket</h5></div>
                                                 <div class="col-md-6"><h5>: {{ $reject->nama_paket }}</h5></div>
                                             </div>
@@ -177,6 +189,10 @@
                                     <div class="card">
                                         <img class="card-img-top" src="{{ $success->bukti_pembayaran }}" alt="">
                                         <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6"><h5>Kode</h5></div>
+                                                <div class="col-md-6"><h5>: {{ $success->kode }}</h5></div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Paket</h5></div>
                                                 <div class="col-md-6"><h5>: {{ $success->nama_paket }}</h5></div>

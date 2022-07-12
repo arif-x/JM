@@ -13,6 +13,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Kode</th>
                                 <th>Nama User</th>
                                 <th>Nama Paket</th>
                                 <th>Nama Kategori</th>
@@ -36,6 +37,11 @@
                                         <input type="hidden" name="id_paket" id="id_paket">
                                         <input type="hidden" name="id_jenis_kampus" id="id_jenis_kampus">
                                         <input type="hidden" name="id_kategori" id="id_kategori">
+
+                                        <div class="form-group">
+                                            <label for="kode" class="control-label">Kode</label>
+                                            <input type="text" class="form-control" readonly name="kode" id="kode">
+                                        </div>
 
                                         <div class="form-group">
                                             <label for="nama_paket" class="control-label">Nama Paket</label>
@@ -90,6 +96,11 @@
                                         <input type="hidden" name="id_jenis_kampus" id="lihat_id_jenis_kampus">
 
                                         <div class="form-group">
+                                            <label for="kode" class="control-label">Kode</label>
+                                            <input type="text" class="form-control" readonly name="kode" id="lihat_kode">
+                                        </div>
+
+                                        <div class="form-group">
                                             <label for="nama_paket" class="control-label">Nama Paket</label>
                                             <input type="text" class="form-control" readonly name="nama_paket" id="lihat_nama_paket">
                                         </div>
@@ -140,6 +151,7 @@
                                 ajax: "{{ route('admin.pembayaran.index') }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                                {data: 'kode', name: 'kode'},
                                 {data: 'nama_lengkap', name: 'nama_lengkap'},
                                 {data: 'nama_paket', name: 'nama_paket'},
                                 {data: 'nama_kategori', name: 'nama_kategori'},
@@ -165,6 +177,7 @@
                                     $('#id_keranjang').val(data.id_keranjang);
                                     $('#id_user').val(data.id_user);
                                     $('#id_paket').val(data.id_paket);
+                                    $('#kode').val(data.kode);
                                     $('#nama_paket').val(data.nama_paket);
                                     $('#id_kategori').val(data.id_kategori);
                                     $('#id_jenis_kampus').val(data.id_jenis_kampus);
@@ -183,6 +196,7 @@
                                     $('#lihat_id_keranjang').val(data.id_keranjang);
                                     $('#lihat_id_user').val(data.id_user);
                                     $('#lihat_id_paket').val(data.id_paket);
+                                    $('#lihat_kode').val(data.kode);
                                     $('#lihat_nama_paket').val(data.nama_paket);
                                     $('#lihat_nama_kategori').val(data.nama_kategori);
                                     $('#lihat_nama_jenis_kampus').val(data.nama_jenis_kampus);

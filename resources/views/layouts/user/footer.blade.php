@@ -1,4 +1,6 @@
 <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between">
-	<p class="text-muted text-center text-md-left">Copyright © 2021 <a href="https://www.nobleui.com" target="_blank">NobleUI</a>. All rights reserved</p>
-	<p class="text-muted text-center text-md-left mb-0 d-none d-md-block">Handcrafted With <i class="mb-1 text-primary ml-1 icon-small" data-feather="heart"></i></p>
+	<p class="text-muted text-center text-md-left">Copyright ©<span id="year"></span> <a href="https://www.jalurmandiri.com" target="_blank">Jalur Mandiri</a>. All rights reserved</p>
 </footer>
+<script type="text/javascript">
+	document.getElementById("year").innerHTML = new Date().getFullYear();
+</script>

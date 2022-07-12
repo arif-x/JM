@@ -197,7 +197,7 @@
                     labels: [ "Benar", "Salah", "Kosong"],
                     datasets: [
                     {
-                        label: "Population",
+                        label: "Jumlah",
                         backgroundColor: ["#b1cfec","#7ee5e5","#66d1d1"],
                         data: [{{$benar}},{{$salah}},{{$kosong}}]
                     }

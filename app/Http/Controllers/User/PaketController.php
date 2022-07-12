@@ -11,6 +11,7 @@ use App\Models\Keranjang;
 use App\Models\PaketAktif;
 use Carbon\Carbon;
 use Auth;
+use Str;
 
 class PaketController extends Controller
 {
@@ -45,6 +46,7 @@ class PaketController extends Controller
             'id_jenis_kampus' => $jenis_kampus,
             'id_kategori' => $request->id_kategori,
             'id_paket' => $request->id_paket,
+            'kode' => strtoupper(Str::random('7')),
             'tgl_pesan' => Carbon::now()->format('d-m-Y'),
             'tgl_limit_bayar' => Carbon::now()->addDays(7)->format('d-m-Y'),
             'status_pembayaran' => 1,

@@ -8,18 +8,11 @@ use Auth;
 
 class AdminAuthenticated
 {
-    public function handle(Request $request, Closure $next)
-    {
-        if (!Auth::guard('admin')) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect(route('adminLogin'));
-            }
+    public function handle($request, Closure $next, $guard = 'admin') {
+        if (!Auth::guard($guard)->check()) {
+            return redirect('/admin/login');
+        } else {
+            return $next($request);
         }
-        
-        $response = $next($request);
-        return $response;
-
     }
 }

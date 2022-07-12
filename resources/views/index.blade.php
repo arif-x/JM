@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Floaks</title>
+    <title>Jalur Mandiri</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
     <meta name="keywords" content="bootstrap 4, premium, marketing, multipurpose" />
@@ -40,24 +40,37 @@
                         <a href="#home" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#portfolio" class="nav-link">Portfolio</a>
+                        <a href="#features" class="nav-link">Fitur</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#pricing" class="nav-link">Pricing</a>
+                        <a href="#pricing" class="nav-link">Paket</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#team" class="nav-link">Team</a>
+                        <a href="#team" class="nav-link">Tim</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#testimonial" class="nav-link">Testimonial</a>
+                        <a href="#testimonial" class="nav-link">Testomoni</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#contact" class="nav-link">Contact</a>
+                        <a href="#contact" class="nav-link">Kontak</a>
                     </li>
                 </ul>
+                @guest
+                @if (Route::has('login'))
                 <div class="navbar-button d-none d-lg-inline-block">
-                    <a href="" class="btn btn-sm btn-primary btn-round">Sign Up</a>
+                    <a href="{{ route('login') }}" class="btn btn-sm btn-primary btn-round">Login</a>
                 </div>
+                @endif
+                @if (Route::has('register'))
+                @endif
+                @else
+                <div class="navbar-button d-none d-lg-inline-block">
+                    <a href="{{ route('logout') }}" class="btn btn-sm btn-primary btn-round" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+                @endguest
             </div>
         </div>
     </nav>
@@ -69,9 +82,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="home-contact mt-4">
-                        <p class="text-primary font-weight-bold">Time date and problem monitoring</p>
+                        <p class="text-primary font-weight-bold">Belajar Dimanapun & Kapanpun</p>
 
-                        <h1 class="home-title mt-3">Super Fast Professional Invoicing For Freelancers</h1>
+                        <h1 class="home-title mt-3">Wujudkan Mimpimu Masuk Kampus Idaman</h1>
 
                         <p class="text-muted mt-4">
                             Quisque a diam mattis fermentum lectus tempuada <br />
@@ -79,19 +92,23 @@
                         </p>
 
                         <div class="mt-4 pt-3">
-                            <a href="" class="btn btn-primary mr-3">Estimate project</a>
-                            <a href="" class="btn btn-outline-primary">Our portfolio</a>
+                            <a href="{{ route('register') }}" class="btn btn-primary mr-3">Daftar</a>
+                            <a href="{{ route('login') }}" class="btn btn-outline-primary">Login</a>
                         </div>
 
                         <div class="watch-video pt-5">
-                            <a href="http://vimeo.com/99025203" class="video-play-icon text-white"><i class="mdi mdi-play play-icon-circle play play-iconbar"></i> <span class="text-dark">Watch our company video!</span></a>
+                            <a href="http://vimeo.com/99025203" class="video-play-icon text-white"><i class="mdi mdi-play play-icon-circle play play-iconbar"></i> <span class="text-dark">Lihat Daftar Tryout Gratis!</span></a>
                         </div>
                     </div>
                 </div>
 
+                @guest
+                @if (Route::has('login'))
+                @endif
+                @if (Route::has('register'))
                 <div class="col-lg-5 offset-lg-1">
                     <div class="home-registration-form bg-white p-5 mt-4">
-                        <h5 class="form-title mb-4 text-center font-weight-bold">Get 30 day FREE Trial</h5>
+                        <h5 class="form-title mb-4 text-center font-weight-bold">Daftar Gratis</h5>
                         <form class="registration-form" method="POST" action="{{ route('register') }}">
                             @csrf
                             <label class="text-muted">Nama Lengkap</label>
@@ -120,16 +137,18 @@
                                     <label class="text-muted">Universitas Tujuan</label>
                                     <select class="form-control mb-4 registration-input-box" name="id_universitas" required>
                                         <option value="" selected disabled>Pilih</option>
-                                            @foreach($universitas as $key => $value)
-                                            <option value="{{ $key }}">{{ $value }}</option>
-                                            @endforeach
+                                        @foreach($universitas as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 mt-3">Free Trial</button>
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Daftar Gratis</button>
                         </form>
                     </div>
                 </div>
+                @endif
+                @endguest
             </div>
         </div>
     </section>
@@ -141,9 +160,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Our Features</p>
-                        <h2 class="title-heading">Get work done in over 300+ different categories</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
+                        <p class="title-sub-heading text-primary f-18">Kenapa Memilih Kami?</p>
+                        <h2 class="title-heading">Benefit Belajar Pintar Dengan Jalur Mandiri</h2>
+                        <p class="title-desc text-muted mt-2">Dengan Dukungan Pembimbing Profesional & 10.000+ Contoh Soal Ujian Masuk Kampus.</p>
                     </div>
                 </div>
             </div>
@@ -156,10 +175,10 @@
                             <img src="{{ asset('assets-guest/images/icon/rulers.png') }}" class="img-fluid" alt="" />
                         </div>
 
-                        <h5 class="f-18 mt-4">Digital Product</h5>
+                        <h5 class="f-18 mt-4">Materi Pilihan</h5>
                         <p class="text-muted mt-3">Pellentesque viverra augarue molestie convallis sit amet interdum bibendum sem urna condimentum.</p>
                         <div class="mt-3">
-                            <a href="" class="text-primary font-weight-600"> Learn more <i class="mdi mdi-arrow-right ml-2"></i> </a>
+                            <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
@@ -171,10 +190,10 @@
                             <img src="{{ asset('assets-guest/images/icon/compose.png') }}" class="img-fluid" alt="" />
                         </div>
 
-                        <h5 class="f-18 mt-4">Digital Marketing</h5>
+                        <h5 class="f-18 mt-4">Sistem CBT</h5>
                         <p class="text-muted mt-3">Passage you need sure there anything embarssing hidden the open chunks necesary making Internet.</p>
                         <div class="mt-3">
-                            <a href="" class="text-primary font-weight-600"> Learn more <i class="mdi mdi-arrow-right ml-2"></i> </a>
+                            <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
@@ -186,10 +205,10 @@
                             <img src="{{ asset('assets-guest/images/icon/presentation.png') }}" class="img-fluid" alt="" />
                         </div>
 
-                        <h5 class="f-18 mt-4">Business Consult</h5>
+                        <h5 class="f-18 mt-4">Menyesuaikan Kisi-Kisi</h5>
                         <p class="text-muted mt-3">Passage you need sure there anything embrassing text hidden all necessary making generator Internet.</p>
                         <div class="mt-3">
-                            <a href="" class="text-primary font-weight-600"> Learn more <i class="mdi mdi-arrow-right ml-2"></i> </a>
+                            <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
@@ -345,16 +364,16 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Our Pricing</p>
-                        <h2 class="title-heading">Choose the offering that works best for you</h2>
+                        <p class="title-sub-heading text-primary f-18">Daftar Paket</p>
+                        <h2 class="title-heading">Paket Unggulan Jalur Mandiri</h2>
                         <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="row mt-5 pt-4">
+            <div class="row mt-5">
                 <div class="col-lg-12">
-                    <div class="text-center">
+                    <!-- <div class="text-center">
                         <ul class="nav nav-pills rounded justify-content-center d-inline-block pricing-tab-border py-1 px-2" id="pills-tab" role="tablist">
                             <li class="nav-item d-inline-block">
                                 <a class="nav-link px-3 rounded active monthly" id="Monthly" data-toggle="pill" href="#Month" role="tab" aria-controls="Month" aria-selected="true">Monthly</a>
@@ -365,9 +384,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
 
-                    <div class="tab-content pt-3" id="pills-tabContent">
+                    <div class="tab-content pt-1" id="pills-tabContent">
                         <div class="tab-pane fade active show" id="Month" role="tabpanel" aria-labelledby="Monthly">
                             <div class="row mt-3">
                                 <div class="col-lg-4">
@@ -550,8 +569,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Our Team</p>
-                        <h2 class="title-heading">Meet our expert people of payonline</h2>
+                        <p class="title-sub-heading text-primary f-18">Tim Kami</p>
+                        <h2 class="title-heading">Jalur Mandiri Didukung Dengan Tenaga Profesional</h2>
                         <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
                     </div>
                 </div>
@@ -574,22 +593,6 @@
                             <p class="text-muted text-uppercase f-13 mb-0">Web Designer</p>
                         </div>
 
-                        <div class="team-social text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-twitter"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-google"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-pinterest"></i></a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
 
@@ -607,23 +610,6 @@
 
                         <div class="team-border text-center">
                             <p class="text-muted text-uppercase f-13 mb-0">Manager</p>
-                        </div>
-
-                        <div class="team-social text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-twitter"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-google"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-pinterest"></i></a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>
@@ -643,22 +629,6 @@
                             <p class="text-muted text-uppercase f-13 mb-0">Web Developer</p>
                         </div>
 
-                        <div class="team-social text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-twitter"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-google"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-pinterest"></i></a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -677,7 +647,7 @@
                             <p class="text-muted text-uppercase f-13 mb-0">Ceo</p>
                         </div>
 
-                        <div class="team-social text-center">
+                        <!-- <div class="team-social text-center">
                             <ul class="list-inline mb-0">
                                 <li class="list-inline-item">
                                     <a href="" class="text-reset"><i class="mdi mdi-facebook"></i></a>
@@ -692,7 +662,7 @@
                                     <a href="" class="text-reset"><i class="mdi mdi-pinterest"></i></a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -835,7 +805,7 @@
     <!-- END TESTIMONIAL -->
 
     <!-- START BLOG -->
-    <section class="section bg-light" id="blog">
+    <!-- <section class="section bg-light" id="blog">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -950,7 +920,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <!-- END BLOG -->
 
     <!-- START CONTACT -->
@@ -1068,16 +1038,14 @@
                     <div class="footer-info mt-4">
                         <img src="{{ asset('assets-guest/images/logo-dark.png') }}" alt="" height="22" />
                         <h5 class="f-18 mt-4 pt-1 line-height_1_6">
-                            Business opportunities Are Like <br />
-                            Buses, There's Always Another <br />
-                            One Coming...
+                            Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman
                         </h5>
                     </div>
                 </div>
 
                 <div class="col-lg-5">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <!-- <div class="col-lg-4">
                             <div class="mt-4">
                                 <h5 class="f-18">Features</h5>
                                 <ul class="list-unstyled footer-link mt-3">
@@ -1087,28 +1055,22 @@
                                     <li><a href="">Company</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="mt-4">
-                                <h5 class="f-18">Policies</h5>
+                                <h5 class="f-18">Kebijakan</h5>
                                 <ul class="list-unstyled footer-link mt-3">
-                                    <li><a href="">Security</a></li>
-                                    <li><a href="">Jobs</a></li>
-                                    <li><a href="">Policy</a></li>
-                                    <li><a href="">Condition</a></li>
+                                    <li><a href="">Kebijakan Pengguna</a></li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="mt-4">
-                                <h5 class="f-18">Company</h5>
+                                <h5 class="f-18">Perusahaan</h5>
                                 <ul class="list-unstyled footer-link mt-3">
-                                    <li><a href="">Leadership</a></li>
-                                    <li><a href="">Careers</a></li>
-                                    <li><a href="">Contact us</a></li>
-                                    <li><a href="">Maps</a></li>
+                                    <li><a href="https://goo.gl/maps/xMfDzL4E9dKjPyHCA" target="_blank">Malang</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -1132,17 +1094,6 @@
                                 <a href="#"><i class="mdi mdi-google-plus"></i></a>
                             </li>
                         </ul>
-
-                        <h5 class="f-18">Follow Us</h5>
-
-                        <div class="mt-4">
-                            <a href="" class="pr-3">
-                                <img src="{{ asset('assets-guest/images/apple-store.png') }}" height="30" alt="" />
-                            </a>
-                            <a href="">
-                                <img src="{{ asset('assets-guest/images/google-play.png') }}" height="30" alt="" />
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1152,7 +1103,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="text-center">
-                        <p class="text-muted mb-0">2020 © Floaks. Design by Themesdesign</p>
+                        <p class="text-muted mb-0">Copyright ©<span id="year"></span> <a href="https://www.jalurmandiri.com" target="_blank">Jalur Mandiri</a>. All rights reserved</p>
                     </div>
                 </div>
             </div>
@@ -1190,5 +1141,8 @@
 
     <!-- Main Js -->
     <script src="{{ asset('assets-guest/js/app.js') }}"></script>
+    <script type="text/javascript">
+        document.getElementById("year").innerHTML = new Date().getFullYear();
+    </script>
 </body>
 </html>

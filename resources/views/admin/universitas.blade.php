@@ -84,8 +84,8 @@
                                 ajax: "{{ route('admin.universitas.index') }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                                {data: 'nama_universitas', name: 'nama_universitas'},
                                 {data: 'nama_jenis_kampus', name: 'nama_jenis_kampus'},
+                                {data: 'nama_universitas', name: 'nama_universitas'},
                                 {data: 'action', name: 'action'},
                                 ]
                             });
