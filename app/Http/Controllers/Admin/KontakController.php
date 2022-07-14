@@ -41,7 +41,7 @@ class KontakController extends Controller
         return response()->json($data);
     }
 
-    public function destroy($id){
-        return response()->json(Kontak::find($id)->delete());
-    }
+    // public function destroy($id){
+    //     return response()->json(Kontak::find($id)->delete());
+    // }
 }

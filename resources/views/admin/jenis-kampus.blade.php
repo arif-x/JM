@@ -7,7 +7,7 @@
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Jenis Kampus</h6>
+                <h6 class="card-title">Jenis Universitas</h6>
                 <div class="card-description">
                     <button class="btn btn-primary" id="tambah">Tambah</button>
                 </div>
@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama Jenis Kampus</th>
+                                <th>Nama Jenis Universitas</th>
                                 <th>Action</th>
                             </tr>
                         </thead>  
@@ -33,7 +33,7 @@
                                         <input type="hidden" name="id_jenis_kampus" id="id_jenis_kampus">
 
                                         <div class="form-group">
-                                            <label for="nama_jenis_kampus" class="control-label">Nama Jenis Kampus</label>
+                                            <label for="nama_jenis_kampus" class="control-label">Nama Jenis Universitas</label>
                                             <input type="text" class="form-control" id="nama_jenis_kampus" name="nama_jenis_kampus" required="">
                                         </div>
 

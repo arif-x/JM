@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <title>Jalur Mandiri</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
-    <meta name="keywords" content="bootstrap 4, premium, marketing, multipurpose" />
+    <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
+    <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
     <meta content="Themesdesign" name="author" />
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('assets-guest/images/favicon.ico') }}" />
@@ -25,10 +25,10 @@
 
 <body>
     <!--Navbar Start-->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky" style="z-index: 1000;">
         <div class="container">
             <!-- LOGO -->
-            <a class="navbar-brand logo text-uppercase" href="index.html">
+            <a class="navbar-brand logo text-uppercase" href="/">
                 <img src="{{ asset('assets-guest/images/logo-dark.png') }}" alt="" height="22" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,8 +92,20 @@
                         </p>
 
                         <div class="mt-4 pt-3">
+                            @guest
+                            @if (Route::has('login'))
                             <a href="{{ route('register') }}" class="btn btn-primary mr-3">Daftar</a>
                             <a href="{{ route('login') }}" class="btn btn-outline-primary">Login</a>
+                            @endif
+                            @if (Route::has('register'))
+                            @endif
+                            @else
+                            <a href="{{ route('user.dashboard') }}" class="btn btn-primary mr-3">Dashboard</a>
+                            <a href="{{ route('logout') }}" class="btn btn-outline-primary" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                            @endguest
                         </div>
 
                         <div class="watch-video pt-5">
@@ -218,144 +230,11 @@
     <!-- END SERVICES -->
 
     <!-- START WORK -->
-    <section class="section" id="portfolio">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Our Portfolio</p>
-                        <h2 class="title-heading">We work fast, but we do not do it alone.</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-5 pt-2">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <ul class="col container-filter portfolioFilte list-unstyled mb-0" id="filter">
-                            <li><a class="categories active" data-filter="*">All</a></li>
-                            <li><a class="categories" data-filter=".Brand">Brand</a></li>
-                            <li><a class="categories" data-filter=".Design">Design</a></li>
-                            <li><a class="categories" data-filter=".Graphic">Graphic</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- End portfolio  -->
-            <div class="port portfolio-masonry mt-5">
-                <div class="portfolioContainer row">
-                    <div class="col-lg-4 col-md-4 Brand p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-1.png') }}" title="Consumer Insights">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-1.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-4 Design p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-2.png') }}" title="Financial Service">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-2.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-4 Design p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-3.png') }}" title="Latest Technology">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-3.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-4 Graphic p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-4.png') }}" title="Business Growth">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-4.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-4 Brand p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-5.png') }}" title="International Business">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-5.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-4 Design Brand p-3">
-                        <div class="item-box p-2 rounded">
-                            <a class="cbox-gallary1 mfp-image" href="{{ asset('assets-guest/images/portfolio/img-6.png') }}" title="Consumer Products">
-                                <img class="item-container rounded" src="{{ asset('assets-guest/images/portfolio/img-6.png') }}" alt="work-img" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
     <!-- END WORK -->
 
     <!-- START COUNTER -->
-    <section class="section bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Specialized Skill</p>
-                        <h2 class="title-heading">Why do people love us</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row align-items-center mt-4 pt-3" id="counter">
-                <div class="col-lg-4">
-                    <div class="counter-box mt-4 p-4">
-                        <h2 class="counter-count text-primary"><span class="counter-value" data-count="49">25</span> <span class="count-plus"> M</span></h2>
-                        <h5 class="mt-2 f-18">Creative User</h5>
-                        <p class="text-muted mt-3 mb-0">Aliquam erat volutpat elit quisque porta varius malesauada nuarnc turpis imperdiet id odio.</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="counter-box mt-4 p-4">
-                        <h2 class="counter-count text-primary"><span class="counter-value" data-count="97">36</span> <span class="count-plus"> %</span></h2>
-                        <h5 class="mt-2 f-18">Successful rate</h5>
-                        <p class="text-muted mt-3 mb-0">Vivamus id lorem ut dolor sagittis elementum finibus vel felis maecenas laoreet leo sollicitudin.</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="p-4">
-                        <div class="mt-4">
-                            <p class="font-weight-500 mb-2">Html</p>
-                            <div class="progress" style="height: 9px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="font-weight-500 mb-2">Css</p>
-                            <div class="progress" style="height: 9px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 87%;" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100">87%</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="font-weight-500 mb-2">Bootstrap</p>
-                            <div class="progress" style="height: 9px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
     <!-- END COUNTER -->
 
     <!-- START PRICING -->
@@ -373,48 +252,63 @@
 
             <div class="row mt-5">
                 <div class="col-lg-12">
-                    <!-- <div class="text-center">
-                        <ul class="nav nav-pills rounded justify-content-center d-inline-block pricing-tab-border py-1 px-2" id="pills-tab" role="tablist">
-                            <li class="nav-item d-inline-block">
-                                <a class="nav-link px-3 rounded active monthly" id="Monthly" data-toggle="pill" href="#Month" role="tab" aria-controls="Month" aria-selected="true">Monthly</a>
-                            </li>
-                            <li class="nav-item d-inline-block">
-                                <a class="nav-link px-3 rounded yearly" id="Yearly" data-toggle="pill" href="#Year" role="tab" aria-controls="Year" aria-selected="false">
-                                    Yearly <span class="badge bg-success rounded text-white">20% Off </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div> -->
 
                     <div class="tab-content pt-1" id="pills-tabContent">
                         <div class="tab-pane fade active show" id="Month" role="tabpanel" aria-labelledby="Monthly">
-                            <div class="row mt-3">
-                                <div class="col-lg-4">
-                                    <div class="pricing-box shadow mt-4 rounded">
-                                        <h5>Freelancer</h5>
+                            <div class="row">
+                                @foreach($pakets as $paket)
+                                <div class="col-lg-4 mb-3">
+                                    <div class="pricing-box shadow rounded h-100">
+                                        @if($paket->nama_paket == 'Premium')
+                                        <div class="pricing-badge">
+                                            <span class="badge">Featured</span>
+                                        </div>
+                                        @endif
+                                        <h5>{{ $paket->nama_paket }}</h5>
 
                                         <div class="mt-4 text-center pb-2">
-                                            <h3 class="text-primary mt-4">$199<span class="f-14 text-muted">/Month</span></h3>
-                                            <h5 class="f-16 mb-2">1,000 Monthly Active Users</h5>
+                                            @if($paket->diskon == 0)
+                                            <h3 class="text-primary mt-4">{{ "Rp. ".number_format($paket->harga, 0) }}</h3>
+                                            @else
+                                            <s>{{ "Rp. ".number_format($paket->harga, 0) }}</s>
+                                            <h3 class="text-primary mt-4">{{ "Rp. ".number_format($paket->jumlah, 0) }}</h3>
+                                            @endif
+                                            <h5 class="f-16 mb-2">Per Semester</h5>
                                         </div>
 
-                                        <div class="mt-4 bg-light p-3">
-                                            <input type="text" id="pricerange1" />
-                                        </div>
+                                        <hr>
                                         <div class="mt-4 pt-2">
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Verifide work and reviews</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Dedicated accounts managers</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Unlimited proposals</p>
-                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>Project tracking</p>
-                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>Easy payments</p>
+                                            @php
+                                            $keterangan_akses = explode(', ', $paket->keterangan_akses);
+                                            $keterangan_no_akses = explode(', ', $paket->keterangan_no_akses);
+                                            @endphp
+                                            @if(count($keterangan_akses) > 1)
+                                            @foreach($keterangan_akses as $akses)
+                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>{{ $akses }}</p>
+                                            @endforeach
+                                            @endif
+                                            @if(count($keterangan_no_akses) > 1)
+                                            @foreach($keterangan_no_akses as $no_akses)
+                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>{{ $no_akses }}</p>
+                                            @endforeach
+                                            @endif
                                         </div>
 
                                         <div class="mt-4 pt-3 text-center">
-                                            <a href="" class="btn btn-outline-primary">Start with Floaks</a>
+                                            @if($paket->nama_paket == 'Gratis')
+                                            <button class="btn btn-outline-primary">Gratis</button>
+                                            @else
+                                            <button id="paket-btn" data-id="{{ $paket->id_paket }}" class="btn btn-outline-primary">Pesan Sekarang</button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
+                                @endforeach
 
+                            </div>
+                        </div>
+                        <!-- <div class="tab-pane fade active show" id="Month" role="tabpanel" aria-labelledby="Monthly">
+                            <div class="row mt-3">
                                 <div class="col-lg-4">
                                     <div class="pricing-box shadow mt-4 rounded">
                                         <div class="pricing-badge">
@@ -443,119 +337,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-4">
-                                    <div class="pricing-box shadow mt-4 rounded">
-                                        <h5>Enterprice</h5>
-
-                                        <div class="mt-4 text-center pb-2">
-                                            <h3 class="text-primary mt-4">$399<span class="f-14 text-muted">/Month</span></h3>
-                                            <h5 class="f-16 mb-2">10,000 Monthly Active Users</h5>
-                                        </div>
-
-                                        <div class="mt-4 bg-light p-3">
-                                            <input type="text" id="pricerange3" />
-                                        </div>
-                                        <div class="mt-4 pt-2">
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Verifide work and reviews</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Dedicated accounts managers</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Unlimited proposals</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Project tracking</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Easy payments</p>
-                                        </div>
-
-                                        <div class="mt-4 pt-3 text-center">
-                                            <a href="" class="btn btn-outline-primary">Start with Floaks</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="Year" role="tabpanel" aria-labelledby="Yearly">
-                            <div class="row mt-3">
-                                <div class="col-lg-4">
-                                    <div class="pricing-box shadow mt-4 rounded">
-                                        <h5>Freelancer</h5>
-
-                                        <div class="mt-4 text-center pb-2">
-                                            <h3 class="text-primary mt-4">$599<span class="f-14 text-muted">/Month</span></h3>
-                                            <h5 class="f-16 mb-2">1,000 Monthly Active Users</h5>
-                                        </div>
-
-                                        <div class="mt-4 bg-light p-3">
-                                            <input type="text" id="pricerange4" />
-                                        </div>
-                                        <div class="mt-4 pt-2">
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Verifide work and reviews</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Dedicated accounts managers</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Unlimited proposals</p>
-                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>Project tracking</p>
-                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>Easy payments</p>
-                                        </div>
-
-                                        <div class="mt-4 pt-3 text-center">
-                                            <a href="" class="btn btn-outline-primary">Start with Floaks</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="pricing-box shadow mt-4 rounded">
-                                        <div class="pricing-badge">
-                                            <span class="badge">Featured</span>
-                                        </div>
-                                        <h5>Startup</h5>
-
-                                        <div class="mt-4 text-center pb-2">
-                                            <h3 class="text-primary mt-4">$799<span class="f-14 text-muted">/Month</span></h3>
-                                            <h5 class="f-16 mb-2">5,000 Monthly Active Users</h5>
-                                        </div>
-
-                                        <div class="mt-4 bg-light p-3">
-                                            <input type="text" id="pricerange5" />
-                                        </div>
-                                        <div class="mt-4 pt-2">
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Verifide work and reviews</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Dedicated accounts managers</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Unlimited proposals</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Project tracking</p>
-                                            <p class="mb-2"><i class="mdi mdi-close-box-outline text-danger f-18 mr-2"></i>Easy payments</p>
-                                        </div>
-
-                                        <div class="mt-4 pt-3 text-center">
-                                            <a href="" class="btn btn-primary">Start with Floaks</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="pricing-box shadow mt-4 rounded">
-                                        <h5>Enterprice</h5>
-
-                                        <div class="mt-4 text-center pb-2">
-                                            <h3 class="text-primary mt-4">$999<span class="f-14 text-muted">/Month</span></h3>
-                                            <h5 class="f-16 mb-2">10,000 Monthly Active Users</h5>
-                                        </div>
-
-                                        <div class="mt-4 bg-light p-3">
-                                            <input type="text" id="pricerange6" />
-                                        </div>
-                                        <div class="mt-4 pt-2">
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Verifide work and reviews</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Dedicated accounts managers</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Unlimited proposals</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Project tracking</p>
-                                            <p class="mb-2"><i class="mdi mdi-check-box-outline text-primary f-18 mr-2"></i>Easy payments</p>
-                                        </div>
-
-                                        <div class="mt-4 pt-3 text-center">
-                                            <a href="" class="btn btn-outline-primary">Start with Floaks</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -577,94 +360,26 @@
             </div>
 
             <div class="row mt-5 pt-5">
+                @foreach($tims as $tim)
                 <div class="col-lg-3">
                     <div class="team-box rounded shadow mt-4 bg-white rounded">
                         <div class="p-4">
                             <div class="team-img text-center">
-                                <img src="{{ asset('assets-guest/images/user/img-1.jpg') }}" class="img-fluid rounded-circle" alt="" />
+                                <img src="{{ $tim->foto }}" class="img-fluid rounded-circle" alt="" />
                             </div>
                             <div class="text-center mt-4">
-                                <h5 class="f-18">Zachary Tevis</h5>
-                                <p class="text-muted mb-0 f-14 mt-2">Zacharyt@gmail.com</p>
+                                <h5 class="f-18">{{ $tim->nama }}</h5>
+                                <p class="text-muted mb-0 f-14 mt-2">{{ $tim->email }}</p>
                             </div>
                         </div>
 
                         <div class="team-border text-center">
-                            <p class="text-muted text-uppercase f-13 mb-0">Web Designer</p>
+                            <p class="text-muted text-uppercase f-13 mb-0">{{ $tim->jabatan }}</p>
                         </div>
 
                     </div>
                 </div>
-
-                <div class="col-lg-3">
-                    <div class="team-box rounded shadow mt-4 bg-white rounded">
-                        <div class="p-4">
-                            <div class="team-img text-center">
-                                <img src="{{ asset('assets-guest/images/user/img-2.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                            </div>
-                            <div class="text-center mt-4">
-                                <h5 class="f-18">Jeremiah Eskew</h5>
-                                <p class="text-muted mb-0 f-14 mt-2">JeremiahE@gmail.com</p>
-                            </div>
-                        </div>
-
-                        <div class="team-border text-center">
-                            <p class="text-muted text-uppercase f-13 mb-0">Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="team-box rounded shadow mt-4 bg-white rounded">
-                        <div class="p-4">
-                            <div class="team-img text-center">
-                                <img src="{{ asset('assets-guest/images/user/img-3.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                            </div>
-                            <div class="text-center mt-4">
-                                <h5 class="f-18">Zachary Tevis</h5>
-                                <p class="text-muted mb-0 f-14 mt-2">ZacharyT@gmail.com</p>
-                            </div>
-                        </div>
-
-                        <div class="team-border text-center">
-                            <p class="text-muted text-uppercase f-13 mb-0">Web Developer</p>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="team-box rounded shadow mt-4 bg-white rounded">
-                        <div class="p-4">
-                            <div class="team-img text-center">
-                                <img src="{{ asset('assets-guest/images/user/img-4.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                            </div>
-                            <div class="text-center mt-4">
-                                <h5 class="f-18">William Aldman</h5>
-                                <p class="text-muted mb-0 f-14 mt-2">WilliamA@gmail.com</p>
-                            </div>
-                        </div>
-
-                        <div class="team-border text-center">
-                            <p class="text-muted text-uppercase f-13 mb-0">Ceo</p>
-                        </div>
-
-                        <!-- <div class="team-social text-center">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-twitter"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-google"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="" class="text-reset"><i class="mdi mdi-pinterest"></i></a>
-                                </li>
-                            </ul>
-                        </div> -->
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -706,7 +421,7 @@
 
             <div class="row mt-5 pt-5 justify-content-center align-items-center">
                 <div class="col-lg-8">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="5000">
                         <div class="carousel-inner pb-5">
                             <div class="carousel-item active">
                                 <div class="client-box bg-light mt-4">
@@ -737,7 +452,7 @@
                                             <img src="{{ asset('assets-guest/images/user/img-2.jpg') }}" class="img-fluid rounded-circle" alt="" />
                                         </div>
                                         <div class="media-body ml-3 mt-2">
-                                            <h5 class="f-18">Brandon Carney</h5>
+                                            <h5 class="f-18">Brandon COK</h5>
                                             <p class="text-primary mb-0">- Designer</p>
                                         </div>
                                         <div class="client-icon">
@@ -803,125 +518,6 @@
         </div>
     </section>
     <!-- END TESTIMONIAL -->
-
-    <!-- START BLOG -->
-    <!-- <section class="section bg-light" id="blog">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center">
-                        <p class="title-sub-heading text-primary f-18">Our Blog</p>
-                        <h2 class="title-heading">Our latest blog posts insights articles</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-5 pt-3">
-                <div class="col-lg-4">
-                    <div class="blog-box mt-4 bg-white">
-                        <img src="{{ asset('assets-guest/images/blog/img-1.jpg') }}" class="img-fluid rounded" alt="" />
-
-                        <div class="blog-contain p-4">
-                            <div class="blog-user-box bg-white rounded">
-                                <div class="media">
-                                    <div class="blog-user">
-                                        <img src="{{ asset('assets-guest/images/user/img-1.jpg') }}" class="img-fluid rounded" alt="" />
-                                    </div>
-                                    <div class="media-body ml-3">
-                                        <h5 class="f-13 mb-1">Derek Monroe</h5>
-                                        <p class="text-primary f-10 mb-0 font-weight-600"><i class="mdi mdi-calender"></i>15 Sep 2020</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h5 class="mt-4"><a href="" class="text-dark f-18">Phasellus sit amet tempus risus consectetur lobortis elementum elit commodo.</a></h5>
-
-                            <div class="mt-4 f-14">
-                                <p class="mb-0">
-                                    <a href="" class="text-dark"><i class="mdi mdi-forum-outline ml-2 text-primary mr-2 f-16"></i>45 Comment</a>
-                                    <a href="" class="text-dark ml-4"><i class="mdi mdi-eye-outline ml-2 text-primary mr-2 f-16"></i>256 Views</a>
-                                </p>
-                            </div>
-
-                            <div class="mt-4">
-                                <a href="" class="btn btn-primary btn-sm">Read more <i class="mdi mdi-arrow-right ml-2"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="blog-box mt-4 bg-white">
-                        <img src="{{ asset('assets-guest/images/blog/img-2.jpg') }}" class="img-fluid rounded" alt="" />
-
-                        <div class="blog-contain p-4">
-                            <div class="blog-user-box bg-white rounded">
-                                <div class="media">
-                                    <div class="blog-user">
-                                        <img src="{{ asset('assets-guest/images/user/img-2.jpg') }}" class="img-fluid rounded" alt="" />
-                                    </div>
-                                    <div class="media-body ml-3">
-                                        <h5 class="f-13 mb-1">Derek Monroe</h5>
-                                        <p class="text-primary f-10 mb-0 font-weight-600"><i class="mdi mdi-calender"></i>21 Sep 2020</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h5 class="mt-4"><a href="" class="text-dark f-18"> Fusce vestibulum porta egestas phasellus laoreet lacaus rutrum vitae eleifend laoreet.</a></h5>
-
-                            <div class="mt-4 f-14">
-                                <p class="mb-0">
-                                    <a href="" class="text-dark"><i class="mdi mdi-forum-outline ml-2 text-primary mr-2 f-16"></i>63 Comment</a>
-                                    <a href="" class="text-dark ml-4"><i class="mdi mdi-eye-outline ml-2 text-primary mr-2 f-16"></i>265 Views</a>
-                                </p>
-                            </div>
-
-                            <div class="mt-4">
-                                <a href="" class="btn btn-primary btn-sm">Read more <i class="mdi mdi-arrow-right ml-2"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="blog-box mt-4 bg-white">
-                        <img src="{{ asset('assets-guest/images/blog/img-3.jpg') }}" class="img-fluid rounded" alt="" />
-
-                        <div class="blog-contain p-4">
-                            <div class="blog-user-box bg-white rounded">
-                                <div class="media">
-                                    <div class="blog-user">
-                                        <img src="{{ asset('assets-guest/images/user/img-3.jpg') }}" class="img-fluid rounded" alt="" />
-                                    </div>
-                                    <div class="media-body ml-3">
-                                        <h5 class="f-13 mb-1">
-                                            Brandon Carney
-                                        </h5>
-                                        <p class="text-primary f-10 mb-0 font-weight-600"><i class="mdi mdi-calender"></i>24 Sep 2020</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <h5 class="mt-4"><a href="" class="text-dark f-18">Maecenas lobortis sem ultricies vestibulum duari purus mauris congue agittis risus.</a></h5>
-
-                            <div class="mt-4 f-14">
-                                <p class="mb-0">
-                                    <a href="" class="text-dark"><i class="mdi mdi-forum-outline ml-2 text-primary mr-2 f-16"></i>76 Comment</a>
-                                    <a href="" class="text-dark ml-4"><i class="mdi mdi-eye-outline ml-2 text-primary mr-2 f-16"></i>451 Views</a>
-                                </p>
-                            </div>
-
-                            <div class="mt-4">
-                                <a href="" class="btn btn-primary btn-sm">Read more <i class="mdi mdi-arrow-right ml-2"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- END BLOG -->
 
     <!-- START CONTACT -->
     <section class="section" id="contact">
@@ -1061,7 +657,7 @@
                             <div class="mt-4">
                                 <h5 class="f-18">Kebijakan</h5>
                                 <ul class="list-unstyled footer-link mt-3">
-                                    <li><a href="">Kebijakan Pengguna</a></li>
+                                    <li><a href="/kebijakan">Kebijakan Pengguna</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -1123,9 +719,6 @@
     <!-- Portfolio -->
     <script src="{{ asset('assets-guest/js/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets-guest/js/isotope.js') }}"></script>
-
-    <!-- counter init -->
-    <script src="{{ asset('assets-guest/js/counter.init.js') }}"></script>
 
     <!-- Swiper JS -->
     <script src="{{ asset('assets-guest/js/swiper.min.js') }}"></script>

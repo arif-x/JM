@@ -70,7 +70,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Harga</h5></div>
-                                                <div class="col-md-6"><h5>: {{ $wait->harga }}</h5></div>
+                                                <div class="col-md-6"><h5>: {{ "Rp. ".number_format($wait->jumlah, 0) }}</h5></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Jenis Kampus</h5></div>
@@ -135,7 +135,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Harga</h5></div>
-                                                <div class="col-md-6"><h5>: {{ $pending->harga }}</h5></div>
+                                                <div class="col-md-6"><h5>: {{ "Rp. ".number_format($pending->jumlah, 0) }}</h5></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Jenis Kampus</h5></div>
@@ -167,7 +167,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Harga</h5></div>
-                                                <div class="col-md-6"><h5>: {{ $reject->harga }}</h5></div>
+                                                <div class="col-md-6"><h5>: {{ "Rp. ".number_format($reject->jumlah, 0) }}</h5></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Jenis Kampus</h5></div>
@@ -199,7 +199,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Harga</h5></div>
-                                                <div class="col-md-6"><h5>: {{ $success->harga }}</h5></div>
+                                                <div class="col-md-6"><h5>: {{ "Rp. ".number_format($success->jumlah, 0) }}</h5></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6"><h5>Jenis Kampus</h5></div>

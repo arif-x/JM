@@ -17,6 +17,9 @@ class PaketController extends Controller
 {
     public function index(){
         $data = Paket::get();
+        for ($i=0; $i < count($data); $i++) { 
+            $data[$i]->jumlah = $data[$i]->harga - ($data[$i]->harga * ($data[$i]->diskon / 100));
+        }
         $kategori = Kategori::pluck('nama_kategori', 'id_kategori');
         $cek = PaketAktif::where('id_user', Auth::user()->id_user)->first();
         if(empty($cek)){

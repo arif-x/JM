@@ -9,7 +9,7 @@
             <div class="card">
                   <div class="col-md-12">
                       <div class="auth-form-wrapper px-4 py-5">
-                        <a href="#" class="noble-ui-logo d-block mb-2">Jalur<span>Mandiri</span></a>
+                        <a href="/" class="noble-ui-logo d-block mb-2">Jalur<span>Mandiri</span></a>
                         <h5 class="text-muted font-weight-normal mb-4">Selamat Datang! Masuk ke Akun Anda.</h5>
                         <form method="POST" action="{{ route('password.update') }}">
                             @csrf

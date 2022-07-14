@@ -9,7 +9,7 @@
                 <h3 class="mb-3">Beli Paket</h3>
                 <hr>
                 <div class="col-md-12 mb-3">
-                    @if ($message = Session::get('success'))
+                    @if ($message = Session::get('upgrade'))
                     <div class="alert alert-primary alert-block">
                         <button type="button" class="close" data-dismiss="alert">×</button> 
                         <strong>{{ $message }}</strong>
@@ -41,11 +41,21 @@
                                         <div class="row">
                                             @foreach($pakets as $paket)
                                             <div class="col-lg-4 mb-3">
-                                                <div class="pricing-box shadow rounded">
+                                                <div class="pricing-box shadow rounded h-100">
+                                                    @if($paket->nama_paket == 'Premium')
+                                                    <div class="pricing-badge">
+                                                        <span class="badge">Featured</span>
+                                                    </div>
+                                                    @endif
                                                     <h5>{{ $paket->nama_paket }}</h5>
 
                                                     <div class="mt-4 text-center pb-2">
-                                                        <h3 class="text-primary mt-4">Rp. {{ $paket->harga }}</h3>
+                                                        @if($paket->diskon == 0)
+                                                        <h3 class="text-primary mt-4">{{ "Rp. ".number_format($paket->harga, 0) }}</h3>
+                                                        @else
+                                                        <s>{{ "Rp. ".number_format($paket->harga, 0) }}</s>
+                                                        <h3 class="text-primary mt-4">{{ "Rp. ".number_format($paket->jumlah, 0) }}</h3>
+                                                        @endif
                                                         <h5 class="f-16 mb-2">Per Semester</h5>
                                                     </div>
 

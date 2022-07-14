@@ -38,7 +38,7 @@ class MateriController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $materi = Materi::join('label_materi', 'label_materi.id_label_materi', '=', 'materi.id_label_materi')
             ->select('materi.*', 'label_materi.jenis_materi')
@@ -82,7 +82,7 @@ class MateriController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $materi = Materi::join('label_materi', 'label_materi.id_label_materi', '=', 'materi.id_label_materi')
             ->select('materi.*', 'label_materi.jenis_materi')

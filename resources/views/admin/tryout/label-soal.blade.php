@@ -16,6 +16,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>ID Label Soal</th>
                                 <th>Nama Label Soal</th>
                                 <th>Paket</th>
                                 <th>Kategori</th>
@@ -106,6 +107,7 @@
                                 ajax: "{{ route('admin.tryout.label-soal.index') }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                                {data: 'id_label_soal_tryout', name: 'id_label_soal_tryout'},
                                 {data: 'nama_label', name: 'nama_label'},
                                 {data: 'nama_paket', name: 'nama_paket'},
                                 {data: 'nama_kategori', name: 'nama_kategori'},

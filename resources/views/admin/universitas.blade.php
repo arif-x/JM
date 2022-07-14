@@ -10,6 +10,8 @@
                 <h6 class="card-title">Universitas</h6>
                 <div class="card-description">
                     <button class="btn btn-primary" id="tambah">Tambah</button>
+                    <button class="btn btn-primary" id="import">Import Excel</button>
+                    <a class="btn btn-primary" href="/excel/universitas.xlsm">Download Format Excel</a>
                 </div>
                 <div class="table-responsive">
                     <table id="dataTableExample" class="table">
@@ -22,6 +24,28 @@
                             </tr>
                         </thead>  
                     </table>
+
+                    <div class="modal fade" id="importModal" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="importModalHeading"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="importForm" method="POST" name="importForm" class="form-horizontal" action="{{ route('admin.universitas.import') }}" enctype="multipart/form-data">
+                                        @csrf
+
+                                        <div class="form-group">
+                                            <label for="file" class="control-label">File Excel</label>
+                                            <input type="file" class="form-control" id="file" name="file" required="">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary w-100">Import</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="modal fade" id="theModal" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -88,6 +112,12 @@
                                 {data: 'nama_universitas', name: 'nama_universitas'},
                                 {data: 'action', name: 'action'},
                                 ]
+                            });
+
+                            $('#import').click(function () {
+                                $('#importForm').trigger("reset");
+                                $('#importModalHeading').html("Import Data");
+                                $('#importModal').modal('show');
                             });
 
                             $('#tambah').click(function () {

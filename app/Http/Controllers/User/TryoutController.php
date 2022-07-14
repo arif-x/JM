@@ -90,7 +90,7 @@ class TryoutController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = LabelSoalTryout::join('soal_tryout', 'soal_tryout.id_label_soal_tryout', '=', 'label_soal_tryout.id_label_soal_tryout')
             ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout.id_paket')
@@ -114,7 +114,7 @@ class TryoutController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->select('soal_tryout', 'soal_tryout.slug')->get();
             $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->orderBy('id_sub_jenis_soal')->inRandomOrder()->get();

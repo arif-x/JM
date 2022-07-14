@@ -105,7 +105,7 @@ class LatihanController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = LabelSoal::join('soal', 'soal.id_label_soal', '=', 'label_soal.id_label_soal')
             ->join('paket', 'paket.id_paket', '=', 'label_soal.id_paket')
@@ -129,7 +129,7 @@ class LatihanController extends Controller
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
-            return redirect()->route('user.paket')->with('success', 'Upgrade Paket Anda Sebelum Mengakses');
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = Soal::join('label_soal', 'label_soal.id_label_soal', '=', 'soal.id_label_soal')->where('label_soal.slug', $slug)->select('soal', 'soal.slug')->get();
             $soal_json = Soal::join('label_soal', 'label_soal.id_label_soal', '=', 'soal.id_label_soal')->where('label_soal.slug', $slug)->inRandomOrder()->get();

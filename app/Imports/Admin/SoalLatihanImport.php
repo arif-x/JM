@@ -20,21 +20,19 @@ class SoalLatihanImport implements ToCollection, WithStartRow, WithHeadingRow
             if($row[$i]['id_label_soal'] == null){
                 break;
             }
-            if(Soal::where('id_label_soal', $row[$i]['id_label_soal'])->count() > 15) {
-                break;
+            if(Soal::where('id_label_soal', $row[$i]['id_label_soal'])->count() < 15) {
+                Soal::insert([
+                    'id_label_soal' => $row[$i]['id_label_soal'],
+                    'soal' => $row[$i]['soal'],
+                    'a' => $row[$i]['a'],
+                    'b' => $row[$i]['b'],
+                    'c' => $row[$i]['c'],
+                    'd' => $row[$i]['d'],
+                    'e' => $row[$i]['e'],
+                    'kunci' => $row[$i]['kunci'],
+                    'pembahasan' => $row[$i]['pembahasan'],
+                ]);
             }
-
-            Soal::insert([
-                'id_label_soal' => $row[$i]['id_label_soal'],
-                'soal' => $row[$i]['soal'],
-                'a' => $row[$i]['a'],
-                'b' => $row[$i]['b'],
-                'c' => $row[$i]['c'],
-                'd' => $row[$i]['d'],
-                'e' => $row[$i]['e'],
-                'kunci' => $row[$i]['kunci'],
-                'pembahasan' => $row[$i]['pembahasan'],
-            ]);
         }
     }
 }

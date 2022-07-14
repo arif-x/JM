@@ -33,7 +33,11 @@ class PembayaranController extends Controller
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_keranjang.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-data">Konfirmasi</a>';
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_keranjang.'" data-original-title="Edit" class="edit-lihat btn btn-primary btn-sm lihat-data">Lihat</a>';
                     return $btn;   
-                } elseif($row->status_pembayaran != 2 || $row->status_pembayaran != 4){
+                }  elseif($row->status_pembayaran == 3){
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_keranjang.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit-data">Konfirmasi</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_keranjang.'" data-original-title="Edit" class="edit-lihat btn btn-primary btn-sm lihat-data">Lihat</a>';
+                    return $btn;   
+                } elseif($row->status_pembayaran != 2 || $row->status_pembayaran != 4 || $row->status_pembayaran != 3){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id_keranjang.'" data-original-title="Edit" class="edit-lihat btn btn-primary btn-sm lihat-data">Lihat</a>';
                     return $btn; 
                 }
@@ -41,15 +45,19 @@ class PembayaranController extends Controller
             ->addColumn('status', function($row){
                 $data = '';
                 if($row->status_pembayaran == 1){
-                    $data = 'Belum Dibayar';
+                    $data = '<span class="text-danger">Belum Dibayar</span>';
                 }elseif($row->status_pembayaran == 2){
-                    $data = 'Perlu Dikonfirmasi';
+                    $data = '<span class="text-danger">Perlu Dikonfirmasi</span>';
                 }elseif($row->status_pembayaran == 3){
-                    $data = 'Ditolak';
+                    $data = '<span class="text-danger">Ditolak</span>';
                 }elseif($row->status_pembayaran == 4){
-                    $data = 'Dikonfirmasi';
+                    $data = '<span class="text-primary">Dikonfirmasi</span>';
                 }
                 return $data;
+            }) 
+            ->addColumn('jumlah', function($row){
+                $jumlah = $row->harga - ($row->harga * ($row->diskon / 100));
+                return "Rp. ".number_format($jumlah, 0);
             }) 
             ->rawColumns(['action', 'status'])
             ->make(true);
@@ -62,17 +70,36 @@ class PembayaranController extends Controller
         ->join('kategori', 'kategori.id_kategori', '=', 'keranjang.id_kategori')
         ->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', '=', 'keranjang.id_jenis_kampus')
         ->join('users', 'users.id_user', '=', 'keranjang.id_user')->find($id);
+
+        $data->jumlah = "Rp. ".number_format($data->harga - ($data->harga * ($data->diskon / 100)), 0);
+
         return response()->json($data);
     }
 
     public function store(Request $request)
     {
-        $data = Keranjang::updateOrCreate(
-            ['id_keranjang' => $request->id_keranjang],
-            [
-                'status_pembayaran' => $request->status_pembayaran
-            ]
-        );
+        if(!empty($request->file('bukti'))){
+            $file = $request->file('bukti');
+            $fileName = rand().$file->getClientOriginalName();
+            $file->move(storage_path('app/public/bukti-pembayaran/'),$fileName);
+
+            $data = Keranjang::updateOrCreate(
+                ['id_keranjang' => $request->id_keranjang],
+                [
+                    'status_pembayaran' => $request->status_pembayaran,
+                    'bukti_pembayaran' => url('/').'/storage/bukti-pembayaran/'.$fileName,
+                    'tgl_dikonfirmasi' => Carbon::now()->format('Y-m-d'),
+                ]
+            );
+        } else {
+            $data = Keranjang::updateOrCreate(
+                ['id_keranjang' => $request->id_keranjang],
+                [
+                    'status_pembayaran' => $request->status_pembayaran,
+                    'tgl_dikonfirmasi' => Carbon::now()->format('Y-m-d'),
+                ]
+            );
+        }
 
         if($request->status_pembayaran == 4){
             $now = Carbon::now();

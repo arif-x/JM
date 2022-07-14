@@ -6,6 +6,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="csrf-token" content="{{csrf_token()}}">
 	<title>Jalur Mandiri | User</title>
+    <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
+    <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
 	<!-- core:css -->
 	<link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
 	<!-- endinject -->
@@ -23,7 +25,7 @@
 	<!-- Layout styles -->  
 	<link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
 	<!-- End layout styles -->
-	<link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+	<link rel="shortcut icon" href="{{ asset('assets-guest/images/favicon.ico') }}" />
 	<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.js"></script> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />

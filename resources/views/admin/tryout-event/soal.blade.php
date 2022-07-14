@@ -11,6 +11,7 @@
                 <div class="card-description">
                     <button class="btn btn-primary" id="tambah">Tambah</button>
                     <button class="btn btn-primary" id="import">Import Excel</button>
+                    <a class="btn btn-primary" href="/excel/tryout event.xlsm">Download Format Excel</a>
                 </div>
                 <div class="alert alert-success alert-block" style="display: none">
                     <button type="button" class="close" data-dismiss="alert">×</button> 
