@@ -30,6 +30,6 @@ class PembayaranBaru extends Mailable
      */
     public function build()
     {
-        return $this->subject('Pembayaran Baru')->view('mail.pembayaran-baru');
+        return $this->subject('Pembayaran Baru')->markdown('mail.pembayaran-baru');
     }
 }

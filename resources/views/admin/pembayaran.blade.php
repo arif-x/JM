@@ -20,6 +20,7 @@
                                 <th>Kode</th>
                                 <th>Nama User</th>
                                 <th>Nama Paket</th>
+                                <th>Metode Pembayaran</th>
                                 <th>Jumlah (Rp.)</th>
                                 <th>Tanggal Pesan</th>
                                 <th>Status</th>
@@ -233,6 +234,7 @@
                                 {data: 'kode', name: 'kode'},
                                 {data: 'nama_lengkap', name: 'nama_lengkap'},
                                 {data: 'nama_paket', name: 'nama_paket'},
+                                {data: 'metode', name: 'metode'},
                                 {data: 'jumlah', name: 'jumlah'},
                                 {data: 'tgl_pesan', name: 'tgl_pesan'},
                                 {data: 'status', name: 'status'},

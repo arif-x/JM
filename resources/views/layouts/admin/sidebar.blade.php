@@ -163,6 +163,14 @@
         </a>
       </li>
 
+      <li class="nav-item nav-category">Referral</li>
+      <li class="nav-item">
+        <a href="{{ route('admin.referral.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Data Referral</span>
+        </a>
+      </li>
+
       <li class="nav-item nav-category">Logout</li>
       <li class="nav-item">
         <a href="#" class="nav-link" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

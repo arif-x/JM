@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Universitas;
+use App\Models\User;
 
 trait RegistersUsers
 {
@@ -17,9 +18,10 @@ trait RegistersUsers
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
+        $referrer = $request->referrer;
         return view('auth.register', compact('universitas'));
     }
 
@@ -31,19 +33,24 @@ trait RegistersUsers
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $checkKode = User::where('referral', $request->referrer)->first();
+        if(empty($checkKode)){
+            return redirect(route('register'))->with('success', 'Kode referral tidak valid!');
+        } else {
+            $this->validator($request->all())->validate();
 
-        event(new Registered($user = $this->create($request->all())));
+            event(new Registered($user = $this->create($request->all())));
 
-        $this->guard()->login($user);
+            $this->guard()->login($user);
 
-        if ($response = $this->registered($request, $user)) {
-            return $response;
+            if ($response = $this->registered($request, $user)) {
+                return $response;
+            }
+
+            return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect($this->redirectPath());
         }
-
-        return $request->wantsJson()
-                    ? new JsonResponse([], 201)
-                    : redirect($this->redirectPath());
     }
 
     /**

@@ -142,13 +142,17 @@
                         <h5 class="form-title mb-4 text-center font-weight-bold">Daftar Gratis</h5>
                         <form class="registration-form" method="POST" action="{{ route('register') }}">
                             @csrf
-                            <label class="text-muted">Nama Lengkap</label>
-                            <input type="text" id="nama_lengkap" class="form-control mb-4 registration-input-box" name="nama_lengkap" required>
                             <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="text-muted">Nama Lengkap</label>
+                                    <input type="text" id="nama_lengkap" class="form-control mb-4 registration-input-box" name="nama_lengkap" required>
+                                </div>
                                 <div class="col-lg-6">
                                     <label class="text-muted">No. HP</label>
                                     <input type="text" id="no_hp" class="form-control mb-4 registration-input-box" name="no_hp" required>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-6">
                                     <label class="text-muted">Email</label>
                                     <input type="email" id="email" class="form-control mb-4 registration-input-box @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" name="email">
@@ -158,17 +162,21 @@
                                     </span>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-lg-6">
                                     <label class="text-muted">Password</label>
                                     <input type="password" id="password" class="form-control mb-4 registration-input-box" name="password" required>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-6">
                                     <label class="text-muted">Universitas Tujuan</label>
                                     <select class="form-control mb-4 registration-input-box" id="id_universitas" name="id_universitas" required>
                                         <!-- <option value="" selected disabled>Pilih</option> -->
                                     </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="text-muted">Kode Referral</label>
+                                    <input type="referrer" id="referrer" class="form-control mb-4 registration-input-box" name="referrer" value="{{app('request')->input('referrer')}}">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 mt-3">Daftar Gratis</button>

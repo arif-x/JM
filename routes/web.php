@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Models\Universitas;
 use App\Models\Paket;
 use App\Models\Tim;
@@ -25,13 +26,14 @@ Route::group([
 });
 
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
     $paket = Paket::get();
     for ($i=0; $i < count($paket); $i++) { 
         $paket[$i]->jumlah = $paket[$i]->harga - ($paket[$i]->harga * ($paket[$i]->diskon / 100));
     }
     $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
     $tim = Tim::get();
+    $ref = $request->referrer;
     return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim]);
 });
 
@@ -145,6 +147,7 @@ Route::group([
         Route::resource('slider-kecil', 'SliderKecilController', ['as' => 'admin']);
         Route::resource('tim', 'TimController', ['as' => 'admin']);
         Route::resource('kebijakan', 'KebijakanController', ['as' => 'admin']);
+        Route::resource('referral', 'ReferralController', ['as' => 'admin']);
 
         Route::group([
             'namespace' => 'Excel\Import',
@@ -323,6 +326,4 @@ Route::group([
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
-
-Route::post('/finish', 'User\TryoutController@finish');
+Route::post('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');

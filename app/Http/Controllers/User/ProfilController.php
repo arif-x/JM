@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Universitas;
 use App\Models\PaketAktif;
+use App\Models\SaldoKomisi;
+use App\Models\Keranjang;
 use Auth;
 use Hash;
 use Crypt;
@@ -16,7 +18,21 @@ class ProfilController extends Controller
     public function index(){
         $user_data = User::join('universitas', 'universitas.id_universitas', '=', 'users.id_universitas')->select('nama_lengkap', 'email', 'no_hp', 'nama_universitas', 'avatar', 'users.id_universitas')->get();
         $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
+        $ref = User::where('id_user', Auth::user()->id_user)->value('referral');
         $cek = PaketAktif::where('id_user', Auth::user()->id_user)->first();
+        $saldo = SaldoKomisi::where('id_user', Auth::user()->id_user)->get();
+        $kurang = Keranjang::where('id_user', Auth::user()->id_user)->where('status_pembayaran', 2)->where('status_pembayaran', 4)->get();
+        $total_saldo = 0;
+        $saldo_kurang = 0;
+        foreach ($saldo as $key => $value) {
+            $total_saldo = $total_saldo + $value['saldo'];
+        }
+        foreach ($kurang as $key => $value) {
+            $saldo_kurang = $saldo_kurang + $value['saldo'];
+        }
+
+        $total_saldo = $total_saldo - $saldo_kurang;
+
         if(empty($cek)){
             $paket_aktif = [
                 [
@@ -27,7 +43,7 @@ class ProfilController extends Controller
         } else {
             $paket_aktif = PaketAktif::join('paket', 'paket.id_paket', '=', 'paket_aktif.id_paket')->where('id_user', Auth::user()->id_user)->get();
         }
-        return view('user.profil', ['user_datas' => $user_data, 'paket_aktifs' => $paket_aktif], compact('universitas'));
+        return view('user.profil', ['user_datas' => $user_data, 'paket_aktifs' => $paket_aktif], compact('universitas', 'ref', 'total_saldo'));
     }
 
     public function storeProfil(Request $request){

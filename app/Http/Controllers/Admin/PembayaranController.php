@@ -11,6 +11,7 @@ use App\Models\Paket;
 use Carbon\Carbon;
 use App\Mail\PembayaranDikonfirmasi;
 use App\Mail\PembayaranDitolak;
+use App\Models\SaldoKomisi;
 use DataTables;
 use Mail;
 
@@ -55,11 +56,20 @@ class PembayaranController extends Controller
                 }
                 return $data;
             }) 
+            ->addColumn('metode', function($row){
+                $data = '';
+                if($row->metode_pembayaran == 1){
+                    $data = 'Transfer Rekening';
+                }elseif($row->metode_pembayaran == 2){
+                    $data = 'Saldo Komisi';
+                }
+                return $data;
+            }) 
             ->addColumn('jumlah', function($row){
                 $jumlah = $row->harga - ($row->harga * ($row->diskon / 100));
                 return "Rp. ".number_format($jumlah, 0);
             }) 
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action', 'status', 'metode'])
             ->make(true);
         }
         return view('admin.pembayaran');
@@ -101,7 +111,39 @@ class PembayaranController extends Controller
             );
         }
 
+
+        $email = User::where('id_user', $request->id_user)->value('email');
+        $nama_paket = Paket::where('id_paket', $request->id_paket)->value('nama_paket');
+        $harga = Paket::where('id_paket', $request->id_paket)->value('harga');
+        $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
+
         if($request->status_pembayaran == 4){
+            $mailData = [
+                'title' => 'Pembayaran Dikonfirmasi',
+                'body' => 'Pembayaran Paket '.$nama_paket.' dengan Harga '.$harga.' Dikonfirmasi.<br/>Kode Transaksi: '.$kode.''
+            ];
+
+            Mail::to($email)->send(new PembayaranDikonfirmasi($mailData));
+
+            $checkPaketAktif = PaketAktif::where('id_user', $request->id_user)->first();
+
+            if(empty($checkPaketAktif)){
+                $kode_referrer = User::where('id_user', $request->id_user)->value('referrer');
+                $kode_referee = User::where('id_user', $request->id_user)->value('referral');
+                $email_referrer = User::where('referral', $kode_referrer)->value('email');
+                $email_referee = User::where('referral', $kode_referee)->value('email');
+                $id_user_referrer = User::where('referral', $kode_referrer)->value('id_user');
+
+                SaldoKomisi::insert([
+                    'id_user' => $id_user_referrer,
+                    'email_referrer' => $email_referrer,
+                    'email_referee' => $email_referee,
+                    'referrer' => $referrer,
+                    'referee' => $referee,
+                    'saldo' => '50000'
+                ]);
+            }
+
             $now = Carbon::now();
             $addNow = Carbon::now()->addDays(180);
             $insert = PaketAktif::updateOrCreate(
@@ -116,21 +158,7 @@ class PembayaranController extends Controller
                     'status_paket_aktif' => 1,
                 ]
             );
-        }
 
-
-        $email = User::where('id_user', $request->id_user)->value('email');
-        $nama_paket = Paket::where('id_paket', $request->id_paket)->value('nama_paket');
-        $harga = Paket::where('id_paket', $request->id_paket)->value('harga');
-        $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
-
-        if($request->status_pembayaran == 4){
-            $mailData = [
-                'title' => 'Pembayaran Dikonfirmasi',
-                'body' => 'Pembayaran Paket '.$nama_paket.' dengan Harga '.$harga.' Dikonfirmasi.<br/>Kode Transaksi: '.$kode.''
-            ];
-
-            Mail::to($email)->send(new PembayaranDikonfirmasi($mailData));
         } elseif($request->status_pembayaran == 3){
             $mailData = [
                 'title' => 'Pembayaran Ditolak',

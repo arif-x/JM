@@ -38,6 +38,11 @@
                                 Ubah Password
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-ref-tab" data-toggle="pill" href="#pills-ref" role="tab" aria-controls="pills-ref" aria-selected="false" style="color:black">
+                                Referral
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="tab-content mt-3" id="pills-tabContent">
@@ -90,6 +95,58 @@
                                 <button class="btn btn-inverse-primary btn-fw ml-0 font-weight-bold">Ganti Password</button>
                             </form>
                         </div>
+
+                        <div class="tab-pane fade" id="pills-ref" role="tabpanel" aria-labelledby="pills-ref-tab">
+
+                            <div class="container">
+                                <div class="card bg-gradient-primary text-white card-shadow-info">
+                                    <div class="card-body">
+                                        <h4>Saldo Komisi</h4>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="mdi mdi-wallet-outline" style="font-size: 30px;">
+                                            </span>
+                                            <h2 class="mb-0">{{ "Rp. ".number_format($total_saldo, 0) }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Kode Referral Anda</label>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <input type="text" id="kode_ref" class="form-control" value="{{ $ref }}" disabled>
+                                                    <span id="kode_alert" class="text-primary help-inline d-none">Kode referral telah disalin!</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button class="btn btn-primary w-100" onclick="kode()">Salin</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Link Referral Anda</label>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <input type="text" id="link_ref" class="form-control" value="{{ route('register') }}?referrer={{ $ref }}" disabled>
+                                                    <span id="link_alert" class="text-primary help-inline d-none">Link referral telah disalin!</span>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button class="btn btn-primary w-100" onclick="link()">Salin</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
 
                 </div>
@@ -127,6 +184,30 @@
         }
     });
   });
+</script>
+<script type="text/javascript">
+    function kode() {
+        var copyText = document.getElementById("kode_ref");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        document.getElementById("kode_alert").classList.remove("d-none");
+        document.getElementById("kode_alert").classList.add("d-block");
+        document.getElementById("link_alert").classList.remove("d-block");
+        document.getElementById("link_alert").classList.add("d-none");
+    }
+</script>
+<script type="text/javascript">
+    function link() {
+        var copyText = document.getElementById("link_ref");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        document.getElementById("link_alert").classList.remove("d-none");
+        document.getElementById("link_alert").classList.add("d-block");
+        document.getElementById("kode_alert").classList.remove("d-block");
+        document.getElementById("kode_alert").classList.add("d-none");
+    }
 </script>
 
 @endsection

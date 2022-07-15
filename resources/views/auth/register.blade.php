@@ -18,25 +18,35 @@
                       <div class="auth-form-wrapper px-4 py-5">
                         <a href="/" class="noble-ui-logo d-block mb-2">Jalur<span> Mandiri</span></a>
                         <h5 class="text-muted font-weight-normal mb-4">Selamat Datang! Daftar Sekarang!.</h5>
+                        @if ($message = Session::get('success'))
+                        <div class="alert alert-primary alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <strong>{{ $message }}</strong>
+                        </div>
+                        @endif
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
-                            <div class="form-group">
-                                <label for="nama_lengkap">Nama Lengkap</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="nama_lengkap" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nama_lengkap" class="col-form-label text-md-end">Nama Lengkap</label>
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="nama_lengkap" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="no_hp" class="col-form-label text-md-end">No HP.</label>
                                         <input id="no_hp" type="text" class="form-control" name="no_hp" required autocomplete="no_hp">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email" class="col-form-label text-md-end">{{ __('Email') }}</label>
@@ -50,9 +60,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password" class="col-form-label text-md-end">{{ __('Password') }}</label>
@@ -64,11 +71,20 @@
                                         @enderror
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="id_universitas" class="col-form-label text-md-end">Universitas</label>
                                         <select class="form-control" name="id_universitas" id="id_universitas" required>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="referrer" class="col-form-label text-md-end">Kode Referral</label>
+                                        <input id="referrer" type="text" class="form-control" name="referrer"  value="{{app('request')->input('referrer')}}">
                                     </div>
                                 </div>
                             </div>

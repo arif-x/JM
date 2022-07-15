@@ -34,6 +34,12 @@
                     <li>Cek secara berkala untuk update pembayaran</li>
                 </div>
                 <hr>
+                @if ($message = Session::get('success'))
+                <div class="alert alert-primary alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                    <strong>{{ $message }}</strong>
+                </div>
+                @endif
                 <p>
                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -94,8 +100,20 @@
                                         <form method="POST" action="{{ route('user.invoice.bayar') }}" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="id_keranjang" id="id_keranjang">
-                                            <h4 class="mb-3">Bayar</h4>
+                                            <div class="d-flex justify-content-between">
+                                                <h4 class="mb-3">Bayar</h4>
+                                                <h4 class="mb-3">Saldo Komisi: {{ "Rp. ".number_format($total_saldo, 0) }}</h4>
+                                            </div>
                                             <div class="form-group">
+                                                <label for="metode_pembayaran">Metode Pembayaran</label>
+                                                <select class="form-control" name="metode_pembayaran" id="metode_pembayaran">
+                                                    <option value="" selected disabled>Pilih</option>
+                                                    <option value="1">Transfer Rekening</option>
+                                                    <option value="2">Saldo Komisi</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group" id="input_bukti">
                                                 <label for="bukti_pembayaran">Unggah Bukti Pembayaran</label>
                                                 <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control">
                                             </div>
@@ -116,6 +134,18 @@
                                     $('#theModal').modal('show');
                                 })
                             });
+                        </script>
+                        <script type="text/javascript">
+                            $(document).ready(function(){
+                                $("#input_bukti").hide();
+                            })
+                            $('#metode_pembayaran').on('change', function() {
+                                if (this.value == '1'){
+                                    $("#input_bukti").show();
+                                } else if (this.value == '2'){
+                                    $("#input_bukti").hide();
+                                }
+                            })
                         </script>
 
                         <div class="tab-pane fade" id="pending-section" role="tabpanel" aria-labelledby="pending-section-tab">

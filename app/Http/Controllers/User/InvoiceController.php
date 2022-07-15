@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
+use App\Models\SaldoKomisi;
 use App\Models\Kontak;
 use App\Models\Rekening;
 use App\Mail\PembayaranBaru;
@@ -16,6 +17,20 @@ use Carbon\Carbon;
 class InvoiceController extends Controller
 {
     public function index(){
+        $saldo = SaldoKomisi::where('id_user', Auth::user()->id_user)->get();
+        $kurang = Keranjang::where('id_user', Auth::user()->id_user)->where('status_pembayaran', 2)->where('status_pembayaran', 4)->get();
+        $total_saldo = 0;
+        $saldo_kurang = 0;
+        foreach ($saldo as $key => $value) {
+            $total_saldo = $total_saldo + $value['saldo'];
+        }
+        foreach ($kurang as $key => $value) {
+            $saldo_kurang = $saldo_kurang + $value['saldo'];
+        }
+
+        $total_saldo = $total_saldo - $saldo_kurang;
+
+
         $reject = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->join('jenis_kampus', 'jenis_kampus.id_jenis_kampus', '=', 'keranjang.id_jenis_kampus')->where('status_pembayaran', 3)->where('id_user', Auth::user()->id_user)->get();
 
         for ($i=0; $i < count($reject); $i++) { 
@@ -43,7 +58,7 @@ class InvoiceController extends Controller
         $rekening = Rekening::get();
         $kontak = Kontak::get();
 
-        return view('user.invoice', ['rekenings' => $rekening, 'kontaks' => $kontak, 'rejects' => $reject, 'waits' => $wait, 'pendings' => $pending, 'successes' => $success]);
+        return view('user.invoice', ['rekenings' => $rekening, 'kontaks' => $kontak, 'rejects' => $reject, 'waits' => $wait, 'pendings' => $pending, 'successes' => $success], compact('total_saldo'));
     }
 
     public function getKeranjang($id){
@@ -53,76 +68,161 @@ class InvoiceController extends Controller
 
     public function store(Request $request){
         $validation = Validator::make($request->all(), [
-            'bukti_pembayaran' => "required|mimes:jpg,png,jpeg|max:10000",
+            'bukti_pembayaran' => "mimes:jpg,png,jpeg|max:10000",
         ]);
 
-        if($validation->passes()){
-            $files = $request->file('bukti_pembayaran');
-            $new_name = url('/storage/bukti-pembayaran') . '/' . Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s') . '.' . $files->getClientOriginalExtension();
-            $file_name = Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s') . '.' . $files->getClientOriginalExtension();
-            $file_val = Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s');
-            $files->move(storage_path('app/public/bukti-pembayaran'), $file_name);
-            $type = $files->getClientOriginalExtension();
+        if($request->metode_pembayaran == 2){
+            $saldo = SaldoKomisi::where('id_user', Auth::user()->id_user)->get();
+            $kurang = Keranjang::where('id_user', Auth::user()->id_user)->where('status_pembayaran', 2)->where('status_pembayaran', 4)->get();
+            $total_saldo = 0;
+            $saldo_kurang = 0;
+            foreach ($saldo as $key => $value) {
+                $total_saldo = $total_saldo + $value['saldo'];
+            }
+            foreach ($kurang as $key => $value) {
+                $saldo_kurang = $saldo_kurang + $value['saldo'];
+            }
 
-            Keranjang::where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->update([
-                'bukti_pembayaran' => $new_name,
-                'status_pembayaran' => 2
-            ]); 
+            $total_saldo = $total_saldo - $saldo_kurang;
 
-            $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
+            $harga = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_user', Auth::user()->id_user)->where('id_keranjang', $request->id_keranjang)->value('harga');
 
-            $nama_paket = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('nama_paket');
+            $diskon = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_user', Auth::user()->id_user)->where('id_keranjang', $request->id_keranjang)->value('diskon');
 
-            $harga = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('harga');
+            $jumlah_bayar = $harga - ($harga * ($diskon / 100));
 
-            $mailData = [
-                'title' => 'Pembayaran Baru',
-                'body' => 'Ada pembayaran baru dengan detail sebagai berikut:<br/>
-                Pembayaran Paket: '.$nama_paket.'<br/>Harga: '.$harga.'.<br/>Nama User: '.Auth::user()->nama_lengkap.'<br/>Kode Transaksi: '.$kode.'<br/><a href="https://jalurmandiri.com/slameho/pembayaran">Login ke panel Admin</a>'
-            ];
+            if($total_saldo <= $jumlah_bayar){
+                return back()->with('success', 'Saldo Komisi Anda Kurang');
+            } else {
+                Keranjang::where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->update([
+                    'metode_pembayaran' => 2,
+                    'bukti_pembayaran' => 'Saldo Komisi',
+                    'status_pembayaran' => 2
+                ]); 
 
-            $title = "Ada Order Baru !";
-            $pesan = "Juragan, ada order baru nih ! Yuk, Kerja Bos !";
-            $image = "https://sahabat.or.id/wp-content/uploads/2022/07/notif_jalurmandiri.png";
+                $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
 
-            $curl = curl_init();
+                $nama_paket = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('nama_paket');
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "POST",
-                CURLOPT_POSTFIELDS => '{
-                 "to":
-                 "/topics/onerjalurmandiri"
-                 ,
-                 
-                 "data": {
-                     "title": "' . $title . '",
-                     "text": "' . $pesan . '",
-                     "image": "' . $image . '"
-                     },
-                 }',
-                 CURLOPT_HTTPHEADER => array(
-                    "Content-type: application/json",
-                    "Authorization: key=AAAAC3XLruw:APA91bHGkPFkNhTqgOwzhT2t8t9jcIHqybkl8WqAHVvL45XpqBPBp7nt_zftWsX-Cov0BoBZn3u2b6lCK7H_ECrDZq8mgNueBE7J0gOopdfMbZpd82RmcBq1q42yD6AnHqxtpaaknUDo",
-                    "Content-Type: application/json"
-                ),
-             ));
+                $harga = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('harga');
 
-            $response = curl_exec($curl);
+                $mailData = [
+                    'title' => 'Pembayaran Baru',
+                    'body' => 'Ada pembayaran baru dengan detail sebagai berikut:<br/>
+                    Pembayaran Paket: '.$nama_paket.'<br/>Harga: '.$harga.'.<br/>Nama User: '.Auth::user()->nama_lengkap.'<br/>Kode Transaksi: '.$kode.'<br/><a href="https://jalurmandiri.com/slameho/pembayaran">Login ke panel Admin</a>'
+                ];
 
-            curl_close($curl);
+                $title = "Ada Order Baru !";
+                $pesan = "Juragan, ada order baru nih ! Yuk, Kerja Bos !";
+                $image = "https://sahabat.or.id/wp-content/uploads/2022/07/notif_jalurmandiri.png";
 
-            Mail::to('mbohweskono@gmail.com')->send(new PembayaranBaru($mailData));
+                $curl = curl_init();
 
-            return back()->with('success', 'Berhasil Mengunggah Bukti Pembayaran');    
-        } else {
-            return back()->with('success', 'Mohon Periksa File Anda');
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => '{
+                     "to":
+                     "/topics/onerjalurmandiri"
+                     ,
+
+                     "data": {
+                         "title": "' . $title . '",
+                         "text": "' . $pesan . '",
+                         "image": "' . $image . '"
+                         },
+                     }',
+                     CURLOPT_HTTPHEADER => array(
+                        "Content-type: application/json",
+                        "Authorization: key=AAAAC3XLruw:APA91bHGkPFkNhTqgOwzhT2t8t9jcIHqybkl8WqAHVvL45XpqBPBp7nt_zftWsX-Cov0BoBZn3u2b6lCK7H_ECrDZq8mgNueBE7J0gOopdfMbZpd82RmcBq1q42yD6AnHqxtpaaknUDo",
+                        "Content-Type: application/json"
+                    ),
+                 ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                Mail::to('mbohweskono@gmail.com')->send(new PembayaranBaru($mailData));
+
+                return back()->with('success', 'Mohon Tunggu Admin Untuk Menyetujui Pembayaran Anda'); 
+            } 
+
+        } elseif($request->metode_pembayaran == 1) {
+            if($validation->passes()){
+                $files = $request->file('bukti_pembayaran');
+                $new_name = url('/storage/bukti-pembayaran') . '/' . Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s') . '.' . $files->getClientOriginalExtension();
+                $file_name = Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s') . '.' . $files->getClientOriginalExtension();
+                $file_val = Auth::user()->id_user . '-' .Carbon::now()->format('d-m-Y'). '-' .Carbon::now()->format('H-i-s');
+                $files->move(storage_path('app/public/bukti-pembayaran'), $file_name);
+                $type = $files->getClientOriginalExtension();
+
+                Keranjang::where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->update(['metode_pembayaran' => 1,
+                    'bukti_pembayaran' => $new_name,
+                    'status_pembayaran' => 2
+                ]); 
+
+                $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
+
+                $nama_paket = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('nama_paket');
+
+                $harga = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('harga');
+
+                $mailData = [
+                    'title' => 'Pembayaran Baru',
+                    'body' => 'Ada pembayaran baru dengan detail sebagai berikut:<br/>
+                    Pembayaran Paket: '.$nama_paket.'<br/>Harga: '.$harga.'.<br/>Nama User: '.Auth::user()->nama_lengkap.'<br/>Kode Transaksi: '.$kode.'<br/><a href="https://jalurmandiri.com/slameho/pembayaran">Login ke panel Admin</a>'
+                ];
+
+                $title = "Ada Order Baru !";
+                $pesan = "Juragan, ada order baru nih ! Yuk, Kerja Bos !";
+                $image = "https://sahabat.or.id/wp-content/uploads/2022/07/notif_jalurmandiri.png";
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => '{
+                       "to":
+                       "/topics/onerjalurmandiri"
+                       ,
+
+                       "data": {
+                           "title": "' . $title . '",
+                           "text": "' . $pesan . '",
+                           "image": "' . $image . '"
+                           },
+                       }',
+                       CURLOPT_HTTPHEADER => array(
+                        "Content-type: application/json",
+                        "Authorization: key=AAAAC3XLruw:APA91bHGkPFkNhTqgOwzhT2t8t9jcIHqybkl8WqAHVvL45XpqBPBp7nt_zftWsX-Cov0BoBZn3u2b6lCK7H_ECrDZq8mgNueBE7J0gOopdfMbZpd82RmcBq1q42yD6AnHqxtpaaknUDo",
+                        "Content-Type: application/json"
+                    ),
+                   ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                Mail::to('mbohweskono@gmail.com')->send(new PembayaranBaru($mailData));
+
+                return back()->with('success', 'Berhasil Mengunggah Bukti Pembayaran');    
+            } else {
+                return back()->with('success', 'Mohon Periksa File Anda');
+            }
         }
     }
 }
