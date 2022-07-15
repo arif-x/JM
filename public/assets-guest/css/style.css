@@ -1183,14 +1183,27 @@ hr {
 }
 
 .registration-input-box {
-  border: none;
-  border-radius: 0px;
-  color: #787a7d;
-  border-bottom: 1px solid #c5c5c5;
+  border: none !important;
+  border-radius: 0px !important;
+  color: #787a7d !important;
+  border-bottom: 1px solid #c5c5c5 !important;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.registration-input-box + .select2-container .select2-selection {
+  border: none !important;
+  border-radius: 0px !important;
+  color: #787a7d !important;
+  border-bottom: 1px solid #c5c5c5 !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  height: calc(1.5em + .75rem + 2px);
+  width: 100% !important;
 }
 
 .registration-input-box:focus {

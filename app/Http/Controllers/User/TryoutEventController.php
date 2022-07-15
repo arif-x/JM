@@ -73,7 +73,7 @@ class TryoutEventController extends Controller
         ->groupBy('soal_tryout_event.id_label_soal_tryout_event')
         ->value('paket.id_paket');
 
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
@@ -111,8 +111,12 @@ class TryoutEventController extends Controller
         ->groupBy('soal_tryout_event.id_label_soal_tryout_event')
         ->value('label_soal_tryout_event.tgl_end');
 
-        if($request->kupon != $checkKupon){
-            return redirect()->back()->with('upgrade', 'Kode Kupon Salah!');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
+
+         if($checkSoal > $checkPaket){
+            return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
+        } elseif($request->kupon != $checkKupon){
+            return redirect()->back()->with('success', 'Kode Kupon Salah!');
         } elseif (!Carbon::now()->between($start, $end)){
             return redirect()->back()->with('upgrade', 'Event Tryout Belum Dimulai atau Sudah Berkahir!');
         } elseif ($request->kupon == $checkKupon && Carbon::now()->between($start, $end)){

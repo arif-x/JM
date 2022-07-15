@@ -6,7 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
     <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
-    <meta content="Themesdesign" name="author" />
+    <meta content="Jalur Mandiri" name="author" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jalurmandiri.com">
+    <meta property="og:title" content="Jalur Mandiri">
+    <meta property="og:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="og:image" content="{{ asset('assets-guest/images/favicon.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jalurmandiri.com">
+    <meta property="twitter:title" content="Jalur Mandiri">
+    <meta property="twitter:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="twitter:image" content="{{ asset('assets-guest/images/favicon.png') }}">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('assets-guest/images/favicon.ico') }}" />
     <!-- css -->

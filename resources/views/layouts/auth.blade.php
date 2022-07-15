@@ -8,6 +8,21 @@
     <title>Jalur Mandiri</title>
     <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
     <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jalurmandiri.com">
+    <meta property="og:title" content="Jalur Mandiri">
+    <meta property="og:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="og:image" content="{{ asset('assets-guest/images/meta-image.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jalurmandiri.com">
+    <meta property="twitter:title" content="Jalur Mandiri">
+    <meta property="twitter:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="twitter:image" content="{{ asset('assets-guest/images/meta-image.png') }}">
+    
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
     <!-- endinject -->
@@ -34,6 +49,9 @@
 
     <link href="{{ asset('assets-guest/css/materialdesignicons.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 
     <style type="text/css">
         .section {

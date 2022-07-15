@@ -17,6 +17,14 @@ use App\Models\Kebijakan;
 |
 */
 
+Route::group([
+    'prefix' => 'api',
+    'namespace' => 'Api'
+], function(){
+    Route::get('/pembayaran-belum-approve', 'PembayaranController@index');
+});
+
+
 Route::get('/', function () {
     $paket = Paket::get();
     for ($i=0; $i < count($paket); $i++) { 
@@ -26,6 +34,8 @@ Route::get('/', function () {
     $tim = Tim::get();
     return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim]);
 });
+
+Route::post('/getuniversitas', 'DataController@getUniv')->name('getuniv');
 
 Route::get('/kebijakan', function () {
     $kebijakan = Kebijakan::where('id_kebijakan', 1)->get();
@@ -40,7 +50,7 @@ Auth::routes(['verify' => true]);
 |--------------------------------------------------------------------------
 */
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'slameho',
 ], function(){ 
     Route::group([
         'namespace' => 'Auth',
@@ -52,7 +62,7 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'slameho',
     'middleware' => ['adminauth']
 ], function(){ 
     Route::group(['prefix' => 'filemanager'], function () {
@@ -61,7 +71,7 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'admin-soal',
+    'prefix' => 'slameho-soal',
     'middleware' => ['adminauth', 'adminsoal']
 ], function(){ 
     Route::group([
@@ -116,7 +126,7 @@ Route::group([
 
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'slameho',
     'middleware' => ['adminauth', 'superadmin']
 ], function(){ 
     Route::group([

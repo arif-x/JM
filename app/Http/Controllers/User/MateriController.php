@@ -35,7 +35,7 @@ class MateriController extends Controller
     }
 
     public function singleText($slug){
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status', 1)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
@@ -79,7 +79,7 @@ class MateriController extends Controller
     }
 
     public function singleVideo($slug){
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status', 1)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');

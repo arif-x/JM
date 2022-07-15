@@ -17,7 +17,7 @@ class AdminSoalMiddleware
      */
     public function handle($request, Closure $next, $guard = 'admin') {
         if(Auth::guard($guard)->user()->level != 2){
-            return redirect('/admin/dashboard');
+            return redirect('/slameho/dashboard');
         } else {
             return $next($request);
         }

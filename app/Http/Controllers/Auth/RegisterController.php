@@ -69,7 +69,7 @@ class RegisterController extends Controller
         return User::create([
             'nama_lengkap' => $data['nama_lengkap'],
             'no_hp' => $data['no_hp'],
-            'avatar' => '<img src="https://ui-avatars.com/api/?name='.$data['nama_lengkap'].'&amp;background=00ADEF&amp;color=fff" alt="profile">',
+            'avatar' => '<img src="https://ui-avatars.com/api/?name='.$data['nama_lengkap'].'&amp;background=4252f9&amp;color=fff" alt="profile">',
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'id_universitas' => $data['id_universitas'],

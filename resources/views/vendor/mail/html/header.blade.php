@@ -2,7 +2,7 @@
 <td class="header">
 <a href="{{ $url }}" style="display: inline-block;">
 @if (trim($slot) === 'Jalur Mandiri')
-<img src="https://images.tokopedia.net/img/cache/500-square/product-1/2017/9/4/0/0_4fb05e35-6eb7-4849-84c5-60663c0cc1f5_488_583.jpg" class="logo" alt="Jalur Mandiri Logo">
+<img src="https://jalurmandiri.com/assets-guest/images/logo-dark.png" class="logo" alt="Jalur Mandiri">
 @else
 {{ $slot }}
 @endif

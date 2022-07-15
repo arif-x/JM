@@ -202,7 +202,7 @@
                             file_picker_callback : function(callback, value, meta) {
                                 var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
                                 var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-                                var cmsURL = materi.path_absolute + 'admin/filemanager?editor=' + meta.fieldname;
+                                var cmsURL = materi.path_absolute + 'slameho/filemanager?editor=' + meta.fieldname;
                                 if (meta.filetype == 'image') {
                                     cmsURL = cmsURL + "&type=Images";
                                 } else {

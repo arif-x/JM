@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="modal fade" id="theModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="theModalHeading"></h4>

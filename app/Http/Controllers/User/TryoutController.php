@@ -87,7 +87,7 @@ class TryoutController extends Controller
         ->groupBy('soal_tryout.id_label_soal_tryout')
         ->value('paket.id_paket');
 
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
@@ -111,7 +111,7 @@ class TryoutController extends Controller
         ->groupBy('soal_tryout.id_label_soal_tryout')
         ->value('paket.id_paket');
 
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');

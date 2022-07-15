@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Kontak;
 use App\Models\Rekening;
+use App\Mail\PembayaranBaru;
 use Auth;
+use Mail;
 use Validator;
 use Carbon\Carbon;
 
@@ -66,6 +68,57 @@ class InvoiceController extends Controller
                 'bukti_pembayaran' => $new_name,
                 'status_pembayaran' => 2
             ]); 
+
+            $kode = Keranjang::where('id_keranjang', $request->id_keranjang)->value('kode');
+
+            $nama_paket = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('nama_paket');
+
+            $harga = Keranjang::join('paket', 'paket.id_paket', '=', 'keranjang.id_paket')->where('id_keranjang', $request->id_keranjang)->where('id_user', Auth::user()->id_user)->value('harga');
+
+            $mailData = [
+                'title' => 'Pembayaran Baru',
+                'body' => 'Ada pembayaran baru dengan detail sebagai berikut:<br/>
+                Pembayaran Paket: '.$nama_paket.'<br/>Harga: '.$harga.'.<br/>Nama User: '.Auth::user()->nama_lengkap.'<br/>Kode Transaksi: '.$kode.'<br/><a href="https://jalurmandiri.com/slameho/pembayaran">Login ke panel Admin</a>'
+            ];
+
+            $title = "Ada Order Baru !";
+            $pesan = "Juragan, ada order baru nih ! Yuk, Kerja Bos !";
+            $image = "https://sahabat.or.id/wp-content/uploads/2022/07/notif_jalurmandiri.png";
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://fcm.googleapis.com/fcm/send",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "POST",
+                CURLOPT_POSTFIELDS => '{
+                 "to":
+                 "/topics/onerjalurmandiri"
+                 ,
+                 
+                 "data": {
+                     "title": "' . $title . '",
+                     "text": "' . $pesan . '",
+                     "image": "' . $image . '"
+                     },
+                 }',
+                 CURLOPT_HTTPHEADER => array(
+                    "Content-type: application/json",
+                    "Authorization: key=AAAAC3XLruw:APA91bHGkPFkNhTqgOwzhT2t8t9jcIHqybkl8WqAHVvL45XpqBPBp7nt_zftWsX-Cov0BoBZn3u2b6lCK7H_ECrDZq8mgNueBE7J0gOopdfMbZpd82RmcBq1q42yD6AnHqxtpaaknUDo",
+                    "Content-Type: application/json"
+                ),
+             ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+
+            Mail::to('mbohweskono@gmail.com')->send(new PembayaranBaru($mailData));
 
             return back()->with('success', 'Berhasil Mengunggah Bukti Pembayaran');    
         } else {

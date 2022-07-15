@@ -19,7 +19,7 @@
                         @endif
 
                         Mohon Cek Email Anda & Klik Link Yang Telah Dikirim
-                        Jika Belum Menerima Email,
+                        Jika Belum Menerima Email, Cek Folder Spam Atau 
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                             @csrf
                             <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Kirim Ulang Untuk Menerima Email Lagi</button>.

@@ -7,6 +7,21 @@
 	<meta name="csrf-token" content="{{csrf_token()}}">
     <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
     <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jalurmandiri.com">
+    <meta property="og:title" content="Jalur Mandiri">
+    <meta property="og:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="og:image" content="{{ asset('assets-guest/images/meta-image.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jalurmandiri.com">
+    <meta property="twitter:title" content="Jalur Mandiri">
+    <meta property="twitter:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="twitter:image" content="{{ asset('assets-guest/images/meta-image.png') }}">
+    
 	<title>Jalur Mandiri | Admin Soal</title>
 	<!-- core:css -->
 	<link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">

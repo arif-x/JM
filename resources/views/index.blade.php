@@ -6,7 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman" />
     <meta name="keywords" content="jalur mandiri, mandiri, sbmptn, utbk" />
-    <meta content="Themesdesign" name="author" />
+    <meta content="Jalur Mandiri" name="author" />
+    <meta name="csrf-token" content="{{csrf_token()}}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jalurmandiri.com">
+    <meta property="og:title" content="Jalur Mandiri">
+    <meta property="og:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="og:image" content="{{ asset('assets-guest/images/favicon.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://jalurmandiri.com">
+    <meta property="twitter:title" content="Jalur Mandiri">
+    <meta property="twitter:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
+    <meta property="twitter:image" content="{{ asset('assets-guest/images/favicon.png') }}">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('assets-guest/images/favicon.ico') }}" />
     <!-- css -->
@@ -19,6 +35,9 @@
     <!-- Pe-icon-7 icon -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets-guest/css/pe-icon-7-stroke.css') }}" />
     <!-- Swiper CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+
     <link rel="stylesheet" href="{{ asset('assets-guest/css/swiper.min.css') }}" />
     <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet" type="text/css" />
 </head>
@@ -147,11 +166,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="text-muted">Universitas Tujuan</label>
-                                    <select class="form-control mb-4 registration-input-box" name="id_universitas" required>
-                                        <option value="" selected disabled>Pilih</option>
-                                        @foreach($universitas as $key => $value)
-                                        <option value="{{ $key }}">{{ $value }}</option>
-                                        @endforeach
+                                    <select class="form-control mb-4 registration-input-box" id="id_universitas" name="id_universitas" required>
+                                        <!-- <option value="" selected disabled>Pilih</option> -->
                                     </select>
                                 </div>
                             </div>
@@ -589,7 +605,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group mt-1">
                                             <label class="contact-lable">Email Address</label>
-                                            <input name="email" id="email" class="form-control" type="text" />
+                                            <input name="email" id="emailad" class="form-control" type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -732,10 +748,41 @@
     <!-- contact init -->
     <script src="{{ asset('assets-guest/js/contact.init.js') }}"></script>
 
-    <!-- Main Js -->
-    <script src="{{ asset('assets-guest/js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script type="text/javascript">
-        document.getElementById("year").innerHTML = new Date().getFullYear();
-    </script>
+
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $(document).ready(function(){
+
+          $("#id_universitas").select2({
+            // theme: "bootstrap4",
+            ajax: { 
+                url: "{{route('getuniv')}}",
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        _token: CSRF_TOKEN,
+                        search: params.term 
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+      });
+  </script>
+
+  <!-- Main Js -->
+  <script src="{{ asset('assets-guest/js/app.js') }}"></script>
+  <script type="text/javascript">
+    document.getElementById("year").innerHTML = new Date().getFullYear();
+</script>
 </body>
 </html>

@@ -97,7 +97,7 @@
 
 
                         <div class="modal fade" id="theModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="theModalHeading"></h4>
@@ -108,7 +108,7 @@
                                             <input type="hidden" name="id_paket" id="id_paket">
                                             <h4 class="mb-3">Ingin Memesan Paket Ini?</h4>
                                             <div class="form-group">
-                                                <label for="id_kategori">Pilih Kategori Kategori</label>
+                                                <label for="id_kategori">Pilih Kategori Jurusan</label>
                                                 <select class="form-control" id="id_kategori" name="id_kategori" required>
                                                     <option value="" disabled selected>Pilih</option>
                                                     @foreach($kategori as $key => $value)
@@ -116,7 +116,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <button type="submit" class="btn btn-primary w-100" id="saveBtn" value="save">Pesan Sekarang</button>
+                                            <button type="submit" class="btn btn-primary" id="saveBtn" value="save">Pesan Sekarang</button>
                                         </form>
                                     </div>
                                 </div>

@@ -98,4 +98,35 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script type="text/javascript">
+
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $(document).ready(function(){
+
+      $("#id_universitas").select2({
+        theme: "bootstrap4",
+        ajax: { 
+            url: "{{route('getuniv')}}",
+            type: "post",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    _token: CSRF_TOKEN,
+                    search: params.term 
+                };
+            },
+            processResults: function (response) {
+                return {
+                    results: response
+                };
+            },
+            cache: true
+        }
+    });
+  });
+</script>
+
 @endsection
