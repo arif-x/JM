@@ -21,7 +21,7 @@ class PaketController extends Controller
             $data[$i]->jumlah = $data[$i]->harga - ($data[$i]->harga * ($data[$i]->diskon / 100));
         }
         $kategori = Kategori::pluck('nama_kategori', 'id_kategori');
-        $cek = PaketAktif::where('id_user', Auth::user()->id_user)->first();
+        $cek = PaketAktif::where('id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->first();
         if(empty($cek)){
             $paket_aktif = [
                 [

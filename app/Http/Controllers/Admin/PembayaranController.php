@@ -138,8 +138,9 @@ class PembayaranController extends Controller
                     'id_user' => $id_user_referrer,
                     'email_referrer' => $email_referrer,
                     'email_referee' => $email_referee,
-                    'referrer' => $referrer,
-                    'referee' => $referee,
+                    'referrer' => $kode_referrer,
+                    'referee' => $kode_referee,
+                    'kode' => $kode,
                     'saldo' => '50000'
                 ]);
             }

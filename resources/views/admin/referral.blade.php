@@ -16,6 +16,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
+                                <th>Kode Transaksi</th>
                                 <th>Email Eeferrer</th>
                                 <th>Email Referee</th>
                                 <th>Referrer</th>
@@ -38,6 +39,7 @@
                                 ajax: "{{ route('admin.referral.index') }}",
                                 columns: [
                                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                                {data: 'kode', name: 'kode'},
                                 {data: 'email_referrer', name: 'email_referrer'},
                                 {data: 'email_referee', name: 'email_referee'},
                                 {data: 'referrer', name: 'referrer'},

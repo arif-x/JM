@@ -113,7 +113,7 @@
 
                             <hr>
                             <div class="container">
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Kode Referral Anda</label>
@@ -140,6 +140,25 @@
                                                 <div class="col-md-3">
                                                     <button class="btn btn-primary w-100" onclick="link()">Salin</button>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card hasil-chart">
+                                            <div class="card-body text-center">
+                                                <h4 class="mb-2">Jumlah Referral</h4>
+                                                <h4><strong>{{ $jumlah_ref }}</strong></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card hasil-chart">
+                                            <div class="card-body text-center">
+                                                <h4 class="mb-2">Jumlah Referral Sukses</h4>
+                                                <h4><strong>{{ $jumlah_ref_sukses }}</strong></h4>
                                             </div>
                                         </div>
                                     </div>

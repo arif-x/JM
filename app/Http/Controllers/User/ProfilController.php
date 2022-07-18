@@ -19,7 +19,7 @@ class ProfilController extends Controller
         $user_data = User::join('universitas', 'universitas.id_universitas', '=', 'users.id_universitas')->select('nama_lengkap', 'email', 'no_hp', 'nama_universitas', 'avatar', 'users.id_universitas')->get();
         $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
         $ref = User::where('id_user', Auth::user()->id_user)->value('referral');
-        $cek = PaketAktif::where('id_user', Auth::user()->id_user)->first();
+        $cek = PaketAktif::where('id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->first();
         $saldo = SaldoKomisi::where('id_user', Auth::user()->id_user)->get();
         $kurang = Keranjang::where('id_user', Auth::user()->id_user)->where('status_pembayaran', 2)->where('status_pembayaran', 4)->get();
         $total_saldo = 0;
@@ -43,7 +43,12 @@ class ProfilController extends Controller
         } else {
             $paket_aktif = PaketAktif::join('paket', 'paket.id_paket', '=', 'paket_aktif.id_paket')->where('id_user', Auth::user()->id_user)->get();
         }
-        return view('user.profil', ['user_datas' => $user_data, 'paket_aktifs' => $paket_aktif], compact('universitas', 'ref', 'total_saldo'));
+
+        $kode_ref = User::where('id_user', Auth::user()->id_user)->value('referral');
+        $jumlah_ref = User::where('referrer', $kode_ref)->count();
+        $jumlah_ref_sukses = SaldoKomisi::where('referrer', $kode_ref)->count();
+
+        return view('user.profil', ['user_datas' => $user_data, 'paket_aktifs' => $paket_aktif], compact('universitas', 'ref', 'total_saldo', 'jumlah_ref_sukses', 'jumlah_ref'));
     }
 
     public function storeProfil(Request $request){
