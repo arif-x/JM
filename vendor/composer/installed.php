@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9fc2cdff615b4f707d1b76e9590adb5edc1d423f',
+        'reference' => '672905107b59bb3dbc15d6a9c537fce6fc694667',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -201,6 +201,17 @@
             'aliases' => array(),
             'reference' => '8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
             'dev_requirement' => true,
+        ),
+        'iamarunp/laraveldbtransactions' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'middleware',
+            'install_path' => __DIR__ . '/../iamarunp/laraveldbtransactions',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => '1a346ba6640f230b29eb638321280324e5149355',
+            'dev_requirement' => false,
         ),
         'illuminate/auth' => array(
             'dev_requirement' => false,
@@ -418,7 +429,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9fc2cdff615b4f707d1b76e9590adb5edc1d423f',
+            'reference' => '672905107b59bb3dbc15d6a9c537fce6fc694667',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(

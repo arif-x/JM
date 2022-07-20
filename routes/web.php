@@ -18,202 +18,204 @@ use App\Models\Kebijakan;
 |
 */
 
-Route::group([
-    'prefix' => 'api',
-    'namespace' => 'Api'
-], function(){
-    Route::get('/pembayaran-belum-approve', 'PembayaranController@index');
-});
+Route::group(['middleware' => 'TransactionHandler'], function () {
 
-
-Route::get('/', function (Request $request) {
-    $paket = Paket::get();
-    for ($i=0; $i < count($paket); $i++) { 
-        $paket[$i]->jumlah = $paket[$i]->harga - ($paket[$i]->harga * ($paket[$i]->diskon / 100));
-    }
-    $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
-    $tim = Tim::get();
-    $ref = $request->referrer;
-    return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim]);
-});
-
-Route::post('/getuniversitas', 'DataController@getUniv')->name('getuniv');
-
-Route::get('/kebijakan', function () {
-    $kebijakan = Kebijakan::where('id_kebijakan', 1)->get();
-    return view('kebijakan', ['kebijakans' => $kebijakan]);
-});
-
-Auth::routes(['verify' => true]);
-
-/*
-|--------------------------------------------------------------------------
-| Admin Routes
-|--------------------------------------------------------------------------
-*/
-Route::group([
-    'prefix' => 'slameho',
-], function(){ 
     Route::group([
-        'namespace' => 'Auth',
+        'prefix' => 'api',
+        'namespace' => 'Api'
     ], function(){
-        Route::get('login', 'AdminAuthController@getLogin')->name('adminLogin');
-        Route::post('login', 'AdminAuthController@postLogin')->name('adminLoginPost');
-        Route::get('logout', 'AdminAuthController@logout')->name('adminLogout');
+        Route::get('/pembayaran-belum-approve', 'PembayaranController@index');
     });
-});
 
-Route::group([
-    'prefix' => 'slameho',
-    'middleware' => ['adminauth']
-], function(){ 
-    Route::group(['prefix' => 'filemanager'], function () {
-        \UniSharp\LaravelFilemanager\Lfm::routes();
+
+    Route::get('/', function (Request $request) {
+        $paket = Paket::get();
+        for ($i=0; $i < count($paket); $i++) { 
+            $paket[$i]->jumlah = $paket[$i]->harga - ($paket[$i]->harga * ($paket[$i]->diskon / 100));
+        }
+        $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
+        $tim = Tim::get();
+        $ref = $request->referrer;
+        return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim]);
     });
-});
 
-Route::group([
-    'prefix' => 'slameho-soal',
-    'middleware' => ['adminauth', 'adminsoal']
-], function(){ 
+    Route::post('/getuniversitas', 'DataController@getUniv')->name('getuniv');
+
+    Route::get('/kebijakan', function () {
+        $kebijakan = Kebijakan::where('id_kebijakan', 1)->get();
+        return view('kebijakan', ['kebijakans' => $kebijakan]);
+    });
+
+    Auth::routes(['verify' => true]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    */
     Route::group([
-        'namespace' => 'AdminSoal',
-    ], function(){
-        Route::get('dashboard', 'DashboardController@dashboard')->name('admin-soal.dashboard');
+        'prefix' => 'slameho',
+    ], function(){ 
         Route::group([
-            'prefix' => 'materi'
+            'namespace' => 'Auth',
         ], function(){
-            Route::resource('materi', 'MateriController', ['as' => 'admin-soal.materi']);  
-        });
-        Route::group([
-            'prefix' => 'latihan'
-        ], function(){
-            Route::resource('soal', 'SoalLatihanController', ['as' => 'admin-soal.latihan']);
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalLatihanController@importExcel')->name('admin-soal.latihan.import');
-            });  
-        });
-        Route::group([
-            'prefix' => 'tryout'
-        ], function(){
-            Route::resource('soal', 'SoalTryoutController', ['as' => 'admin-soal.tryout']);  
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalTryoutController@importExcel')->name('admin-soal.tryout.import');
-            });  
-        });
-        Route::group([
-            'prefix' => 'event-tryout'
-        ], function(){
-            Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin-soal.event-tryout']);  
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalTryoutEventController@importExcel')->name('admin-soal.event-tryout.import');
-            });  
-        });
-        Route::group([
-            'prefix' => 'data'
-        ], function(){
-            Route::get('get-sub-jenis-soal/{id}', 'DataController@getSubJenisSoal')->name('admin.data.get-sub-jenis-soal');
+            Route::get('login', 'AdminAuthController@getLogin')->name('adminLogin');
+            Route::post('login', 'AdminAuthController@postLogin')->name('adminLoginPost');
+            Route::get('logout', 'AdminAuthController@logout')->name('adminLogout');
         });
     });
-});
 
-
-Route::group([
-    'prefix' => 'slameho',
-    'middleware' => ['adminauth', 'superadmin']
-], function(){ 
     Route::group([
-        'namespace' => 'Admin',
-    ], function(){
-        Route::get('dashboard', 'DashboardController@dashboard')->name('admin.dashboard');
-        Route::resource('admin-soal', 'AdminSoalController', ['as' => 'admin']);
-        Route::resource('paket', 'PaketController', ['as' => 'admin']);
-        Route::resource('kategori', 'KategoriController', ['as' => 'admin']);
-        Route::resource('jenis-kampus', 'JenisKampusController', ['as' => 'admin']);
-        Route::resource('universitas', 'UniversitasController', ['as' => 'admin']);
-        Route::resource('jenis-view-soal', 'JenisViewSoalController', ['as' => 'admin']);
-        Route::resource('jenis-soal', 'JenisSoalController', ['as' => 'admin']);
-        Route::resource('sub-jenis-soal', 'SubJenisSoalController', ['as' => 'admin']);
-        Route::resource('slider-besar', 'SliderBesarController', ['as' => 'admin']);
-        Route::resource('slider-kecil', 'SliderKecilController', ['as' => 'admin']);
-        Route::resource('tim', 'TimController', ['as' => 'admin']);
-        Route::resource('kebijakan', 'KebijakanController', ['as' => 'admin']);
-        Route::resource('referral', 'ReferralController', ['as' => 'admin']);
-
-        Route::group([
-            'namespace' => 'Excel\Import',
-            'prefix' => 'import'
-        ], function(){
-            Route::post('/universitas', 'UniversitasController@importExcel')->name('admin.universitas.import');
-        }); 
-
-        Route::group([
-            'prefix' => 'excel',
-            'namespace' => 'Excel\Export',
-        ], function(){
-            Route::post('pembayaran', 'PembayaranController@export')->name('admin.export.pembayaran');
-        });
-
-        Route::group([
-            'prefix' => 'materi'
-        ], function(){
-            Route::resource('label-materi', 'LabelMateriController', ['as' => 'admin.materi']);
-            Route::resource('materi', 'MateriController', ['as' => 'admin.materi']);  
-        });
-        Route::group([
-            'prefix' => 'latihan'
-        ], function(){
-            Route::resource('label-soal', 'LabelSoalLatihanController', ['as' => 'admin.latihan']);
-            Route::resource('soal', 'SoalLatihanController', ['as' => 'admin.latihan']);
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalLatihanController@importExcel')->name('admin.latihan.import');
-            });  
-        });
-        Route::group([
-            'prefix' => 'tryout'
-        ], function(){
-            Route::resource('label-soal', 'LabelSoalTryoutController', ['as' => 'admin.tryout']);
-            Route::resource('soal', 'SoalTryoutController', ['as' => 'admin.tryout']);  
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalTryoutController@importExcel')->name('admin.tryout.import');
-            });  
-        });
-        Route::group([
-            'prefix' => 'event-tryout'
-        ], function(){
-            Route::resource('label-soal', 'LabelSoalTryoutEventController', ['as' => 'admin.event-tryout']);
-            Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin.event-tryout']);  
-            Route::group([
-                'namespace' => 'Excel\Import',
-                'prefix' => 'import'
-            ], function(){
-                Route::post('/', 'SoalTryoutEventController@importExcel')->name('admin.event-tryout.import');
-            });  
-        });
-        Route::resource('pembayaran', 'PembayaranController', ['as' => 'admin']);
-        Route::resource('rekening', 'RekeningController', ['as' => 'admin']);
-        Route::resource('kontak', 'KontakController', ['as' => 'admin']);
-        Route::group([
-            'prefix' => 'data'
-        ], function(){
-            Route::get('get-sub-jenis-soal/{id}', 'DataController@getSubJenisSoal')->name('admin.data.get-sub-jenis-soal');
+        'prefix' => 'slameho',
+        'middleware' => ['adminauth']
+    ], function(){ 
+        Route::group(['prefix' => 'filemanager'], function () {
+            \UniSharp\LaravelFilemanager\Lfm::routes();
         });
     });
+
+    Route::group([
+        'prefix' => 'slameho-soal',
+        'middleware' => ['adminauth', 'adminsoal']
+    ], function(){ 
+        Route::group([
+            'namespace' => 'AdminSoal',
+        ], function(){
+            Route::get('dashboard', 'DashboardController@dashboard')->name('admin-soal.dashboard');
+            Route::group([
+                'prefix' => 'materi'
+            ], function(){
+                Route::resource('materi', 'MateriController', ['as' => 'admin-soal.materi']);  
+            });
+            Route::group([
+                'prefix' => 'latihan'
+            ], function(){
+                Route::resource('soal', 'SoalLatihanController', ['as' => 'admin-soal.latihan']);
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalLatihanController@importExcel')->name('admin-soal.latihan.import');
+                });  
+            });
+            Route::group([
+                'prefix' => 'tryout'
+            ], function(){
+                Route::resource('soal', 'SoalTryoutController', ['as' => 'admin-soal.tryout']);  
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalTryoutController@importExcel')->name('admin-soal.tryout.import');
+                });  
+            });
+            Route::group([
+                'prefix' => 'event-tryout'
+            ], function(){
+                Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin-soal.event-tryout']);  
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalTryoutEventController@importExcel')->name('admin-soal.event-tryout.import');
+                });  
+            });
+            Route::group([
+                'prefix' => 'data'
+            ], function(){
+                Route::get('get-sub-jenis-soal/{id}', 'DataController@getSubJenisSoal')->name('admin.data.get-sub-jenis-soal');
+            });
+        });
+    });
+
+
+    Route::group([
+        'prefix' => 'slameho',
+        'middleware' => ['adminauth', 'superadmin']
+    ], function(){ 
+        Route::group([
+            'namespace' => 'Admin',
+        ], function(){
+            Route::get('dashboard', 'DashboardController@dashboard')->name('admin.dashboard');
+            Route::resource('admin-soal', 'AdminSoalController', ['as' => 'admin']);
+            Route::resource('paket', 'PaketController', ['as' => 'admin']);
+            Route::resource('kategori', 'KategoriController', ['as' => 'admin']);
+            Route::resource('jenis-kampus', 'JenisKampusController', ['as' => 'admin']);
+            Route::resource('universitas', 'UniversitasController', ['as' => 'admin']);
+            Route::resource('jenis-view-soal', 'JenisViewSoalController', ['as' => 'admin']);
+            Route::resource('jenis-soal', 'JenisSoalController', ['as' => 'admin']);
+            Route::resource('sub-jenis-soal', 'SubJenisSoalController', ['as' => 'admin']);
+            Route::resource('slider-besar', 'SliderBesarController', ['as' => 'admin']);
+            Route::resource('slider-kecil', 'SliderKecilController', ['as' => 'admin']);
+            Route::resource('tim', 'TimController', ['as' => 'admin']);
+            Route::resource('kebijakan', 'KebijakanController', ['as' => 'admin']);
+            Route::resource('referral', 'ReferralController', ['as' => 'admin']);
+
+            Route::group([
+                'namespace' => 'Excel\Import',
+                'prefix' => 'import'
+            ], function(){
+                Route::post('/universitas', 'UniversitasController@importExcel')->name('admin.universitas.import');
+            }); 
+
+            Route::group([
+                'prefix' => 'excel',
+                'namespace' => 'Excel\Export',
+            ], function(){
+                Route::post('pembayaran', 'PembayaranController@export')->name('admin.export.pembayaran');
+            });
+
+            Route::group([
+                'prefix' => 'materi'
+            ], function(){
+                Route::resource('label-materi', 'LabelMateriController', ['as' => 'admin.materi']);
+                Route::resource('materi', 'MateriController', ['as' => 'admin.materi']);  
+            });
+            Route::group([
+                'prefix' => 'latihan'
+            ], function(){
+                Route::resource('label-soal', 'LabelSoalLatihanController', ['as' => 'admin.latihan']);
+                Route::resource('soal', 'SoalLatihanController', ['as' => 'admin.latihan']);
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalLatihanController@importExcel')->name('admin.latihan.import');
+                });  
+            });
+            Route::group([
+                'prefix' => 'tryout'
+            ], function(){
+                Route::resource('label-soal', 'LabelSoalTryoutController', ['as' => 'admin.tryout']);
+                Route::resource('soal', 'SoalTryoutController', ['as' => 'admin.tryout']);  
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalTryoutController@importExcel')->name('admin.tryout.import');
+                });  
+            });
+            Route::group([
+                'prefix' => 'event-tryout'
+            ], function(){
+                Route::resource('label-soal', 'LabelSoalTryoutEventController', ['as' => 'admin.event-tryout']);
+                Route::resource('soal', 'SoalTryoutEventController', ['as' => 'admin.event-tryout']);  
+                Route::group([
+                    'namespace' => 'Excel\Import',
+                    'prefix' => 'import'
+                ], function(){
+                    Route::post('/', 'SoalTryoutEventController@importExcel')->name('admin.event-tryout.import');
+                });  
+            });
+            Route::resource('pembayaran', 'PembayaranController', ['as' => 'admin']);
+            Route::resource('rekening', 'RekeningController', ['as' => 'admin']);
+            Route::resource('kontak', 'KontakController', ['as' => 'admin']);
+            Route::group([
+                'prefix' => 'data'
+            ], function(){
+                Route::get('get-sub-jenis-soal/{id}', 'DataController@getSubJenisSoal')->name('admin.data.get-sub-jenis-soal');
+            });
+        });
 });
 
 
@@ -301,6 +303,7 @@ Route::group([
     Route::get('/hasil-latihan', 'LatihanController@hasilLatihan')->name('user.latihan.hasil');
     Route::get('/hasil-tryout', 'TryoutController@hasilTryout')->name('user.tryout.hasil');
     Route::get('/hasil-event-tryout/{slug}', 'TryoutEventController@hasilTryout')->name('user.event-tryout.hasil');
+    Route::get('/hasil-event-tryout/univ/{slug}', 'TryoutEventController@hasilTryoutperUniv')->name('user.event-tryout.hasiluniv');
 
     Route::group([
         'prefix' => 'paket'
@@ -327,3 +330,5 @@ Route::group([
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('/test', [App\Http\Controllers\TestController::class, 'index'])->name('test');
+
+});

@@ -75,6 +75,10 @@ class TryoutEventController extends Controller
 
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
+        if(empty($checkPaket)){
+            $checkPaket = 1;
+        }
+
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
@@ -113,7 +117,11 @@ class TryoutEventController extends Controller
 
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
-         if($checkSoal > $checkPaket){
+        if(empty($checkPaket)){
+            $checkPaket = 1;
+        }
+
+        if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } elseif($request->kupon != $checkKupon){
             return redirect()->back()->with('success', 'Kode Kupon Salah!');
@@ -128,6 +136,10 @@ class TryoutEventController extends Controller
             ->value('paket.id_paket');
 
             $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->value('paket_aktif.id_paket');
+
+            if(empty($checkPaket)){
+                $checkPaket = 1;
+            }
 
             if($checkSoal > $checkPaket){
                 return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
@@ -524,5 +536,16 @@ class TryoutEventController extends Controller
         }
 
         return view('user.tryout-event.hasil', compact('slugs', 'label'));
+    }
+
+    public function hasilTryoutPerUniv(Request $request, $slug){
+        $data = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')
+        ->join('users', 'users.id_user', '=', 'jawaban_user_tryout_event.id_user')
+        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap', 'id_universitas')
+        ->groupBy('jawaban_user_tryout_event.id_user')->where('label_soal_tryout_event.slug', $slug)->where('id_universitas', Auth::user()->id_universitas)->orderBy('skor', 'DESC')->get();
+
+        return Datatables::of($data)
+        ->addIndexColumn()
+        ->make(true);
     }
 }

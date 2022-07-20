@@ -49,6 +49,10 @@ class ComposerStaticInitb52bc849c5baba1ed0b634c5284a230a
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'i' => 
+        array (
+            'iamarunp\\Laraveldbtransactions\\' => 31,
+        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -210,6 +214,10 @@ class ComposerStaticInitb52bc849c5baba1ed0b634c5284a230a
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'iamarunp\\Laraveldbtransactions\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/iamarunp/laraveldbtransactions/src',
         ),
         'ZipStream\\' => 
         array (
@@ -625,6 +633,7 @@ class ComposerStaticInitb52bc849c5baba1ed0b634c5284a230a
         'App\\Http\\Controllers\\Admin\\MateriController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/MateriController.php',
         'App\\Http\\Controllers\\Admin\\PaketController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PaketController.php',
         'App\\Http\\Controllers\\Admin\\PembayaranController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PembayaranController.php',
+        'App\\Http\\Controllers\\Admin\\ReferralController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ReferralController.php',
         'App\\Http\\Controllers\\Admin\\RekeningController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/RekeningController.php',
         'App\\Http\\Controllers\\Admin\\SliderBesarController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SliderBesarController.php',
         'App\\Http\\Controllers\\Admin\\SliderKecilController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SliderKecilController.php',
@@ -662,6 +671,7 @@ class ComposerStaticInitb52bc849c5baba1ed0b634c5284a230a
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\SuperAdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/SuperAdminMiddleware.php',
+        'App\\Http\\Middleware\\TransactionMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/TransactionMiddleware.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
@@ -6793,6 +6803,8 @@ class ComposerStaticInitb52bc849c5baba1ed0b634c5284a230a
         'ZipStream\\Option\\Version' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Option/Version.php',
         'ZipStream\\Stream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Stream.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
+        'iamarunp\\Laraveldbtransactions\\Middleware\\TransactionHandler' => __DIR__ . '/..' . '/iamarunp/laraveldbtransactions/src/Middleware/TransactionHandler.php',
+        'iamarunp\\Laraveldbtransactions\\TransactionServiceProvider' => __DIR__ . '/..' . '/iamarunp/laraveldbtransactions/src/TransactionServiceProvider.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',
         'phpDocumentor\\Reflection\\DocBlockFactory' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactory.php',
         'phpDocumentor\\Reflection\\DocBlockFactoryInterface' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlockFactoryInterface.php',

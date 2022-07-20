@@ -1,0 +1,36 @@
+{
+    "name": "iamarunp/laraveldbtransactions",
+    "description": "The package can be used to handle DB transaction through a middleware.",
+    "type": "middleware",
+    "license": "MIT",
+    "keywords": [
+        "Laravel",
+        "middleware",
+        "DB",
+        "Transaction",
+        "Database",
+        "wrapping",
+        "Transaction"
+    ],
+    "authors": [
+        {
+            "name": "iamarunp",
+            "email": "ar.dev.mac@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "iamarunp\\Laraveldbtransactions\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "iamarunp\\Laraveldbtransactions\\TransactionServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

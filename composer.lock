@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f405352373ca79c179cc504a056630b3",
+    "content-hash": "1d477b03d346210c4bfeffa78fe02008",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1007,6 +1007,59 @@
                 }
             ],
             "time": "2022-06-09T08:26:02+00:00"
+        },
+        {
+            "name": "iamarunp/laraveldbtransactions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamarunp/Laraveldbtransactions.git",
+                "reference": "1a346ba6640f230b29eb638321280324e5149355"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamarunp/Laraveldbtransactions/zipball/1a346ba6640f230b29eb638321280324e5149355",
+                "reference": "1a346ba6640f230b29eb638321280324e5149355",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "middleware",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "iamarunp\\Laraveldbtransactions\\TransactionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "iamarunp\\Laraveldbtransactions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "iamarunp",
+                    "email": "ar.dev.mac@gmail.com"
+                }
+            ],
+            "description": "The package can be used to handle DB transaction through a middleware.",
+            "keywords": [
+                "database",
+                "db",
+                "laravel",
+                "middleware",
+                "transaction",
+                "wrapping"
+            ],
+            "support": {
+                "issues": "https://github.com/iamarunp/Laraveldbtransactions/issues",
+                "source": "https://github.com/iamarunp/Laraveldbtransactions/tree/master"
+            },
+            "time": "2020-02-10T08:45:21+00:00"
         },
         {
             "name": "intervention/image",
@@ -8690,7 +8743,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "iamarunp/laraveldbtransactions": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

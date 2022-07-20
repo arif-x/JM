@@ -104,6 +104,10 @@ class LatihanController extends Controller
 
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
+        if(empty($checkPaket)){
+            $checkPaket = 1;
+        }
+
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
@@ -127,6 +131,10 @@ class LatihanController extends Controller
         ->value('paket.id_paket');
 
         $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
+
+        if(empty($checkPaket)){
+            $checkPaket = 1;
+        }
 
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');

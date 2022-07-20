@@ -1518,6 +1518,62 @@
             "install-path": "../hamcrest/hamcrest-php"
         },
         {
+            "name": "iamarunp/laraveldbtransactions",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamarunp/Laraveldbtransactions.git",
+                "reference": "1a346ba6640f230b29eb638321280324e5149355"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamarunp/Laraveldbtransactions/zipball/1a346ba6640f230b29eb638321280324e5149355",
+                "reference": "1a346ba6640f230b29eb638321280324e5149355",
+                "shasum": ""
+            },
+            "time": "2020-02-10T08:45:21+00:00",
+            "default-branch": true,
+            "type": "middleware",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "iamarunp\\Laraveldbtransactions\\TransactionServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "iamarunp\\Laraveldbtransactions\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "iamarunp",
+                    "email": "ar.dev.mac@gmail.com"
+                }
+            ],
+            "description": "The package can be used to handle DB transaction through a middleware.",
+            "keywords": [
+                "database",
+                "db",
+                "laravel",
+                "middleware",
+                "transaction",
+                "wrapping"
+            ],
+            "support": {
+                "issues": "https://github.com/iamarunp/Laraveldbtransactions/issues",
+                "source": "https://github.com/iamarunp/Laraveldbtransactions/tree/master"
+            },
+            "install-path": "../iamarunp/laraveldbtransactions"
+        },
+        {
             "name": "intervention/image",
             "version": "2.7.2",
             "version_normalized": "2.7.2.0",
