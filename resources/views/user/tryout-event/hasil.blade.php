@@ -34,6 +34,7 @@
                                             <th>No.</th>
                                             <th>Nama</th>
                                             <th>Skor</th>
+                                            <th>Skor Akhir</th>
                                         </tr>
                                     </thead>  
                                 </table>
@@ -53,6 +54,7 @@
                                             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                                             {data: 'nama_lengkap', name: 'nama_lengkap'},
                                             {data: 'skor', name: 'skor'},
+                                            {data: 'skor_akhir', name: 'skor_akhir'},
                                             ]
                                         });
                                     });
@@ -68,6 +70,7 @@
                                             <th>No.</th>
                                             <th>Nama</th>
                                             <th>Skor</th>
+                                            <th>Skor Akhir</th>
                                         </tr>
                                     </thead>  
                                 </table>
@@ -87,6 +90,7 @@
                                             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                                             {data: 'nama_lengkap', name: 'nama_lengkap'},
                                             {data: 'skor', name: 'skor'},
+                                            {data: 'skor_akhir', name: 'skor_akhir'},
                                             ]
                                         });
                                     });

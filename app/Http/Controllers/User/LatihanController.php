@@ -140,7 +140,8 @@ class LatihanController extends Controller
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = Soal::join('label_soal', 'label_soal.id_label_soal', '=', 'soal.id_label_soal')->where('label_soal.slug', $slug)->select('soal', 'soal.slug')->get();
-            $soal_json = Soal::join('label_soal', 'label_soal.id_label_soal', '=', 'soal.id_label_soal')->where('label_soal.slug', $slug)->inRandomOrder()->get();
+
+            $soal_json = Soal::join('label_soal', 'label_soal.id_label_soal', '=', 'soal.id_label_soal')->where('label_soal.slug', $slug)->inRandomOrder()->select('id_soal', 'soal', 'a', 'b', 'c', 'd', 'e', 'soal.slug')->get();
             $label = LabelSoal::where('label_soal.slug', $slug)->value('nama_label');
             $id_label = LabelSoal::where('label_soal.slug', $slug)->value('id_label_soal');
 
@@ -206,9 +207,18 @@ class LatihanController extends Controller
 
             if(file_exists(storage_path("app/public/jawaban/latihan/".Auth::user()->email.".json"))){
                 $json = File::get(storage_path("app/public/jawaban/latihan/".Auth::user()->email.".json"));
+                $soal = json_decode($json, true);
             } else {
                 File::put(storage_path("app/public/jawaban/latihan/".Auth::user()->email.".json"), $newJson);   
+                $json = File::get(storage_path("app/public/jawaban/latihan/".Auth::user()->email.".json"));
+                $soal = json_decode($json, true);
             }
+
+            // for ($i=0; $i < count($soal); $i++) { 
+            //     print_r($soal[$i]);
+            // }
+
+            // die();
 
             return view('user.latihan.single', ['soals' => $soal], compact('label', 'timer', 'end'));
         }

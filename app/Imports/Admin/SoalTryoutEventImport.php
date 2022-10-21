@@ -23,7 +23,7 @@ class SoalTryoutEventImport implements ToCollection, WithStartRow, WithHeadingRo
 
             $getJumlahSoal = SoalTryoutEvent::where('id_label_soal_tryout_event', $row[$i]['id_label_soal_tryout_event'])->where('id_sub_jenis_soal', $row[$i]['id_sub_jenis_soal'])->count();
 
-            if($getJumlahSoal < 15) {
+            if($getJumlahSoal <= 50) {
                 SoalTryoutEvent::insert([
                     'id_label_soal_tryout_event' => $row[$i]['id_label_soal_tryout_event'],
                     'soal_tryout_event' => $row[$i]['soal_tryout_event'],
@@ -32,7 +32,7 @@ class SoalTryoutEventImport implements ToCollection, WithStartRow, WithHeadingRo
                     'c' => $row[$i]['c'],
                     'd' => $row[$i]['d'],
                     'e' => $row[$i]['e'],
-                    'kunci' => $row[$i]['kunci'],
+                    'kunci' => strtolower($row[$i]['kunci']),
                     'id_jenis_soal' => $row[$i]['id_jenis_soal'],
                     'id_sub_jenis_soal' => $row[$i]['id_sub_jenis_soal'],
                     'pembahasan' => $row[$i]['pembahasan'],

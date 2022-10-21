@@ -106,8 +106,7 @@
                         <h1 class="home-title mt-3">Wujudkan Mimpimu Masuk Kampus Idaman</h1>
 
                         <p class="text-muted mt-4">
-                            Quisque a diam mattis fermentum lectus tempuada <br />
-                            velit cras magna dictum porta dolor dapibus dolor Etiam congartue hendrerit fusce eget ligula.
+                            Belajar dengan mudah dibimbing mentor berpengalaman dan ribuan latihan soal masuk kampus.
                         </p>
 
                         <div class="mt-4 pt-3">
@@ -204,6 +203,7 @@
             </div>
 
             <div class="row mt-5 pt-4">
+                @foreach($fitur_1s as $fitur_1)
                 <div class="col-lg-4">
                     <div class="features-box mt-4">
                         <h1 class="features-title">01</h1>
@@ -211,29 +211,33 @@
                             <img src="{{ asset('assets-guest/images/icon/rulers.png') }}" class="img-fluid" alt="" />
                         </div>
 
-                        <h5 class="f-18 mt-4">Materi Pilihan</h5>
-                        <p class="text-muted mt-3">Pellentesque viverra augarue molestie convallis sit amet interdum bibendum sem urna condimentum.</p>
+                        <h5 class="f-18 mt-4">{{ $fitur_1->header }}</h5>
+                        <p class="text-muted mt-3">{{ $fitur_1->deskripsi }}</p>
                         <div class="mt-3">
                             <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
+                @foreach($fitur_2s as $fitur_2)
                 <div class="col-lg-4">
                     <div class="features-box mt-4">
                         <h1 class="features-title">02</h1>
                         <div class="features-img">
                             <img src="{{ asset('assets-guest/images/icon/compose.png') }}" class="img-fluid" alt="" />
                         </div>
-
-                        <h5 class="f-18 mt-4">Sistem CBT</h5>
-                        <p class="text-muted mt-3">Passage you need sure there anything embarssing hidden the open chunks necesary making Internet.</p>
+                        
+                        <h5 class="f-18 mt-4">{{ $fitur_2->header }}</h5>
+                        <p class="text-muted mt-3">{{ $fitur_2->deskripsi }}</p>
                         <div class="mt-3">
                             <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
+                @foreach($fitur_3s as $fitur_3)
                 <div class="col-lg-4">
                     <div class="features-box mt-4">
                         <h1 class="features-title">03</h1>
@@ -241,13 +245,14 @@
                             <img src="{{ asset('assets-guest/images/icon/presentation.png') }}" class="img-fluid" alt="" />
                         </div>
 
-                        <h5 class="f-18 mt-4">Menyesuaikan Kisi-Kisi</h5>
-                        <p class="text-muted mt-3">Passage you need sure there anything embrassing text hidden all necessary making generator Internet.</p>
+                        <h5 class="f-18 mt-4">{{ $fitur_3->header }}</h5>
+                        <p class="text-muted mt-3">{{ $fitur_3->deskripsi }}</p>
                         <div class="mt-3">
                             <a href="{{ route('register') }}" class="text-primary font-weight-600"> Daftar Sekarang<i class="mdi mdi-arrow-right ml-2"></i> </a>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -269,7 +274,7 @@
                     <div class="text-center">
                         <p class="title-sub-heading text-primary f-18">Daftar Paket</p>
                         <h2 class="title-heading">Paket Unggulan Jalur Mandiri</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
+                        <p class="title-desc text-muted mt-2">Paket ramah kantong dengan fitur unggulan, khusus kamu yang mau masuk kampus impian. Dibimbing mentor asyik berpengalaman!.</p>
                     </div>
                 </div>
             </div>
@@ -378,7 +383,7 @@
                     <div class="text-center">
                         <p class="title-sub-heading text-primary f-18">Tim Kami</p>
                         <h2 class="title-heading">Jalur Mandiri Didukung Dengan Tenaga Profesional</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
+                        <p class="title-desc text-muted mt-2">Sempurnakan pemahamanmu dibantu mentor yang berpengalaman dan asyik seperti sahabatmu sendiri. Belajar jadi santai tapi tetap paham maksimal!.</p>
                     </div>
                 </div>
             </div>
@@ -436,9 +441,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-center">
-                        <p class="title-sub-heading text-primary mb-3">Our Feedback</p>
-                        <h2 class="title-heading">Few Words Form Our Satisfied Clients</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
+                        <p class="title-sub-heading text-primary mb-3">Testimoni</p>
+                        <h2 class="title-heading">Kata Mereka yang Puas Belajar Pakai Jalur Mandiri</h2>
+                        <p class="title-desc text-muted mt-2">Pengguna Jalur Mandiri berpeluang besar tembus kampus impian mereka.</p>
                     </div>
                 </div>
             </div>
@@ -447,90 +452,32 @@
                 <div class="col-lg-8">
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="5000">
                         <div class="carousel-inner pb-5">
+                            @for($i = 0; $i < count($testimonis); $i++)
+                            @if($i == 0)
                             <div class="carousel-item active">
-                                <div class="client-box bg-light mt-4">
-                                    <div class="media">
-                                        <div class="client-img">
-                                            <img src="{{ asset('assets-guest/images/user/img-1.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                                        </div>
-                                        <div class="media-body ml-3 mt-2">
-                                            <h5 class="f-18">Derek Monroe</h5>
-                                            <p class="text-primary mb-0">- Designer</p>
-                                        </div>
-                                        <div class="client-icon">
-                                            <i class="mdi mdi-format-quote-close text-primary"></i>
-                                        </div>
-                                    </div>
-
-                                    <p class="client-desc mt-4 mb-0 pt-1 f-18">
-                                        Vestibulum mollis auctor aliquam dolor sit amet consectetur adipiscing elit Aenean volutpat vitae metus quis diam dolor lobortis eros conetur ligula odio a magna interdum Maecenas sit amet
-                                        malesuada dolor vitae commodo magna dapibus sit amet.
-                                    </p>
-                                </div>
-                            </div>
-
+                            @else
                             <div class="carousel-item">
+                            @endif
                                 <div class="client-box bg-light mt-4">
                                     <div class="media">
                                         <div class="client-img">
-                                            <img src="{{ asset('assets-guest/images/user/img-2.jpg') }}" class="img-fluid rounded-circle" alt="" />
+                                            <img src="{{ $testimonis[$i]['foto'] }}" class="img-fluid rounded-circle" alt="" />
                                         </div>
                                         <div class="media-body ml-3 mt-2">
-                                            <h5 class="f-18">Brandon COK</h5>
-                                            <p class="text-primary mb-0">- Designer</p>
+                                            <h5 class="f-18">{{ $testimonis[$i]['nama'] }}</h5>
+                                            <p class="text-primary mb-0">- User</p>
                                         </div>
                                         <div class="client-icon">
                                             <i class="mdi mdi-format-quote-close text-primary"></i>
                                         </div>
                                     </div>
-                                    <p class="client-desc mt-4 mb-0 pt-1 f-18">
-                                        Vestibulum mollis auctor aliquam dolor sit amet consectetur adipiscing elit Aenean volutpat vitae metus quis diam dolor lobortis eros conetur ligula odio a magna interdum Maecenas sit amet
-                                        malesuada dolor vitae commodo magna dapibus sit amet.
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div class="carousel-item">
-                                <div class="client-box bg-light mt-4">
-                                    <div class="media">
-                                        <div class="client-img">
-                                            <img src="{{ asset('assets-guest/images/user/img-3.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                                        </div>
-                                        <div class="media-body ml-3 mt-2">
-                                            <h5 class="f-18">Brandon Carney</h5>
-                                            <p class="text-primary mb-0">- Designer</p>
-                                        </div>
-                                        <div class="client-icon">
-                                            <i class="mdi mdi-format-quote-close text-primary"></i>
-                                        </div>
-                                    </div>
                                     <p class="client-desc mt-4 mb-0 pt-1 f-18">
-                                        Vestibulum mollis auctor aliquam dolor sit amet consectetur adipiscing elit Aenean volutpat vitae metus quis diam dolor lobortis eros conetur ligula odio a magna interdum Maecenas sit amet
-                                        malesuada dolor vitae commodo magna dapibus sit amet.
+                                        {{ $testimonis[$i]['testimoni'] }}
                                     </p>
                                 </div>
                             </div>
-
-                            <div class="carousel-item">
-                                <div class="client-box bg-light mt-4">
-                                    <div class="media">
-                                        <div class="client-img">
-                                            <img src="{{ asset('assets-guest/images/user/img-4.jpg') }}" class="img-fluid rounded-circle" alt="" />
-                                        </div>
-                                        <div class="media-body ml-3 mt-2">
-                                            <h5 class="f-18">Brandon Carney</h5>
-                                            <p class="text-primary mb-0">- Designer</p>
-                                        </div>
-                                        <div class="client-icon">
-                                            <i class="mdi mdi-format-quote-close text-primary"></i>
-                                        </div>
-                                    </div>
-                                    <p class="client-desc mt-4 mb-0 pt-1 f-18">
-                                        Vestibulum mollis auctor aliquam dolor sit amet consectetur adipiscing elit Aenean volutpat vitae metus quis diam dolor lobortis eros conetur ligula odio a magna interdum Maecenas sit amet
-                                        malesuada dolor vitae commodo magna dapibus sit amet.
-                                    </p>
-                                </div>
-                            </div>
+                            @endfor
                         </div>
                     </div>
 
@@ -550,8 +497,8 @@
                 <div class="col-lg-12">
                     <div class="text-center">
                         <p class="title-sub-heading text-primary f-18">Contact Us</p>
-                        <h2 class="title-heading">Let's talk about everything!</h2>
-                        <p class="title-desc text-muted mt-2">Donec dapibus dolor at semper dictum phasellus fringilla sem risus mollis faucibus dolor eleifend id maecenas viverra.</p>
+                        <h2 class="title-heading">Ingin menggunakan Jalur Mandiri atau ada pertanyaan? Yuk, hubungi kami!</h2>
+                        <p class="title-desc text-muted mt-2">Hubungi tim Jalur Mandiri, kami siap membantu sepenuh hati!</p>
                     </div>
                 </div>
             </div>
@@ -563,27 +510,27 @@
                     </div>
 
                     <div class="row mt-3">
+                        @foreach($kontaks as $kontak)
                         <div class="col-lg-6">
                             <div class="mt-4">
-                                <h5 class="f-18">Online Services</h5>
-                                <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-email mr-2 text-primary"></i>JohnPBeau@jourrapide.com</p>
-                                <p class="text-muted"><i class="mdi mdi-email mr-2 text-primary"></i>mycheapsale.com</p>
+                                <h5 class="f-18">Email</h5>
+                                <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-email mr-2 text-primary"></i>{{ $kontak->email }}</p>
                             </div>
                         </div>
 
                         <div class="col-lg-6">
                             <div class="mt-4">
-                                <h5 class="f-18">Online Contact</h5>
-                                <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-phone mr-2 text-primary"></i> +112 708-231-9668</p>
-                                <p class="text-muted"><i class="mdi mdi-phone mr-2 text-primary"></i>+125 458-565-9695</p>
+                                <h5 class="f-18">No. HP/WhatsApp</h5>
+                                <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-phone mr-2 text-primary"></i>{{ $kontak->no_hp }}</p>
                             </div>
                         </div>
+                        @endforeach
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-lg-12">
-                            <h5 class="f-18">Office Address</h5>
-                            <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-map-marker mr-2 text-primary"></i>3429 Gnatty Creek Road Farmingdale, NY 11735</p>
+                            <h5 class="f-18">Alamat</h5>
+                            <p class="mb-2 mt-3 text-muted"><i class="mdi mdi-map-marker mr-2 text-primary"></i>Malang</p>
                         </div>
                     </div>
                 </div>

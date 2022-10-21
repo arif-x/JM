@@ -16,26 +16,26 @@ class MateriController extends Controller
         $tps = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 1)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
         
         $tka = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 2)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
 
         $inggris = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 3)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
 
         return view('user.materi.text', ['tps' => $tps, 'tka' => $tka, 'inggris' => $inggris]);
     }
 
     public function singleText($slug){
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status', 1)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
@@ -60,26 +60,26 @@ class MateriController extends Controller
         $tps = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 4)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
         
         $tka = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 5)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
 
         $inggris = LabelMateri::join('materi', 'materi.id_label_materi', '=', 'label_materi.id_label_materi')
         ->join('paket', 'paket.id_paket', '=', 'label_materi.id_paket')
         ->where('label_materi.jenis_materi', 6)
-        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi', DB::raw("count(materi.id_label_materi) as counts"))
+        ->select('label_materi.id_label_materi', 'nama_paket', 'label_materi.slug', 'materi.slug as slug_materi', 'label_materi.nama_label', 'materi.judul_materi', 'materi.deskripsi')
         ->get();
 
         return view('user.materi.video', ['tps' => $tps, 'tka' => $tka, 'inggris' => $inggris]);
     }
 
     public function singleVideo($slug){
-        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status', 1)->value('paket_aktif.id_paket');
+        $checkPaket = User::join('paket_aktif', 'paket_aktif.id_user', '=', 'users.id_user')->where('paket_aktif.id_user', Auth::user()->id_user)->where('status_paket_aktif', 1)->value('paket_aktif.id_paket');
 
         if($checkPaket < 2){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');

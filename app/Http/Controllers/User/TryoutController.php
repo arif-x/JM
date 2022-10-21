@@ -125,7 +125,7 @@ class TryoutController extends Controller
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } else {
             $soal = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->select('soal_tryout', 'soal_tryout.slug')->get();
-            $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->where('label_soal_tryout.slug', $slug)->orderBy('id_sub_jenis_soal')->inRandomOrder()->get();
+            $soal_json = SoalTryout::join('label_soal_tryout', 'label_soal_tryout.id_label_soal_tryout', '=', 'soal_tryout.id_label_soal_tryout')->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout.id_jenis_soal')->where('label_soal_tryout.slug', $slug)->orderBy('id_jenis_soal')->inRandomOrder()->select('id_soal_tryout', 'soal_tryout', 'a', 'b', 'c', 'd', 'e', 'soal_tryout.slug', 'soal_tryout.id_jenis_soal', 'id_sub_jenis_soal', 'jenis_soal')->get();
             $label = LabelSoalTryout::where('label_soal_tryout.slug', $slug)->value('nama_label');
             $id_label = LabelSoalTryout::where('label_soal_tryout.slug', $slug)->value('id_label_soal_tryout');
 
@@ -142,6 +142,7 @@ class TryoutController extends Controller
                 'slug' => '',
                 'id_jenis_soal' => '',
                 'id_sub_jenis_soal' => '',
+                'jenis_soal' => '',
                 'waktu_mengerjakan' => '',
                 'jawaban' => '',
             ];
@@ -162,6 +163,7 @@ class TryoutController extends Controller
                 $data['e'] = $value['e'];
                 $data['slug'] = $value['slug'];
                 $data['id_jenis_soal'] = $value['id_jenis_soal'];
+                $data['jenis_soal'] = $value['jenis_soal'];
                 $data['id_sub_jenis_soal'] = $value['id_sub_jenis_soal'];
                 $data['waktu_mengerjakan'] = Carbon::now()->toDateTimeString();
                 $data['jawaban'] = '-';
@@ -195,8 +197,11 @@ class TryoutController extends Controller
 
             if(file_exists(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"))){
                 $json = File::get(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"));
+                $soal = json_decode($json, true);
             } else {
-                File::put(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"), $newJson);   
+                File::put(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"), $newJson);
+                $json = File::get(storage_path("app/public/jawaban/tryout/".Auth::user()->email.".json"));   
+                $soal = json_decode($json, true);
             }
 
             return view('user.tryout.single', ['soals' => $soal], compact('label', 'timer', 'end'));
@@ -204,12 +209,12 @@ class TryoutController extends Controller
     }
 
     public function firstSoal($slug){
-        $data = SoalTryout::select('soal_tryout', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
+        $data = SoalTryout::select('soal_tryout', 'a', 'b', 'c', 'd', 'e', 'jenis_soal')->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout.id_jenis_soal')->where('slug', $slug)->get();
         return response()->json($data);
     }
 
     public function getSoal($slug){
-        $data = SoalTryout::select('soal_tryout', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
+        $data = SoalTryout::select('soal_tryout', 'a', 'b', 'c', 'd', 'e', 'jenis_soal')->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout.id_jenis_soal')->where('slug', $slug)->get();
         return response()->json($data);
     }
 

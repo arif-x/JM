@@ -64,7 +64,7 @@ class SoalTryoutEventController extends Controller
             }
         }
 
-        if($getJumlahSoal <= 20){
+        if($getJumlahSoal <= 50){
             if($request->id_soal_tryout_event == ''){
                 $data = SoalTryoutEvent::insert([
                     'id_label_soal_tryout_event' => $request->id_label_soal_tryout_event,

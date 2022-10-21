@@ -153,7 +153,8 @@
                         </div>
                     </div>
 
-                    <script src="https://cdn.tiny.cloud/1/m1nz6lkq0ki8c21mhmdrhi8pfa5sjru7d79jblmku8iu0e3u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+                    <!-- <script src="https://cdn.tiny.cloud/1/m1nz6lkq0ki8c21mhmdrhi8pfa5sjru7d79jblmku8iu0e3u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+                    <script src="https://menjadiapoteker.id/assets/vendors/tinymce/tinymce.min.js"></script>
                     <script type="text/javascript">
                         $(function () {
                             $.ajaxSetup({
@@ -292,7 +293,7 @@
                                 var id_jenis_soal = $(this).val();
                                 if(id_jenis_soal) {
                                     $.ajax({
-                                        url: "/admin/data/get-sub-jenis-soal/"+id_jenis_soal+"",
+                                        url: "/slameho/data/get-sub-jenis-soal/"+id_jenis_soal+"",
                                         type: "GET",
                                         dataType: "json",
                                         success:function(data) {

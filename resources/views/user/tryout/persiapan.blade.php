@@ -22,7 +22,8 @@
 							</tr>
 							<tr>
 								<th class="w-25">Waktu Mengerjakan</th>
-								<td class="fs-15">{{ $soal->counts }} menit</td>
+								<!-- <td class="fs-15">{{ $soal->counts }} menit</td> -->
+								<td class="fs-15">50 menit</td>
 							</tr>
 						</table>
 						<div class="alert alert-warning">

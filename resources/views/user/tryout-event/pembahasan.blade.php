@@ -140,7 +140,7 @@
                                     <div class="card hasil-chart">
                                         <div class="card-body text-center">
                                             <h4 class="mb-2">Skor Akhir</h4>
-                                            <h4><strong>{{ $skor }}</strong></h4>
+                                            <h4><strong>{!! $skor !!}</strong></h4>
                                             <h6>Dari 15</h6>
                                         </div>
                                     </div>

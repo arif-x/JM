@@ -22,7 +22,7 @@
                                     Jumlah Soal: {{ $soal->counts }} soal
                                 </p>
                                 <p class="mt-2 mb-0 text-muted card-text">
-                                    Waktu: 15 menit
+                                    Waktu: 50 menit
                                 </p>
                                 <button class="btn btn-inverse-primary btn-fw ml-0 font-weight-bold col mt-3" data-slug="{{ $soal->slug }}" onclick="tryout(this);" id="kerjakan">Kerjakan</button>
                             </div>

@@ -57,9 +57,18 @@
                                             <textarea name="deskripsi" class="form-control" id="deskripsi" cols="30" rows="5"></textarea>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="materi" class="control-label">Materi</label>
-                                            <textarea name="materi" class="form-control" id="materi" cols="30" rows="60"></textarea>
+                                        <div id="video_materi">
+                                            <div class="form-group">
+                                                <label for="embed" class="control-label">Embed Video</label>
+                                                <input type="text" name="embed" id="embed" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div id="text_materi">
+                                            <div class="form-group">
+                                                <label for="materi" class="control-label">Materi</label>
+                                                <textarea name="materi" class="form-control" id="materi" cols="30" rows="60"></textarea>
+                                            </div>
                                         </div>
 
                                         <button type="submit" class="btn btn-primary w-100" id="saveBtn" value="create">Simpan</button>
@@ -84,7 +93,8 @@
                         </div>
                     </div>
 
-                    <script src="https://cdn.tiny.cloud/1/m1nz6lkq0ki8c21mhmdrhi8pfa5sjru7d79jblmku8iu0e3u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+                    <!-- <script src="https://cdn.tiny.cloud/1/m1nz6lkq0ki8c21mhmdrhi8pfa5sjru7d79jblmku8iu0e3u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+                    <script src="https://menjadiapoteker.id/assets/vendors/tinymce/tinymce.min.js"></script>
                     <script type="text/javascript">
                         $(function () {
                             $.ajaxSetup({
@@ -104,6 +114,21 @@
                                 {data: 'materis', name:'materis'},
                                 {data: 'action', name: 'action'},
                                 ],
+                            });
+
+                            $('#video_materi').hide();
+                            $('#text_materi').hide();
+
+                            $('#id_label_materi').on('change', function(){
+                                if($(this).val() == 1 || $(this).val() == 2 || $(this).val() == 3){
+                                    $('#video_materi').hide();
+                                    $("#embed").val('');
+                                    $('#text_materi').show();
+                                } else if($(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6){
+                                    $('#text_materi').hide();
+                                    tinymce.get("materi").setContent('');
+                                    $('#video_materi').show();
+                                }
                             });
 
                             $('#tambah').click(function () {
@@ -127,6 +152,15 @@
                                     $('#id_label_materi').val(data.id_label_materi);
                                     $('#judul_materi').val(data.judul_materi);
                                     $('#deskripsi').val(data.deskripsi);
+                                    if($('#id_label_materi').val() == 1 || $('#id_label_materi').val() == 2 || $('#id_label_materi').val() == 3){
+                                        $('#video_materi').hide();
+                                        $("#embed").val('');
+                                        $('#text_materi').show();
+                                    } else if($('#id_label_materi').val() == 4 || $('#id_label_materi').val() == 5 || $('#id_label_materi').val() == 6){
+                                        $('#text_materi').hide();
+                                        tinymce.get("materi").setContent('');
+                                        $('#video_materi').show();
+                                    }
                                     tinymce.get("materi").setContent(data.materi);
                                     $('#theModal').modal('show');
                                 })
@@ -152,6 +186,7 @@
                                         id_label_materi: $('#id_label_materi').val(),
                                         judul_materi: $('#judul_materi').val(),
                                         deskripsi: $('#deskripsi').val(),
+                                        embed: $('#embed').val(),
                                         materi: tinymce.get('materi').getContent(),
                                     },
                                     url: "{{ route('admin-soal.materi.materi.store') }}",

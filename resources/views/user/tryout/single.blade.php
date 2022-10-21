@@ -121,9 +121,9 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="d-flex flex-wrap justify-content-between mb-3">
-                                    @foreach($soals as $key => $soal)
-                                    <button id="mini_map_{{ $loop->iteration }}" class="btn mb-3 p-1 btn-light" style="width: 100px; max-width:32px; height:32px; margin: 4px; padding:0;" data-no="{{ $loop->iteration }}" data-id="{{ $soal->slug }}" onclick="getSoal(this);">{{ $loop->iteration }}</button>
-                                    @endforeach
+                                    @for($i=0; $i < count($soals); $i++)
+                                    <button id="mini_map_{{ $soals[$i]['nomor'] }}" class="btn mb-3 p-1 btn-light mini_map_c" style="width: 100px; max-width:32px; height:32px; margin: 4px; padding:0;" data-no="{{ $soals[$i]['nomor'] }}" data-id="{{ $soals[$i]['slug'] }}" onclick="getSoal(this);">{{ $soals[$i]['nomor'] }}</button>
+                                    @endfor
                                 </div>
                             </div>
                         </div>
@@ -151,6 +151,10 @@
         });
 
         $("#previous").click(function () {
+            $("html, body").animate({scrollTop: 0}, 250);
+        });
+
+        $(".mini_map_c").click(function () {
             $("html, body").animate({scrollTop: 0}, 250);
         });
 
@@ -188,7 +192,7 @@
         var no = $('#mini_map_1').data('no');
         $.getJSON("/user/tryout/first-soal/" + slug + "", function(data){
             $("#soal").html(data[0].soal_tryout);
-            $("#nomor_soal").text("Soal Nomor " + $('#mini_map_1').data('no'));
+            $("#nomor_soal").text("Soal Nomor " + $('#mini_map_1').data('no') + " (" + data[0].jenis_soal + ")");
             $("#no_soal").val($('#mini_map_1').data('no'));
             $("#jawaban_a_text").html(data[0].a);
             $("#jawaban_b_text").html(data[0].b);
@@ -332,9 +336,9 @@ function getSoal(obj) {
         all = data.length+1
         for (var i=0; i < data.length; i++) {
             var index_view=i+1;
-            $('#mini_map_'+index_view+'[data-no='+index_view+']').click(function(){
-                $("html, body").animate({scrollTop: 0}, 500);
-            });
+            // $('#mini_map_'+index_view+'[data-no='+index_view+']').click(function(){
+            //     $("html, body").animate({scrollTop: 0}, 500);
+            // });
             if(index_view == no){
                 $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-light');
                 $('#mini_map_'+index_view+'[data-no='+index_view+']').removeClass('btn-success');
@@ -355,7 +359,7 @@ function getSoal(obj) {
 
     $.getJSON("/user/tryout/get-soal/" + slug + "", function(data){
         $("#soal").html(data[0].soal_tryout);
-        $("#nomor_soal").text("Soal Nomor " + actual_no);
+        $("#nomor_soal").text("Soal Nomor " + actual_no + " (" + data[0].jenis_soal + ")");
         $("#no_soal").val(actual_no);
         $("#jawaban_a_text").html(data[0].a);
         $("#jawaban_b_text").html(data[0].b);

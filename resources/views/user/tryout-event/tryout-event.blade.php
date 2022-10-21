@@ -17,7 +17,7 @@
                     <div class="col-md-6">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h4 class="text-primary"><strong>{{ $soal->nama_label }}</strong></h4>
+                                <h4 class="text-primary"><strong>{{ $soal->nama_label }} ({{ $soal->nama_paket }})</strong></h4>
                                 Informasi lebih lengkap untuk berpartisipasi dalam event try out ini kunjungi ..... 
                             </div>
                             <div class="card-body">

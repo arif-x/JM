@@ -93,6 +93,10 @@ class TryoutEventController extends Controller
         }
     }
 
+    public function kerjakanGet($slug){
+        return redirect()->route('user.event-tryout.ready', $slug)->with('success', 'Kode Kupon Salah!');
+    }
+
     public function kerjakan(Request $request, $slug){
         $checkKupon = LabelSoalTryoutEvent::join('soal_tryout_event', 'soal_tryout_event.id_label_soal_tryout_event', '=', 'label_soal_tryout_event.id_label_soal_tryout_event')
         ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout_event.id_paket')
@@ -121,12 +125,20 @@ class TryoutEventController extends Controller
             $checkPaket = 1;
         }
 
+        
+        $checkSoal = LabelSoalTryoutEvent::join('soal_tryout_event', 'soal_tryout_event.id_label_soal_tryout_event', '=', 'label_soal_tryout_event.id_label_soal_tryout_event')
+        ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout_event.id_paket')
+        ->join('kategori', 'kategori.id_kategori', '=', 'label_soal_tryout_event.id_kategori')
+        ->where('label_soal_tryout_event.slug', $slug)
+        ->groupBy('soal_tryout_event.id_label_soal_tryout_event')
+        ->value('paket.id_paket');
+
         if($checkSoal > $checkPaket){
             return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
         } elseif($request->kupon != $checkKupon){
             return redirect()->back()->with('success', 'Kode Kupon Salah!');
         } elseif (!Carbon::now()->between($start, $end)){
-            return redirect()->back()->with('upgrade', 'Event Tryout Belum Dimulai atau Sudah Berkahir!');
+            return redirect()->back()->with('success', 'Event Tryout Belum Dimulai atau Sudah Berkahir!');
         } elseif ($request->kupon == $checkKupon && Carbon::now()->between($start, $end)){
             $checkSoal = LabelSoalTryoutEvent::join('soal_tryout_event', 'soal_tryout_event.id_label_soal_tryout_event', '=', 'label_soal_tryout_event.id_label_soal_tryout_event')
             ->join('paket', 'paket.id_paket', '=', 'label_soal_tryout_event.id_paket')
@@ -145,7 +157,7 @@ class TryoutEventController extends Controller
                 return redirect()->route('user.paket')->with('upgrade', 'Upgrade Paket Anda Sebelum Mengakses');
             } else {
                 $soal = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->select('soal_tryout_event', 'soal_tryout_event.slug')->get();
-                $soal_json = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->orderBy('id_sub_jenis_soal')->inRandomOrder()->get();
+                $soal_json = SoalTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'soal_tryout_event.id_label_soal_tryout_event')->where('label_soal_tryout_event.slug', $slug)->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout_event.id_jenis_soal')->where('label_soal_tryout_event.slug', $slug)->orderBy('id_jenis_soal')->inRandomOrder()->select('id_soal_tryout_event', 'soal_tryout_event', 'a', 'b', 'c', 'd', 'e', 'soal_tryout_event.slug', 'soal_tryout_event.id_jenis_soal', 'jenis_soal', 'id_sub_jenis_soal')->get();
                 $label = LabelSoalTryoutEvent::where('label_soal_tryout_event.slug', $slug)->value('nama_label');
                 $id_label = LabelSoalTryoutEvent::where('label_soal_tryout_event.slug', $slug)->value('id_label_soal_tryout_event');
 
@@ -161,6 +173,7 @@ class TryoutEventController extends Controller
                     'e' => '',
                     'slug' => '',
                     'id_jenis_soal' => '',
+                    'jenis_soal' => '',
                     'id_sub_jenis_soal' => '',
                     'waktu_mengerjakan' => '',
                     'jawaban' => '',
@@ -182,6 +195,7 @@ class TryoutEventController extends Controller
                     $data['e'] = $value['e'];
                     $data['slug'] = $value['slug'];
                     $data['id_jenis_soal'] = $value['id_jenis_soal'];
+                    $data['jenis_soal'] = $value['jenis_soal'];
                     $data['id_sub_jenis_soal'] = $value['id_sub_jenis_soal'];
                     $data['waktu_mengerjakan'] = Carbon::now()->toDateTimeString();
                     $data['jawaban'] = '-';
@@ -215,22 +229,25 @@ class TryoutEventController extends Controller
 
                 if(file_exists(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"))){
                     $json = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"));
+                    $soal = json_decode($json, true);
                 } else {
-                    File::put(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"), $newJson);   
+                    File::put(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"), $newJson);  
+                    $json = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json")); 
+                    $soal = json_decode($json, true);
                 }
 
-                return view('user.tryout-event.single', ['soals' => $soal], compact('label', 'timer', 'end'));
+                return view('user.tryout-event.single', ['soals' => $soal], compact('label', 'timer', 'end', 'slug'));
             }
         }
     }
 
     public function firstSoal($slug){
-        $data = SoalTryoutEvent::select('soal_tryout_event', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
+        $data = SoalTryoutEvent::select('soal_tryout_event', 'a', 'b', 'c', 'd', 'e', 'jenis_soal')->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout_event.id_jenis_soal')->where('slug', $slug)->get();
         return response()->json($data);
     }
 
     public function getSoal($slug){
-        $data = SoalTryoutEvent::select('soal_tryout_event', 'a', 'b', 'c', 'd', 'e')->where('slug', $slug)->get();
+        $data = SoalTryoutEvent::select('soal_tryout_event', 'a', 'b', 'c', 'd', 'e', 'jenis_soal')->join('jenis_soal', 'jenis_soal.id_jenis_soal', '=', 'soal_tryout_event.id_jenis_soal')->where('slug', $slug)->get();
         return response()->json($data);
     }
 
@@ -276,7 +293,7 @@ class TryoutEventController extends Controller
 
     public function finish(){
         // $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"));
-        $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/akuganteng@gmail.com.json"));
+        $oldJson = File::get(storage_path("app/public/jawaban/tryout-event/".Auth::user()->email.".json"));
         $jsonData = json_decode($oldJson, true);
         $jsonSubJenis = json_decode($oldJson);
 
@@ -523,14 +540,38 @@ class TryoutEventController extends Controller
     public function hasilTryout(Request $request, $slug){
         $data = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')
         ->join('users', 'users.id_user', '=', 'jawaban_user_tryout_event.id_user')
-        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap')
-        ->groupBy('jawaban_user_tryout_event.id_user')->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
+        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap', 'jawaban_user_tryout_event.id_user')
+        // ->groupBy('jawaban_user_tryout_event.id_user')
+        ->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
+
+        $fix = [];
+
+        for ($i=0; $i < count($data); $i++) { 
+            $fix[$i]['nama_label'] = $data[$i]['nama_label'];
+            $fix[$i]['tgl_mengerjakan'] = $data[$i]['tgl_mengerjakan'];
+            $fix[$i]['slugs'] = $data[$i]['slugs'];
+            $fix[$i]['skor'] = $data[$i]['skor'];
+            $fix[$i]['nama_lengkap'] = $data[$i]['nama_lengkap'];
+            $fix[$i]['id_user'] = $data[$i]['id_user'];
+        }
+
+        for ($i=0; $i < count($fix); $i++) { 
+            $exploded = explode(',', $fix[$i]['skor']);
+            $fix[$i]['skor_akhir'] = array_sum($exploded);
+        }
+
+        $columns = array_column($fix, 'skor_akhir');
+        array_multisort($columns, SORT_DESC, $fix);
+
+        $tempArr = array_unique(array_column($fix, 'id_user'));
+
+        // echo json_encode(array_intersect_key($fix, $tempArr));
 
         $slugs = LabelSoalTryoutEvent::where('slug', $slug)->value('slug');
         $label = LabelSoalTryoutEvent::where('slug', $slug)->value('nama_label');
 
         if($request->ajax()){
-            return Datatables::of($data)
+            return Datatables::of(array_intersect_key($fix, $tempArr))
             ->addIndexColumn()
             ->make(true);
         }
@@ -541,11 +582,41 @@ class TryoutEventController extends Controller
     public function hasilTryoutPerUniv(Request $request, $slug){
         $data = JawabanUserTryoutEvent::join('label_soal_tryout_event', 'label_soal_tryout_event.id_label_soal_tryout_event', '=', 'jawaban_user_tryout_event.id_label_soal_tryout_event')
         ->join('users', 'users.id_user', '=', 'jawaban_user_tryout_event.id_user')
-        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap', 'id_universitas')
-        ->groupBy('jawaban_user_tryout_event.id_user')->where('label_soal_tryout_event.slug', $slug)->where('id_universitas', Auth::user()->id_universitas)->orderBy('skor', 'DESC')->get();
+        ->select('nama_label', 'tgl_mengerjakan', 'jawaban_user_tryout_event.slug as slugs', 'skor', 'nama_lengkap', 'id_universitas', 'jawaban_user_tryout_event.id_user')
+        // ->groupBy('jawaban_user_tryout_event.id_user')
+        ->where('label_soal_tryout_event.slug', $slug)->orderBy('skor', 'DESC')->get();
 
-        return Datatables::of($data)
-        ->addIndexColumn()
-        ->make(true);
+        $fix = [];
+
+        for ($i=0; $i < count($data); $i++) { 
+            $fix[$i]['nama_label'] = $data[$i]['nama_label'];
+            $fix[$i]['tgl_mengerjakan'] = $data[$i]['tgl_mengerjakan'];
+            $fix[$i]['slugs'] = $data[$i]['slugs'];
+            $fix[$i]['skor'] = $data[$i]['skor'];
+            $fix[$i]['nama_lengkap'] = $data[$i]['nama_lengkap'];
+            $fix[$i]['id_user'] = $data[$i]['id_user'];
+            $fix[$i]['id_universitas'] = $data[$i]['id_universitas'];
+        }
+
+        for ($i=0; $i < count($fix); $i++) { 
+            $exploded = explode(',', $fix[$i]['skor']);
+            $fix[$i]['skor_akhir'] = array_sum($exploded);
+        }
+
+        $columns = array_column($fix, 'skor_akhir');
+        array_multisort($columns, SORT_DESC, $fix);
+
+        $tempArr = array_unique(array_column($fix, 'id_user'));
+
+        // echo json_encode(array_intersect_key($fix, $tempArr));
+
+        $slugs = LabelSoalTryoutEvent::where('slug', $slug)->value('slug');
+        $label = LabelSoalTryoutEvent::where('slug', $slug)->value('nama_label');
+
+        if($request->ajax()){
+            return Datatables::of(array_intersect_key($fix, $tempArr))
+            ->addIndexColumn()
+            ->make(true);
+        }
     }
 }

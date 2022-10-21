@@ -6,6 +6,9 @@ use App\Models\Universitas;
 use App\Models\Paket;
 use App\Models\Tim;
 use App\Models\Kebijakan;
+use App\Models\Kontak;
+use App\Models\Testimoni;
+use App\Models\Fitur;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +39,12 @@ Route::group(['middleware' => 'TransactionHandler'], function () {
         $universitas = Universitas::pluck('nama_universitas', 'id_universitas');
         $tim = Tim::get();
         $ref = $request->referrer;
-        return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim]);
+        $kontak = Kontak::get();
+        $testimoni = Testimoni::get();
+        $fitur_1 = Fitur::where('id_fitur', 1)->get();
+        $fitur_2 = Fitur::where('id_fitur', 2)->get();
+        $fitur_3 = Fitur::where('id_fitur', 3)->get();
+        return view('index', compact('universitas'), ['pakets' => $paket, 'tims' => $tim, 'kontaks' => $kontak, 'testimonis' => $testimoni, 'fitur_1s' => $fitur_1, 'fitur_2s' => $fitur_2, 'fitur_3s' => $fitur_3]);
     });
 
     Route::post('/getuniversitas', 'DataController@getUniv')->name('getuniv');
@@ -149,6 +157,8 @@ Route::group(['middleware' => 'TransactionHandler'], function () {
             Route::resource('slider-kecil', 'SliderKecilController', ['as' => 'admin']);
             Route::resource('tim', 'TimController', ['as' => 'admin']);
             Route::resource('kebijakan', 'KebijakanController', ['as' => 'admin']);
+            Route::resource('testimoni', 'TestimoniController', ['as' => 'admin']);
+            Route::resource('fitur', 'FiturController', ['as' => 'admin']);
             Route::resource('referral', 'ReferralController', ['as' => 'admin']);
 
             Route::group([
@@ -286,6 +296,7 @@ Route::group([
         Route::get('/persiapan/{slug}', 'TryoutEventController@ready')->name('user.event-tryout.ready');
         Route::post('/persiapan/{slug}', 'TryoutEventController@ready')->name('user.event-tryout.ready.post');
         Route::post('/kerjakan/{slug}', 'TryoutEventController@kerjakan')->name('user.event-tryout.kerjakan');
+        Route::get('/kerjakan/{slug}', 'TryoutEventController@kerjakanGet')->name('user.event-tryout.kerjakan.get');
         Route::get('/first-soal/{id}', 'TryoutEventController@firstSoal')->name('user.event-tryout.soal.first');
         Route::get('/get-soal/{id}', 'TryoutEventController@getSoal')->name('user.event-tryout.soal.single');
         Route::get('/get-jawaban/{id}', 'TryoutEventController@getJawaban')->name('user.event-tryout.soal.jawaban');

@@ -19,86 +19,6 @@
         </a>
       </li>
 
-      <li class="nav-item nav-category">Konfigurasi Umum</li>
-      <li class="nav-item">
-        <a href="{{ route('admin.admin-soal.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Admin Soal</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.kontak.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Kontak</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.rekening.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Rekening</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.paket.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Paket</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.kategori.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Kategori</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.jenis-soal.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Jenis Soal</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.sub-jenis-soal.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Sub Jenis Soal</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.jenis-kampus.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Jenis Universitas</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.universitas.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Universitas</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.tim.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Tim</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.kebijakan.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Kebijakan</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.slider-besar.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Slider Besar</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{{ route('admin.slider-kecil.index') }}" class="nav-link">
-          <i class="link-icon" data-feather="box"></i>
-          <span class="link-title">Slider Kecil</span>
-        </a>
-      </li>
-
       <li class="nav-item nav-category">Konfigurasi Materi</li>
       <li class="nav-item">
         <a href="{{ route('admin.materi.label-materi.index') }}" class="nav-link">
@@ -168,6 +88,98 @@
         <a href="{{ route('admin.referral.index') }}" class="nav-link">
           <i class="link-icon" data-feather="box"></i>
           <span class="link-title">Data Referral</span>
+        </a>
+      </li>
+
+      <li class="nav-item nav-category">Konfigurasi Umum</li>
+      <li class="nav-item">
+        <a href="{{ route('admin.admin-soal.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Admin Soal</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.kontak.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Kontak</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.rekening.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Rekening</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.paket.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Paket</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.kategori.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Kategori</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.jenis-soal.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Jenis Soal</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.sub-jenis-soal.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Sub Jenis Soal</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.jenis-kampus.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Jenis Universitas</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.universitas.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Universitas</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.tim.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Tim</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.testimoni.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Testimoni</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.fitur.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Fitur</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.kebijakan.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Kebijakan</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.slider-besar.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Slider Besar</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('admin.slider-kecil.index') }}" class="nav-link">
+          <i class="link-icon" data-feather="box"></i>
+          <span class="link-title">Slider Kecil</span>
         </a>
       </li>
 

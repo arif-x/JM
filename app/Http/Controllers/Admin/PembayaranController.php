@@ -69,7 +69,7 @@ class PembayaranController extends Controller
                 $jumlah = $row->harga - ($row->harga * ($row->diskon / 100));
                 return "Rp. ".number_format($jumlah, 0);
             }) 
-            ->rawColumns(['action', 'status', 'metode'])
+            ->rawColumns(['action', 'status'])
             ->make(true);
         }
         return view('admin.pembayaran');
@@ -126,8 +126,9 @@ class PembayaranController extends Controller
             Mail::to($email)->send(new PembayaranDikonfirmasi($mailData));
 
             $checkPaketAktif = PaketAktif::where('id_user', $request->id_user)->first();
+            $refer = User::where('id_user', $request->id_user)->get();
 
-            if(empty($checkPaketAktif)){
+            if(empty($checkPaketAktif) && $refer[0]['referrer'] != ''){
                 $kode_referrer = User::where('id_user', $request->id_user)->value('referrer');
                 $kode_referee = User::where('id_user', $request->id_user)->value('referral');
                 $email_referrer = User::where('referral', $kode_referrer)->value('email');

@@ -273,18 +273,19 @@
             if(data[0]['jawaban'] == 'a' && data[0]['kunci'] == 'a') {
                 $('#jawaban_a_text').addClass('text-primary');
             } else if(data[0]['jawaban'] == 'b' && data[0]['kunci'] == 'b') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_b_text').addClass('text-primary');
             } else if(data[0]['jawaban'] == 'c' && data[0]['kunci'] == 'c') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_c_text').addClass('text-primary');
             } else if(data[0]['jawaban'] == 'd' && data[0]['kunci'] == 'd') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_d_text').addClass('text-primary');
             } else if(data[0]['jawaban'] == 'e' && data[0]['kunci'] == 'e') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_e_text').addClass('text-primary');
             }
 
-            if(data[0]['jawaban'] == data[0]['kunci']) {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'a'){
+            // if(data[0]['jawaban'] == data[0]['kunci']) {
+            //     $('#jawaban_a_text').addClass('text-primary');
+            // } else 
+            if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'a'){
                 $('#jawaban_a_text').addClass('text-danger');
             } else if(data[0]['jawaban'] != data[0]['kunci'] && data[0]['jawaban'] == 'b'){
                 $('#jawaban_b_text').addClass('text-danger');
@@ -426,21 +427,24 @@ function getSoal(obj){
                 $('#jawaban_e_text').addClass('text-primary');
             }
 
+            console.log(data[no_min_1]['jawaban'] + "" + data[no_min_1]['kunci'])
+
             if(data[no_min_1]['jawaban'] == 'a' && data[no_min_1]['kunci'] == 'a') {
                 $('#jawaban_a_text').addClass('text-primary');
             } else if(data[no_min_1]['jawaban'] == 'b' && data[no_min_1]['kunci'] == 'b') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_b_text').addClass('text-primary');
             } else if(data[no_min_1]['jawaban'] == 'c' && data[no_min_1]['kunci'] == 'c') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_c_text').addClass('text-primary');
             } else if(data[no_min_1]['jawaban'] == 'd' && data[no_min_1]['kunci'] == 'd') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_d_text').addClass('text-primary');
             } else if(data[no_min_1]['jawaban'] == 'e' && data[no_min_1]['kunci'] == 'e') {
-                $('#jawaban_a_text').addClass('text-primary');
+                $('#jawaban_e_text').addClass('text-primary');
             }
 
-            if(data[no_min_1]['jawaban'] == data[no_min_1]['kunci']) {
-                $('#jawaban_a_text').addClass('text-primary');
-            } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'a'){
+            // if(data[no_min_1]['jawaban'] == data[no_min_1]['kunci']) {
+            //     $('#jawaban_a_text').addClass('text-primary');
+            // } else 
+            if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'a'){
                 $('#jawaban_a_text').addClass('text-danger');
             } else if(data[no_min_1]['jawaban'] != data[no_min_1]['kunci'] && data[no_min_1]['jawaban'] == 'b'){
                 $('#jawaban_b_text').addClass('text-danger');

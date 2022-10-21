@@ -135,6 +135,7 @@
                                 {data: 'nama_jenis_kampus', name: 'nama_jenis_kampus'},
                                 {data: 'tanggal_mulai', name: 'tanggal_mulai'},
                                 {data: 'tanggal_end', name: 'tanggal_end'},
+                                {data: 'kupon', name: 'kupon'},
                                 {data: 'action', name: 'action'},
                                 ]
                             });

@@ -58,18 +58,32 @@ class MateriController extends Controller
             }
         }
 
-        $data = Materi::updateOrCreate(
-            ['id_materi' => $request->id_materi],
-            [
-                'id_label_materi' => $request->id_label_materi,
-                'judul_materi' => $request->judul_materi,
-                'materi' => $request->materi,
-                'deskripsi' => $request->deskripsi,
-                'slug' => $slug_name
-            ]
-        );
+        if($request->id_label_materi == 1 || $request->id_label_materi == 2 || $request->id_label_materi == 3){
+            $data = Materi::updateOrCreate(
+                ['id_materi' => $request->id_materi],
+                [
+                    'id_label_materi' => $request->id_label_materi,
+                    'judul_materi' => $request->judul_materi,
+                    'materi' => $request->materi,
+                    'deskripsi' => $request->deskripsi,
+                    'slug' => $slug_name
+                ]
+            );
 
-        return response()->json($data);
+            return response()->json($data);
+        } else  {
+            $data = Materi::updateOrCreate(
+                ['id_materi' => $request->id_materi],
+                [
+                    'id_label_materi' => $request->id_label_materi,
+                    'judul_materi' => $request->judul_materi,
+                    'materi' => $request->embed,
+                    'deskripsi' => $request->deskripsi,
+                    'slug' => $slug_name
+                ]
+            );
+            return response()->json($data);
+        }
     }
 
     public function destroy($id){

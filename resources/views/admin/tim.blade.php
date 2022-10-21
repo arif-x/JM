@@ -7,7 +7,7 @@
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-                <h6 class="card-title">Slider Kecil</h6>
+                <h6 class="card-title">Tim</h6>
                 <div class="card-description">
                     <button class="btn btn-primary" id="tambah">Tambah</button>
                 </div>
@@ -51,7 +51,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="foto" class="control-label">Gambar Slider</label>
+                                            <label for="foto" class="control-label">Foto</label>
                                             <input type="file" class="form-control" id="foto" name="foto">
                                         </div>
 

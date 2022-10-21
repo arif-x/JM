@@ -43,7 +43,6 @@ class ProfilController extends Controller
         } else {
             $paket_aktif = PaketAktif::join('paket', 'paket.id_paket', '=', 'paket_aktif.id_paket')->where('id_user', Auth::user()->id_user)->get();
         }
-
         $kode_ref = User::where('id_user', Auth::user()->id_user)->value('referral');
         $jumlah_ref = User::where('referrer', $kode_ref)->count();
         $jumlah_ref_sukses = SaldoKomisi::where('referrer', $kode_ref)->count();

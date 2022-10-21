@@ -23,7 +23,7 @@ class SoalTryoutImport implements ToCollection, WithStartRow, WithHeadingRow
 
             $getJumlahSoal = SoalTryout::where('id_label_soal_tryout', $row[$i]['id_label_soal_tryout'])->where('id_sub_jenis_soal', $row[$i]['id_sub_jenis_soal'])->count();
 
-            if($getJumlahSoal < 15) {
+            if($getJumlahSoal <= 50) {
                 SoalTryout::insert([
                     'id_label_soal_tryout' => $row[$i]['id_label_soal_tryout'],
                     'soal_tryout' => $row[$i]['soal_tryout'],
@@ -32,7 +32,7 @@ class SoalTryoutImport implements ToCollection, WithStartRow, WithHeadingRow
                     'c' => $row[$i]['c'],
                     'd' => $row[$i]['d'],
                     'e' => $row[$i]['e'],
-                    'kunci' => $row[$i]['kunci'],
+                    'kunci' => strtolower($row[$i]['kunci']),
                     'id_jenis_soal' => $row[$i]['id_jenis_soal'],
                     'id_sub_jenis_soal' => $row[$i]['id_sub_jenis_soal'],
                     'pembahasan' => $row[$i]['pembahasan'],

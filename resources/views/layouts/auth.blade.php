@@ -22,7 +22,7 @@
     <meta property="twitter:title" content="Jalur Mandiri">
     <meta property="twitter:description" content="Jalur Mandiri, Wujudkan Mimpimu Masuk Kampus Idaman">
     <meta property="twitter:image" content="{{ asset('assets-guest/images/meta-image.png') }}">
-    
+
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
     <!-- endinject -->
